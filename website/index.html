@@ -14,7 +14,7 @@
   
   <style>
     /* ==========================================================================
-       Mobata — Dark Monochrome & Celestial Morphing Design System
+       Mobata — Dark Monochrome & Transitions.dev Design System
        ========================================================================== */
     :root {
       --bg-black: #030306;
@@ -37,9 +37,25 @@
       --term-cyan: #64d2ff;
       --term-purple: #bf5af2;
 
-      /* Motion */
-      --swipe-dur: 280ms;
+      /* Normal Smooth Swipe Motion */
+      --swipe-dur: 480ms;
       --swipe-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+      /* Transitions.dev Card Hover Tilt Tokens */
+      --tilt-perspective: 1000px;
+      --tilt-return: 1000ms;
+      --tilt-return-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --tilt-follow: 400ms;
+      --tilt-follow-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --tilt-glare-opacity: 0.32;
+      --tilt-glare-fade: 300ms;
+      --tilt-glare-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+      /* Transitions.dev Shimmer Tokens */
+      --shimmer-dur: 2800ms;
+      --shimmer-highlight: #ffffff;
+      --shimmer-band: 350%;
+      --shimmer-ease: linear;
 
       --think-hold: 2400ms;
       --think-swap: 180ms;
@@ -47,7 +63,6 @@
       --think-blur: 2px;
       --think-shimmer: 2200ms;
       --think-base: #ffffff;
-      --think-highlight: #a0a0aa;
       --think-ease: ease-in-out;
 
       --stream-gap: 35ms;
@@ -105,7 +120,7 @@
       z-index: 1;
     }
 
-    /* Subtle Silver Ambient Glow */
+    /* Ambient Lighting */
     .ambient-glow {
       position: absolute;
       top: 0;
@@ -137,7 +152,7 @@
     }
 
     /* ==========================================================================
-       Floating Capsule Navigation Bar (No full-width background strap!)
+       Floating Capsule Navigation Bar
        ========================================================================== */
     .nav-floating-wrap {
       display: flex;
@@ -197,7 +212,6 @@
       border-radius: 9999px;
     }
 
-    /* Navigation links (Overview & Advantages removed as requested) */
     .nav-links {
       display: flex;
       align-items: center;
@@ -253,14 +267,98 @@
     }
 
     /* ==========================================================================
-       Hero Section (Two-Column Layout: Left Text & Terminal, Right Card Swipe Deck)
+       Transitions.dev: Card Hover Tilt & Glare (Universal)
+       ========================================================================== */
+    .t-tilt {
+      touch-action: none;
+      position: relative;
+    }
+    .t-tilt-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      transform:
+        perspective(var(--tilt-perspective))
+        rotateX(var(--tilt-rx, 0deg))
+        rotateY(var(--tilt-ry, 0deg));
+      transform-style: preserve-3d;
+      transition: transform var(--tilt-return) var(--tilt-return-ease), border-color 0.25s ease;
+      will-change: transform;
+    }
+    .t-tilt-card.is-tilting {
+      transition: transform var(--tilt-follow) var(--tilt-follow-ease);
+    }
+    .t-tilt-glare {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      mix-blend-mode: screen;
+      background:
+        radial-gradient(circle 95px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+          rgba(255,255,255,0.48), rgba(255,255,255,0.06) 52%, rgba(255,255,255,0) 84%),
+        radial-gradient(circle 200px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+          rgba(255,255,255,0.22), rgba(255,255,255,0.04) 58%, rgba(255,255,255,0) 78%),
+        radial-gradient(circle 360px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+          rgba(255,255,255,0.10), rgba(255,255,255,0) 88%);
+      transition: opacity var(--tilt-glare-fade) var(--tilt-glare-ease);
+    }
+    .t-tilt.is-hover .t-tilt-glare {
+      opacity: var(--tilt-glare-opacity);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .t-tilt-card { transform: none !important; transition: none !important; }
+    }
+
+    /* ==========================================================================
+       Transitions.dev: Shimmer Text (Headline Animation)
+       ========================================================================== */
+    .t-shimmer {
+      position: relative;
+      display: inline-block;
+      color: #ffffff;
+    }
+    .t-shimmer.shimmer-dim {
+      color: #9e9ea6;
+    }
+    .t-shimmer::before {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        transparent 35%,
+        var(--shimmer-highlight) 50%,
+        transparent 65%,
+        transparent 100%
+      );
+      background-size: var(--shimmer-band) 100%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      animation: t-shimmer var(--shimmer-dur) var(--shimmer-ease) infinite;
+    }
+    @keyframes t-shimmer {
+      0%   { background-position: 100% 0; }
+      100% { background-position: 0% 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .t-shimmer::before { animation: none !important; }
+    }
+
+    /* ==========================================================================
+       Hero Section
        ========================================================================== */
     .hero-split {
-      padding: 60px 0 80px; /* Pulled up closer to the top */
+      padding: 60px 0 80px;
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
       gap: 48px;
-      align-items: flex-start; /* Aligns cards directly with top header */
+      align-items: flex-start;
       width: 100%;
       position: relative;
       z-index: 2;
@@ -286,16 +384,11 @@
       border-radius: 9999px;
     }
     .hero-h1 {
-      font-size: 58px;
+      font-size: 56px;
       font-weight: 900;
-      line-height: 1.08;
+      line-height: 1.1;
       letter-spacing: -0.04em;
       margin-bottom: 22px;
-    }
-    .grad-txt {
-      background: linear-gradient(135deg, #ffffff 40%, #9e9ea6 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
     .hero-p {
       font-size: 18.5px;
@@ -351,7 +444,7 @@
     }
 
     /* ==========================================================================
-       Hero Right: 3D Stacked Card Swipe Deck (Positioned Higher Up & Snappy)
+       Hero Right: 3D Stacked Card Swipe Deck (Tight Gap & Normal Speed)
        ========================================================================== */
     .hero-right {
       display: flex;
@@ -359,7 +452,7 @@
       align-items: center;
       justify-content: flex-start;
       position: relative;
-      margin-top: 6px; /* Pulled up */
+      margin-top: 6px;
     }
     .deck-header {
       width: 100%;
@@ -392,38 +485,38 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
     }
     .btn-swipe-next:hover {
       background: #ffffff;
       color: #000000;
     }
 
-    /* Fixed Deck Stage: Prevents Any Layout Shift / Reflow */
+    /* Rigid Deck Stage: Zero layout reflow */
     .card-deck-stage {
       position: relative;
       width: 100%;
       max-width: 440px;
-      height: 360px;
-      min-height: 360px;
-      max-height: 360px;
+      height: 350px;
+      min-height: 350px;
+      max-height: 350px;
       perspective: 1200px;
-      overflow: visible; /* Prevents scrollbar flashes */
-      contain: layout size; /* Strictly isolates geometry from rest of page! */
+      overflow: visible;
+      contain: layout size;
     }
     .stack-card {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 350px;
-      background: rgba(20, 20, 26, 0.9);
+      height: 340px;
+      background: rgba(20, 20, 26, 0.92);
       backdrop-filter: blur(28px) saturate(180%);
       -webkit-backdrop-filter: blur(28px) saturate(180%);
       border: 1px solid var(--border-subtle);
-      border-radius: 24px;
-      padding: 32px 28px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px 26px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.1);
       cursor: pointer;
       user-select: none;
       transition:
@@ -435,7 +528,7 @@
       will-change: transform, opacity;
     }
     .stack-card:hover {
-      border-color: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.35);
     }
     .sc-tag {
       display: inline-block;
@@ -447,10 +540,10 @@
       border: 1px solid rgba(255, 255, 255, 0.14);
       padding: 3px 10px;
       border-radius: 6px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .sc-title {
-      font-size: 23px;
+      font-size: 22px;
       font-weight: 800;
       letter-spacing: -0.02em;
       margin-bottom: 12px;
@@ -486,9 +579,9 @@
       background: #ffffff;
     }
 
-    /* Fast, Snappy Swipe Keyframe */
+    /* Tight-gap exit: smooth normal speed, no giant flyaway */
     .stack-card.is-swiping {
-      transform: translateX(115%) rotate(14deg) scale(0.92) !important;
+      transform: translateX(45px) translateY(-8px) rotate(4deg) scale(0.96) !important;
       opacity: 0 !important;
       pointer-events: none;
     }
@@ -576,9 +669,7 @@
       51%, 100% { opacity: 0; }
     }
 
-    /* ==========================================================================
-       Transitions.dev: Thinking States
-       ========================================================================== */
+    /* Thinking States */
     .t-think {
       position: relative;
       display: inline-block;
@@ -616,7 +707,7 @@
       pointer-events: none;
       background-image: linear-gradient(90deg,
         transparent 0%, transparent 40%,
-        var(--think-highlight) 50%,
+        var(--shimmer-highlight) 50%,
         transparent 60%, transparent 100%);
       background-size: 400% 100%;
       background-repeat: no-repeat;
@@ -642,9 +733,7 @@
       opacity: 0;
     }
 
-    /* ==========================================================================
-       Transitions.dev: Streaming Text
-       ========================================================================== */
+    /* Streaming Text */
     .t-stream-w {
       display: inline-block;
       opacity: 0;
@@ -658,9 +747,7 @@
       filter: blur(0);
     }
 
-    /* ==========================================================================
-       Transitions.dev: Matrix Dot Loader
-       ========================================================================== */
+    /* Matrix Dot Loader */
     .t-matrix {
       display: inline-grid;
       grid-template-columns: repeat(4, 2.5px);
@@ -681,12 +768,14 @@
     }
 
     /* ==========================================================================
-       Scroll Fade Animation Elements
+       Scroll-Driven Fade Animation (High Visibility)
        ========================================================================== */
     .scroll-fade {
       opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      transform: translateY(36px);
+      transition: 
+        opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform;
     }
     .scroll-fade.is-visible {
@@ -696,7 +785,7 @@
 
     /* Sections */
     .section {
-      padding: 90px 0;
+      padding: 96px 0;
       position: relative;
       width: 100%;
       z-index: 2;
@@ -704,7 +793,7 @@
     .sec-head {
       text-align: center;
       max-width: 820px;
-      margin: 0 auto 52px;
+      margin: 0 auto 56px;
     }
     .sec-tag {
       font-size: 12px;
@@ -730,21 +819,19 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 28px;
     }
-    .metric-card {
+    .metric-card-inner {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 20px;
       padding: 44px 34px;
       text-align: center;
       backdrop-filter: blur(20px);
-      transition: all 0.25s ease;
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
     }
-    .metric-card:hover {
+    .t-tilt.is-hover .metric-card-inner {
       background: var(--bg-card-hover);
       border-color: var(--border-focus);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
     }
     .metric-num {
       font-size: 64px;
@@ -765,7 +852,7 @@
       line-height: 1.6;
     }
 
-    /* Comparison Table */
+    /* Comparison Table Box */
     .table-box {
       background: var(--bg-card);
       backdrop-filter: blur(20px);
@@ -799,13 +886,13 @@
       font-weight: 800;
     }
 
-    /* Dedicated Documentation Cards (Separated Pages!) */
+    /* Dedicated Documentation Cards */
     .docs-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 28px;
     }
-    .doc-page-card {
+    .doc-page-card-inner {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 20px;
@@ -816,13 +903,12 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: all 0.25s ease;
+      height: 100%;
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
     }
-    .doc-page-card:hover {
+    .t-tilt.is-hover .doc-page-card-inner {
       background: var(--bg-card-hover);
       border-color: rgba(255, 255, 255, 0.35);
-      transform: translateY(-4px);
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
     }
     .doc-tag {
@@ -956,7 +1042,7 @@
       .footer-row { grid-template-columns: 1fr 1fr; }
       .nav-links { display: none; }
       .container { padding: 0 20px; }
-      .hero-h1 { font-size: 42px; }
+      .hero-h1 { font-size: 40px; }
     }
   </style>
 </head>
@@ -971,7 +1057,7 @@
     <div class="glow-orb orb-2"></div>
   </div>
 
-  <!-- Floating Capsule Navigation Bar (No full-width background strap!) -->
+  <!-- Floating Capsule Navigation Bar -->
   <div class="nav-floating-wrap">
     <nav class="capsule-navbar">
       <!-- Logo + Mobata Brand Text -->
@@ -985,7 +1071,7 @@
         <span>v1.0.0</span>
       </div>
 
-      <!-- Navigation links (Overview & Advantages removed!) -->
+      <!-- Navigation links (Overview & Advantages removed) -->
       <div class="nav-links">
         <a href="#benchmarks">Benchmarks</a>
         <a href="#guides">Setup Guides</a>
@@ -1008,7 +1094,7 @@
   <main class="container">
     <div class="hero-split">
       
-      <!-- Left Column: Hero Copy + Vibrant Live Terminal -->
+      <!-- Left Column: Hero Copy + Transitions.dev Shimmer Headline -->
       <div class="hero-left">
         <div class="hero-badge-wrap">
           <div class="hero-badge">
@@ -1017,9 +1103,10 @@
           </div>
         </div>
 
+        <!-- Transitions.dev Shimmer Animation Applied to Main Headline -->
         <h1 class="hero-h1">
-          Upload Unlimited Media Files.<br>
-          <span class="grad-txt">Without Limits.</span>
+          <span class="t-shimmer" data-text="Upload Unlimited Media Files.">Upload Unlimited Media Files.</span><br>
+          <span class="t-shimmer shimmer-dim" data-text="Without Limits.">Without Limits.</span>
         </h1>
 
         <!-- Streaming text paragraph -->
@@ -1039,8 +1126,8 @@
         </div>
 
         <!-- Terminal Stage (Code colors preserved!) -->
-        <div class="terminal-stage">
-          <div class="terminal-frame">
+        <div class="terminal-stage t-tilt">
+          <div class="terminal-frame t-tilt-card">
             <div class="term-top">
               <div class="term-dots">
                 <span class="t-dot t-red"></span>
@@ -1049,7 +1136,6 @@
               </div>
               <div class="term-meta">
                 <span>mobata //</span>
-                <!-- Transitions.dev Thinking States -->
                 <span class="t-think" id="engine-think" role="status">
                   <span class="t-think-sizer" aria-hidden="true">Streaming 4K video block 18/64…</span>
                   <span class="t-think-text" data-text="Analyzing media folder…">Analyzing media folder…</span>
@@ -1065,21 +1151,22 @@
               <div class="term-row"><span class="c-cyan">[DIR]</span> Media Scan: C:\Photos\Master (5,242 items indexed)</div>
               <div class="term-row"><span class="c-cyan">[CHN]</span> Connected to channel: "Private Archive" (-1003099948239)</div>
               <div class="t-hr"></div>
-              <div class="term-row c-dim">[4728/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - <span class="c-green">Done!</span></div>
-              <div class="term-row c-dim">[4729/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - <span class="c-green">Done!</span></div>
+              <div class="term-row c-dim">[4776/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - <span class="c-green">Done!</span></div>
+              <div class="term-row c-dim">[4777/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - <span class="c-green">Done!</span></div>
               <div class="term-row">
-                <span class="c-yellow" id="t-count">[4730/5242]</span>
+                <span class="c-yellow" id="t-count">[4778/5242]</span>
                 <span id="t-file" class="c-cyan">IMG_0812.jpg:</span>
                 <span id="t-meter">96%|█████████ | 2.9M/3.1M [00:01, 3.2MB/s]</span>
                 <span class="t-cursor">_</span>
               </div>
             </div>
+            <div class="t-tilt-glare"></div>
           </div>
         </div>
 
       </div>
 
-      <!-- Right Column: 3D Stacked Card Swipe Deck (Positioned Higher Up & Smooth) -->
+      <!-- Right Column: 3D Stacked Card Swipe Deck (Tight Stack Gap & Smooth Normal Speed) -->
       <div class="hero-right">
         <div class="deck-header">
           <span class="deck-title">ARCHITECTURAL ADVANTAGES</span>
@@ -1091,10 +1178,10 @@
           </div>
         </div>
 
-        <div class="card-deck-stage" id="deck-stage">
+        <div class="card-deck-stage t-tilt" id="deck-stage">
           
           <!-- Card 1 -->
-          <div class="stack-card" data-idx="0">
+          <div class="stack-card t-tilt-card" data-idx="0">
             <div>
               <span class="sc-tag">[TCP] NETWORK SHIELD</span>
               <h3 class="sc-title">Anti-Throttling Protocol</h3>
@@ -1111,10 +1198,11 @@
                 <span class="sc-dot"></span>
               </div>
             </div>
+            <div class="t-tilt-glare"></div>
           </div>
 
           <!-- Card 2 -->
-          <div class="stack-card" data-idx="1">
+          <div class="stack-card t-tilt-card" data-idx="1">
             <div>
               <span class="sc-tag">[STREAM] PLAYBACK</span>
               <h3 class="sc-title">In-App Video Streaming</h3>
@@ -1131,10 +1219,11 @@
                 <span class="sc-dot"></span>
               </div>
             </div>
+            <div class="t-tilt-glare"></div>
           </div>
 
           <!-- Card 3 -->
-          <div class="stack-card" data-idx="2">
+          <div class="stack-card t-tilt-card" data-idx="2">
             <div>
               <span class="sc-tag">[AUTO] RATE RESILIENCE</span>
               <h3 class="sc-title">Self-Healing FloodWait</h3>
@@ -1151,10 +1240,11 @@
                 <span class="sc-dot"></span>
               </div>
             </div>
+            <div class="t-tilt-glare"></div>
           </div>
 
           <!-- Card 4 -->
-          <div class="stack-card" data-idx="3">
+          <div class="stack-card t-tilt-card" data-idx="3">
             <div>
               <span class="sc-tag">[LOCK] CONCURRENCY</span>
               <h3 class="sc-title">Instance Protection</h3>
@@ -1171,10 +1261,11 @@
                 <span class="sc-dot"></span>
               </div>
             </div>
+            <div class="t-tilt-glare"></div>
           </div>
 
           <!-- Card 5 -->
-          <div class="stack-card" data-idx="4">
+          <div class="stack-card t-tilt-card" data-idx="4">
             <div>
               <span class="sc-tag">[QUEUE] SCHEDULER</span>
               <h3 class="sc-title">Smart Priority Sorting</h3>
@@ -1191,10 +1282,11 @@
                 <span class="sc-dot"></span>
               </div>
             </div>
+            <div class="t-tilt-glare"></div>
           </div>
 
           <!-- Card 6 -->
-          <div class="stack-card" data-idx="5">
+          <div class="stack-card t-tilt-card" data-idx="5">
             <div>
               <span class="sc-tag">[SYNC] PERSISTENCE</span>
               <h3 class="sc-title">Zero-Loss Persistence</h3>
@@ -1211,6 +1303,7 @@
                 <span class="sc-dot active"></span>
               </div>
             </div>
+            <div class="t-tilt-glare"></div>
           </div>
 
         </div>
@@ -1220,7 +1313,7 @@
     </div>
   </main>
 
-  <!-- Metrics Section (Scroll Fade Animation) -->
+  <!-- Metrics Section (Scroll Fade Animation & Transitions.dev Tilt on All Cards) -->
   <section class="section scroll-fade">
     <div class="container">
       <div class="sec-head">
@@ -1230,22 +1323,34 @@
       </div>
 
       <div class="metrics-grid">
-        <div class="metric-card">
-          <div class="metric-num">4 GB</div>
-          <div class="metric-lbl">Max File Size</div>
-          <p class="metric-p">Full-length 4K footage and multi-gigabyte videos uploaded without compression or quality loss.</p>
+        <!-- Metric Card 1 with Tilt -->
+        <div class="t-tilt">
+          <div class="metric-card-inner t-tilt-card">
+            <div class="metric-num">4 GB</div>
+            <div class="metric-lbl">Max File Size</div>
+            <p class="metric-p">Full-length 4K footage and multi-gigabyte videos uploaded without compression or quality loss.</p>
+            <div class="t-tilt-glare"></div>
+          </div>
         </div>
 
-        <div class="metric-card">
-          <div class="metric-num">80×</div>
-          <div class="metric-lbl">C-Accelerated Speed</div>
-          <p class="metric-p">Native compiled <code>cryptg</code> AES-NI hardware encryption eliminates software CPU bottlenecks.</p>
+        <!-- Metric Card 2 with Tilt -->
+        <div class="t-tilt">
+          <div class="metric-card-inner t-tilt-card">
+            <div class="metric-num">80×</div>
+            <div class="metric-lbl">C-Accelerated Speed</div>
+            <p class="metric-p">Native compiled <code>cryptg</code> AES-NI hardware encryption eliminates software CPU bottlenecks.</p>
+            <div class="t-tilt-glare"></div>
+          </div>
         </div>
 
-        <div class="metric-card">
-          <div class="metric-num">0</div>
-          <div class="metric-lbl">Duplicate Uploads</div>
-          <p class="metric-p">Persistent state tracking flushes every file instantly. Restarts pick up at the exact next item.</p>
+        <!-- Metric Card 3 with Tilt -->
+        <div class="t-tilt">
+          <div class="metric-card-inner t-tilt-card">
+            <div class="metric-num">0</div>
+            <div class="metric-lbl">Duplicate Uploads</div>
+            <p class="metric-p">Persistent state tracking flushes every file instantly. Restarts pick up at the exact next item.</p>
+            <div class="t-tilt-glare"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1259,60 +1364,63 @@
         <h2 class="sec-title">Why Traditional Methods Fail.</h2>
       </div>
 
-      <div class="table-box">
-        <table class="comp-table">
-          <thead>
-            <tr>
-              <th>Feature</th>
-              <th>Telegram Desktop App</th>
-              <th>Standard Bot API</th>
-              <th class="col-hi">Mobata (MTProto)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Max File Size</strong></td>
-              <td>2 GB (Manual Drag-and-Drop)</td>
-              <td>50 MB Strictly</td>
-              <td class="col-hi">2 GB – 4 GB</td>
-            </tr>
-            <tr>
-              <td><strong>Unlimited Batch Queue</strong></td>
-              <td>UI Freezes / Crashes</td>
-              <td>Fails on large videos</td>
-              <td class="col-hi">Autonomous Queue</td>
-            </tr>
-            <tr>
-              <td><strong>Auto-Resume on Disconnect</strong></td>
-              <td>❌ No</td>
-              <td>❌ No</td>
-              <td class="col-hi">Zero Duplicates</td>
-            </tr>
-            <tr>
-              <td><strong>FloodWait Auto Recovery</strong></td>
-              <td>❌ Manual retry</td>
-              <td>❌ Crashes Script</td>
-              <td class="col-hi">Self-Healing</td>
-            </tr>
-            <tr>
-              <td><strong>ISP DPI / Throttling Bypass</strong></td>
-              <td>❌ No</td>
-              <td>❌ No</td>
-              <td class="col-hi">Obfuscated TCP</td>
-            </tr>
-            <tr>
-              <td><strong>Headless Server Support</strong></td>
-              <td>❌ Requires GUI</td>
-              <td>✅ Yes</td>
-              <td class="col-hi">CLI / Docker / VPS</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="table-box t-tilt">
+        <div class="t-tilt-card">
+          <table class="comp-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Telegram Desktop App</th>
+                <th>Standard Bot API</th>
+                <th class="col-hi">Mobata (MTProto)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Max File Size</strong></td>
+                <td>2 GB (Manual Drag-and-Drop)</td>
+                <td>50 MB Strictly</td>
+                <td class="col-hi">2 GB – 4 GB</td>
+              </tr>
+              <tr>
+                <td><strong>Unlimited Batch Queue</strong></td>
+                <td>UI Freezes / Crashes</td>
+                <td>Fails on large videos</td>
+                <td class="col-hi">Autonomous Queue</td>
+              </tr>
+              <tr>
+                <td><strong>Auto-Resume on Disconnect</strong></td>
+                <td>❌ No</td>
+                <td>❌ No</td>
+                <td class="col-hi">Zero Duplicates</td>
+              </tr>
+              <tr>
+                <td><strong>FloodWait Auto Recovery</strong></td>
+                <td>❌ Manual retry</td>
+                <td>❌ Crashes Script</td>
+                <td class="col-hi">Self-Healing</td>
+              </tr>
+              <tr>
+                <td><strong>ISP DPI / Throttling Bypass</strong></td>
+                <td>❌ No</td>
+                <td>❌ No</td>
+                <td class="col-hi">Obfuscated TCP</td>
+              </tr>
+              <tr>
+                <td><strong>Headless Server Support</strong></td>
+                <td>❌ Requires GUI</td>
+                <td>✅ Yes</td>
+                <td class="col-hi">CLI / Docker / VPS</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="t-tilt-glare"></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Dedicated Setup Guides (Separate Pages!) -->
+  <!-- Dedicated Setup Guides (Scroll Fade Animation & Transitions.dev Tilt on All Cards) -->
   <section class="section scroll-fade" id="guides">
     <div class="container">
       <div class="sec-head">
@@ -1322,44 +1430,53 @@
       </div>
 
       <div class="docs-grid">
-        <!-- Page 1: Local Setup -->
-        <a href="setup.html" class="doc-page-card">
-          <div>
-            <div class="doc-tag">LOCAL WORKSTATION</div>
-            <h3 class="doc-title">💻 Local Machine Setup</h3>
-            <p class="doc-desc">Deploy directly on Windows, macOS, or Linux. Obtain Telegram API keys, set up environment variables, and run one-click batch scripts.</p>
-          </div>
-          <div class="doc-cta">
-            <span>Read Local Setup Guide</span>
-            <span>→</span>
-          </div>
-        </a>
+        <!-- Page 1: Local Setup with Tilt -->
+        <div class="t-tilt">
+          <a href="setup.html" class="doc-page-card-inner t-tilt-card">
+            <div>
+              <div class="doc-tag">LOCAL WORKSTATION</div>
+              <h3 class="doc-title">💻 Local Machine Setup</h3>
+              <p class="doc-desc">Deploy directly on Windows, macOS, or Linux. Obtain Telegram API keys, set up environment variables, and run one-click batch scripts.</p>
+            </div>
+            <div class="doc-cta">
+              <span>Read Local Setup Guide</span>
+              <span>→</span>
+            </div>
+            <div class="t-tilt-glare"></div>
+          </a>
+        </div>
 
-        <!-- Page 2: Docker & NAS -->
-        <a href="docker.html" class="doc-page-card">
-          <div>
-            <div class="doc-tag">CONTAINER & STORAGE</div>
-            <h3 class="doc-title">🐳 Docker & NAS Setup</h3>
-            <p class="doc-desc">Run headless in the background 24/7 on Synology, Unraid, TrueNAS SCALE, or Ubuntu server using clean <code>docker-compose.yml</code>.</p>
-          </div>
-          <div class="doc-cta">
-            <span>Read Docker Guide</span>
-            <span>→</span>
-          </div>
-        </a>
+        <!-- Page 2: Docker & NAS with Tilt -->
+        <div class="t-tilt">
+          <a href="docker.html" class="doc-page-card-inner t-tilt-card">
+            <div>
+              <div class="doc-tag">CONTAINER & STORAGE</div>
+              <h3 class="doc-title">🐳 Docker & NAS Setup</h3>
+              <p class="doc-desc">Run headless in the background 24/7 on Synology, Unraid, TrueNAS SCALE, or Ubuntu server using clean <code>docker-compose.yml</code>.</p>
+            </div>
+            <div class="doc-cta">
+              <span>Read Docker Guide</span>
+              <span>→</span>
+            </div>
+            <div class="t-tilt-glare"></div>
+          </a>
+        </div>
 
-        <!-- Page 3: Cloud & Automation -->
-        <a href="cloud.html" class="doc-page-card">
-          <div>
-            <div class="doc-tag">CLOUD WORKERS & N8N</div>
-            <h3 class="doc-title">☁️ Cloud & Automation</h3>
-            <p class="doc-desc">Deploy on Koyeb or Heroku workers, create Linux systemd daemon units, and automate smartphone photo syncing via n8n webhooks.</p>
-          </div>
-          <div class="doc-cta">
-            <span>Read Cloud & n8n Guide</span>
-            <span>→</span>
-          </div>
-        </a>
+        <!-- Page 3: Cloud & Automation with Tilt -->
+        <div class="t-tilt">
+          <a href="cloud.html" class="doc-page-card-inner t-tilt-card">
+            <div>
+              <div class="doc-tag">CLOUD WORKERS & N8N</div>
+              <h3 class="doc-title">☁️ Cloud & Automation</h3>
+              <p class="doc-desc">Deploy on Koyeb or Heroku workers, create Linux systemd daemon units, and automate smartphone photo syncing via n8n webhooks.</p>
+            </div>
+            <div class="doc-cta">
+              <span>Read Cloud & n8n Guide</span>
+              <span>→</span>
+            </div>
+            <div class="t-tilt-glare"></div>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -1446,8 +1563,9 @@
   </footer>
 
   <!-- ==========================================================================
-       Interactive Scripts: Morphing Celestial Canvas, Glitch-Free 3D Card Swipe
-       ========================================================================== -->
+       Interactive Scripts: Transitions.dev Tilt Everywhere, Snappy Swipe, Scroll Fade
+       ========================================================================== */
+  -->
   <script>
     // ---------------------------------------------------------
     // 1. Morphing Celestial Starfield Background Canvas
@@ -1458,7 +1576,7 @@
     let patterns = [];
     let curPatternIdx = 0;
     let nextPatternIdx = 1;
-    let patternProgress = 0; // 0 to 1 cross-fade
+    let patternProgress = 0;
     let isPatternFading = false;
 
     function resizeCanvas() {
@@ -1499,14 +1617,14 @@
 
       const W = canvas.width, H = canvas.height;
 
-      // Pattern 0: Constellation Network (Cassiopeia, Cygnus, Orion)
+      // Pattern 0: Constellations
       const p0 = [
         [{ x: W*0.15, y: H*0.2 }, { x: W*0.2, y: H*0.28 }, { x: W*0.25, y: H*0.23 }, { x: W*0.3, y: H*0.32 }, { x: W*0.36, y: H*0.25 }],
         [{ x: W*0.72, y: H*0.18 }, { x: W*0.8, y: H*0.26 }, { x: W*0.88, y: H*0.34 }, { x: W*0.76, y: H*0.3 }, { x: W*0.84, y: H*0.22 }],
-        [{ x: W*0.12, y: H*0.68 }, { x: W*0.18, y: H*0.7 }, { x: W*0.24, y: H*0.75 }, { x: W*0.3, y: H*0.76 }, { x: W*0.36, y: H*0.72 }, { x: W*0.38, y: H*0.82 }, { x: W*0.32, y: H*0.84 }]
+        [{ x: W*0.12, y: H*0.68 }, { x: W*0.18, y: H*0.7 }, { x: W*0.24, y: H*0.75 }, { x: W*0.3, y: H*0.76 }, { x: W*0.36, y: H*0.72 }]
       ];
 
-      // Pattern 1: Orbital Planetary Ellipses
+      // Pattern 1: Planetary Ellipses
       const p1 = [
         [{ x: W*0.25, y: H*0.25 }, { x: W*0.32, y: H*0.22 }, { x: W*0.38, y: H*0.28 }, { x: W*0.33, y: H*0.36 }, { x: W*0.25, y: H*0.25 }],
         [{ x: W*0.75, y: H*0.65 }, { x: W*0.84, y: H*0.6 }, { x: W*0.9, y: H*0.68 }, { x: W*0.82, y: H*0.78 }, { x: W*0.75, y: H*0.65 }],
@@ -1524,7 +1642,6 @@
     }
     resizeCanvas();
 
-    // Smoothly cycle patterns every 6 seconds
     setInterval(() => {
       isPatternFading = true;
     }, 6000);
@@ -1543,7 +1660,6 @@
         }
         ctx.stroke();
 
-        // Glowing nodes
         for (let pt of line) {
           ctx.fillStyle = `rgba(255, 255, 255, ${0.85 * alpha})`;
           ctx.shadowBlur = 6 * alpha;
@@ -1559,13 +1675,11 @@
     function animateCelestial() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // 1. Draw twinkling background stars
       for (let s of stars) {
         s.update();
         s.draw();
       }
 
-      // 2. Cross-fade between patterns
       if (isPatternFading) {
         patternProgress += 0.015;
         if (patternProgress >= 1) {
@@ -1588,13 +1702,13 @@
     animateCelestial();
 
     // ---------------------------------------------------------
-    // 2. Glitch-Free 3D Card Swipe Stacking Deck (Strict Debounce)
+    // 2. 3D Card Swipe Deck (Tight Stack Gap & Smooth Normal Speed)
     // ---------------------------------------------------------
     const deckStage = document.getElementById('deck-stage');
     const cards = Array.from(deckStage.querySelectorAll('.stack-card'));
     const btnSwipe = document.getElementById('btn-next-swipe');
     let cardOrder = cards.map((_, i) => i);
-    let isSwiping = false; // Prevents double click / rapid spam
+    let isSwiping = false;
 
     function renderDeck() {
       cardOrder.forEach((cardIdx, pos) => {
@@ -1602,22 +1716,26 @@
         card.classList.remove('is-swiping');
         
         if (pos === 0) {
+          // Front Card: crisp 0 gap
           card.style.transform = 'translate3d(0, 0, 0) scale(1)';
           card.style.zIndex = '30';
           card.style.opacity = '1';
           card.style.pointerEvents = 'auto';
         } else if (pos === 1) {
-          card.style.transform = 'translate3d(0, 16px, -30px) scale(0.95)';
+          // Second Card: TIGHT 8px GAP!
+          card.style.transform = 'translate3d(0, 8px, -15px) scale(0.975)';
           card.style.zIndex = '20';
-          card.style.opacity = '0.75';
+          card.style.opacity = '0.78';
           card.style.pointerEvents = 'none';
         } else if (pos === 2) {
-          card.style.transform = 'translate3d(0, 32px, -60px) scale(0.90)';
+          // Third Card: TIGHT 16px GAP!
+          card.style.transform = 'translate3d(0, 16px, -30px) scale(0.95)';
           card.style.zIndex = '10';
-          card.style.opacity = '0.45';
+          card.style.opacity = '0.48';
           card.style.pointerEvents = 'none';
         } else {
-          card.style.transform = 'translate3d(0, 42px, -90px) scale(0.85)';
+          // Hidden Back Cards: TIGHT 22px GAP
+          card.style.transform = 'translate3d(0, 22px, -45px) scale(0.92)';
           card.style.zIndex = '5';
           card.style.opacity = '0';
           card.style.pointerEvents = 'none';
@@ -1631,21 +1749,21 @@
         e.preventDefault();
         e.stopPropagation();
       }
-      if (isSwiping) return; // Strict lock: completely prevents double click / jump
+      if (isSwiping) return;
       isSwiping = true;
 
       const topCardIdx = cardOrder[0];
       const topCard = cards[topCardIdx];
       topCard.classList.add('is-swiping');
 
-      // Snappy, quick 280ms duration
+      // Smooth normal speed: 480ms duration
       setTimeout(() => {
         cardOrder.push(cardOrder.shift());
         renderDeck();
         setTimeout(() => {
-          isSwiping = false; // Release lock cleanly
-        }, 50);
-      }, 280);
+          isSwiping = false;
+        }, 60);
+      }, 480);
     }
 
     if (btnSwipe) {
@@ -1653,21 +1771,61 @@
     }
     deckStage.addEventListener('click', triggerCardSwipe);
 
-    // Auto cycle cards every 4.8 seconds safely
+    // Auto cycle cards every 5 seconds safely
     let deckTimer = setInterval(() => {
       if (!isSwiping) triggerCardSwipe();
-    }, 4800);
+    }, 5000);
 
     deckStage.addEventListener('mouseenter', () => clearInterval(deckTimer));
     deckStage.addEventListener('mouseleave', () => {
       clearInterval(deckTimer);
       deckTimer = setInterval(() => {
         if (!isSwiping) triggerCardSwipe();
-      }, 4800);
+      }, 5000);
     });
 
     // ---------------------------------------------------------
-    // 3. Scroll-Driven Fade Animation (IntersectionObserver)
+    // 3. Transitions.dev: Card Hover Tilt & Glare (Universal Wireup)
+    // ---------------------------------------------------------
+    document.querySelectorAll('.t-tilt').forEach(wrapper => {
+      const card = wrapper.querySelector('.t-tilt-card');
+      if (!card) return;
+
+      wrapper.addEventListener('pointerenter', () => {
+        wrapper.classList.add('is-hover');
+        card.classList.add('is-tilting');
+      });
+
+      wrapper.addEventListener('pointermove', (e) => {
+        const rect = wrapper.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const px = (x / rect.width) * 2 - 1;   // -1 to 1
+        const py = (y / rect.height) * 2 - 1;  // -1 to 1
+
+        const rx = -py * 10;
+        const ry = px * 10;
+
+        const gx = (x / rect.width) * 100;
+        const gy = (y / rect.height) * 100;
+
+        wrapper.style.setProperty('--tilt-rx', `${rx.toFixed(2)}deg`);
+        wrapper.style.setProperty('--tilt-ry', `${ry.toFixed(2)}deg`);
+        wrapper.style.setProperty('--tilt-gx', `${gx.toFixed(1)}%`);
+        wrapper.style.setProperty('--tilt-gy', `${gy.toFixed(1)}%`);
+      });
+
+      wrapper.addEventListener('pointerleave', () => {
+        wrapper.classList.remove('is-hover');
+        card.classList.remove('is-tilting');
+        wrapper.style.setProperty('--tilt-rx', '0deg');
+        wrapper.style.setProperty('--tilt-ry', '0deg');
+      });
+    });
+
+    // ---------------------------------------------------------
+    // 4. Scroll-Driven Fade Animation (High Visibility)
     // ---------------------------------------------------------
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -1675,12 +1833,12 @@
           entry.target.classList.add('is-visible');
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.1 });
 
     document.querySelectorAll('.scroll-fade').forEach(el => observer.observe(el));
 
     // ---------------------------------------------------------
-    // 4. Transitions.dev: Streaming Text
+    // 5. Transitions.dev: Streaming Text
     // ---------------------------------------------------------
     const streamContainer = document.getElementById('hero-stream');
     if (streamContainer) {
@@ -1697,7 +1855,7 @@
     }
 
     // ---------------------------------------------------------
-    // 5. Transitions.dev: Thinking States
+    // 6. Transitions.dev: Thinking States
     // ---------------------------------------------------------
     const thinkingStates = [
       "Analyzing media folder…",
@@ -1728,7 +1886,7 @@
     }
 
     // ---------------------------------------------------------
-    // 6. Transitions.dev: Matrix Dot Loader Builder
+    // 7. Transitions.dev: Matrix Dot Loader Builder
     // ---------------------------------------------------------
     document.querySelectorAll('.t-matrix').forEach(matrix => {
       matrix.innerHTML = '';
@@ -1741,7 +1899,7 @@
     });
 
     // ---------------------------------------------------------
-    // 7. Live Terminal Progress Simulation
+    // 8. Live Terminal Progress Simulation
     // ---------------------------------------------------------
     const queue = [
       { name: 'IMG_2026_0918.jpg', size: '3.4M', speed: '3.2MB/s' },
@@ -1749,7 +1907,7 @@
       { name: 'DSC_NIGHT_RAW.jpg', size: '4.1M', speed: '3.1MB/s' },
       { name: 'TRIP_DOCUMENTARY.mkv', size: '1.2G', speed: '8.4MB/s' }
     ];
-    let qI = 0, qP = 30, qCnt = 4730;
+    let qI = 0, qP = 30, qCnt = 4778;
     setInterval(() => {
       const f = document.getElementById('t-file'), m = document.getElementById('t-meter'), c = document.getElementById('t-count');
       if (!f || !m) return;
@@ -1773,7 +1931,7 @@
     }, 550);
 
     // ---------------------------------------------------------
-    // 8. FAQ Accordion
+    // 9. FAQ Accordion
     // ---------------------------------------------------------
     document.querySelectorAll('.faq-q').forEach(btn => {
       btn.addEventListener('click', () => {
