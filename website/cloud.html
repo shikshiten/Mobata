@@ -10,7 +10,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -81,12 +81,14 @@
     }
     * {
       margin: 0; padding: 0; box-sizing: border-box;
-      font-family: 'Atyp', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Doto', sans-serif;
+      font-variation-settings: "ROND" 0;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
     h1, h2, h3, .nav-brand-name {
-      font-family: 'Atyp Display', 'Atyp', sans-serif;
+      font-family: 'Doto', sans-serif;
+      font-variation-settings: "ROND" 0;
     }
     code, pre, .code-box {
       font-family: 'JetBrains Mono', 'SF Mono', Consolas, Menlo, monospace !important;
@@ -301,6 +303,16 @@
     .hide-mobile { display: inline; }
 
     @media (max-width: 768px) {
+      * {
+        font-family: 'Atyp', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif !important;
+        font-variation-settings: normal !important;
+      }
+      h1, h2, h3, .nav-brand-name {
+        font-family: 'Atyp Display', 'Atyp', sans-serif !important;
+      }
+      code, pre, .code-box {
+        font-family: 'JetBrains Mono', 'SF Mono', Consolas, Menlo, monospace !important;
+      }
       body {
         padding-bottom: 84px;
         overflow-x: hidden;
