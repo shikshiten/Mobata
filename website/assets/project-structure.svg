@@ -47,16 +47,16 @@
   <line x1="85" y1="46" x2="225" y2="46" stroke="#61afef" stroke-width="2"/>
   
   <!-- Tab Icon + Text -->
-  <text x="98" y=\"66\" font-size="13">🐍</text>
+  <text x="98" y="66" font-size="13">🐍</text>
   <text x="118" y="66" class="tab-text">uploader.py</text>
   
-  <text x="240" y=\"66\" font-size="13">🐳</text>
+  <text x="240" y="66" font-size="13">🐳</text>
   <text x="260" y="66" class="title-text">Dockerfile</text>
   
-  <text x="360" y=\"66\" font-size="13">Ⓜ️</text>
+  <text x="360" y="66" font-size="13">Ⓜ️</text>
   <text x="380" y="66" class="title-text">README.md</text>
 
-  <!-- Tree Lines & Content -->
+  <!-- Tree Lines &amp; Content -->
   <g class="code-tree" transform="translate(35, 104)">
     
     <!-- Mobata/ -->

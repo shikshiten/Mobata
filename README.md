@@ -55,11 +55,8 @@ Unlike standard Telegram bots that are artificially throttled and strictly cappe
 ## ⬡ Repository Structure
 
 <div align="center">
-  <img src="assets/project-structure.svg" alt="Mobata VS Code Project Structure" width="100%" />
+  <img src="assets/project-structure.svg" alt="Mobata Project Structure" width="100%" />
 </div>
-
-<details open>
-<summary><b>📂 VS Code Explorer File Tree</b></summary>
 
 ```yaml
 📂 Mobata/
@@ -77,7 +74,6 @@ Unlike standard Telegram bots that are artificially throttled and strictly cappe
 ├── 📖 WHY_MOBATA.md             # In-depth architectural & problem-solving guide
 └── 📝 README.md                 # Documentation
 ```
-</details>
 
 ---
 
