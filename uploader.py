@@ -82,6 +82,31 @@ def append_history(file_identifier: str):
         f.flush()
 
 
+def detect_media_type(file_path: Path):
+    """
+    Detect whether file is a video, image, or generic document.
+    Reads magic bytes to accurately catch motion photo MP4 videos disguised as .jpg.
+    """
+    try:
+        with open(file_path, "rb") as f:
+            header = f.read(32)
+        # MP4, QuickTime MOV, 3GP, WebM, MKV
+        if b"ftyp" in header or header.startswith(b"\x1aE\xdf\xa3"):
+            return "video"
+        # JPEG, PNG, WebP, BMP, GIF
+        if header.startswith(b"\xff\xd8\xff") or header.startswith(b"\x89PNG") or b"WEBP" in header or header.startswith(b"BM"):
+            return "image"
+    except Exception:
+        pass
+
+    ext = file_path.suffix.lower()
+    if ext in VIDEO_EXTENSIONS:
+        return "video"
+    if ext in IMAGE_EXTENSIONS:
+        return "image"
+    return "document"
+
+
 def get_files_to_upload(folder_path: str):
     """Scan folder recursively and return sorted list of supported media files."""
     path = Path(folder_path)
@@ -163,15 +188,15 @@ async def main():
         return
 
     # Use ConnectionTcpObfuscated to bypass ISP packet filtering
-    # timeout=300 prevents TimeoutError on large video uploads (50-250MB)
+    # timeout=600 prevents TimeoutError on large files (50-250MB+)
     client = TelegramClient(
         SESSION_NAME,
         API_ID,
         API_HASH,
         connection=ConnectionTcpObfuscated,
-        request_retries=10,
-        connection_retries=10,
-        timeout=300,
+        request_retries=15,
+        connection_retries=15,
+        timeout=600,
         flood_sleep_threshold=120
     )
 
@@ -196,7 +221,17 @@ async def main():
             file_name = file_path.name
             file_size = file_path.stat().st_size
             ext = file_path.suffix.lower()
-            is_video = ext in VIDEO_EXTENSIONS
+            media_type = detect_media_type(file_path)
+            is_video = (media_type == "video")
+
+            # Telegram has a strict 10MB limit for compressed photos.
+            # If an image > 9.5MB or is an MP4 motion photo with .jpg extension,
+            # send with force_document=True so Telegram accepts it up to 2GB.
+            force_doc = False
+            if media_type == "image" and file_size > 9.5 * 1024 * 1024:
+                force_doc = True
+            elif is_video and ext in IMAGE_EXTENSIONS:
+                force_doc = True
 
             curr_total_idx = already_done + idx
             progress_prefix = f"[{curr_total_idx}/{total_found}]"
@@ -236,6 +271,7 @@ async def main():
                         entity=channel,
                         file=str(file_path.resolve()),
                         supports_streaming=is_video,
+                        force_document=force_doc,
                         progress_callback=upload_progress
                     )
                     # Complete progress bar to 100%
@@ -262,21 +298,48 @@ async def main():
                     last_bytes = 0
                 except (ConnectionError, errors.RPCError, asyncio.TimeoutError, OSError) as e:
                     pbar.close()
-                    # Exponential backoff: 5s, 10s, 20s, 30s, 45s...
-                    backoff = min(5 * (2 ** (attempt - 1)), 60)
+                    err_msg = str(e).lower()
+                    err_name = type(e).__name__.lower()
+
+                    # Telegram Photo Limit Rejection (e.g. photo exceeds 10MB or motion photo)
+                    is_photo_limit = (
+                        "cannot be saved by telegram" in err_msg
+                        or "exceeds 10mb" in err_msg
+                        or "photocrop" in err_name
+                        or "photoinvalid" in err_name
+                        or "dimension" in err_msg
+                    )
+
+                    if is_photo_limit and not force_doc:
+                        print(f"\n[!] Photo limitation detected ({e}). Re-uploading cleanly as Document/Video...")
+                        force_doc = True
+                        pbar = tqdm(
+                            total=file_size,
+                            unit="B",
+                            unit_scale=True,
+                            unit_divisor=1024,
+                            desc=f"{progress_prefix} Doc {file_name[:20]}",
+                            leave=False,
+                            ncols=85
+                        )
+                        last_bytes = 0
+                        continue  # Immediate retry with force_document=True!
+
+                    # Exponential backoff: 4s, 8s, 16s, 24s...
+                    backoff = min(4 * attempt, 30)
                     print(f"\n[!] Network drop on attempt {attempt}/{max_retries}: {e}")
                     if attempt < max_retries:
                         print(f"[*] Waiting {backoff}s before retry...")
                         await asyncio.sleep(backoff)
                         try:
-                            # Full disconnect-reconnect cycle for clean state
-                            await client.disconnect()
+                            if not client.is_connected():
+                                await client.connect()
                         except Exception:
-                            pass
-                        try:
-                            await client.connect()
-                        except Exception:
-                            pass
+                            try:
+                                await client.disconnect()
+                                await client.connect()
+                            except Exception:
+                                pass
                         pbar = tqdm(
                             total=file_size,
                             unit="B",
