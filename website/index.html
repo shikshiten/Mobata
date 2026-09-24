@@ -1,67 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mobata — High-Performance Automated Media Uploader for Telegram</title>
-  <meta name="description" content="Upload thousands of photos and multi-gigabyte 4K videos to private Telegram channels autonomously with native C-accelerated MTProto engine." />
+  <meta name="description" content="Upload unlimited photos and multi-gigabyte 4K videos to private Telegram channels autonomously with native C-accelerated MTProto engine." />
   <link rel="icon" type="image/png" href="assets/logo-dark.png" />
   
-  <!-- Fonts -->
+  <!-- Doto Font Everywhere -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <style>
     /* ==========================================================================
-       Mobata — Liquid Glass & Bloody Crimson Design System
+       Mobata — Dark Monochrome & Constellation Glass Design System
        ========================================================================== */
     :root {
-      /* Dark Theme (Default) */
-      --bg-black: #030102;
-      --bg-canvas: #070204;
-      --bg-obsidian: #0c0307;
+      /* Pure Dark Monochrome Theme */
+      --bg-black: #030306;
+      --bg-canvas: #07070b;
+      --bg-card: rgba(18, 18, 24, 0.72);
+      --bg-card-hover: rgba(28, 28, 36, 0.85);
       
-      /* Liquid Glass Tokens */
-      --glass-bg: rgba(25, 4, 8, 0.55);
-      --glass-card: rgba(36, 6, 12, 0.45);
-      --glass-card-hover: rgba(60, 10, 20, 0.65);
-      --glass-border: rgba(255, 35, 60, 0.18);
-      --glass-border-focus: rgba(255, 30, 50, 0.6);
-      --glass-specular: rgba(255, 255, 255, 0.08);
-
-      /* Bloody Red Palette */
-      --blood-red: #e50914;
-      --blood-bright: #ff1a2d;
-      --blood-neon: #ff334b;
-      --blood-deep: #8b0000;
-      --blood-dark: #4a0004;
-      --blood-glow: rgba(229, 9, 20, 0.35);
-      --blood-glow-strong: rgba(255, 26, 45, 0.65);
+      --border-subtle: rgba(255, 255, 255, 0.1);
+      --border-focus: rgba(255, 255, 255, 0.35);
 
       --text-main: #ffffff;
-      --text-muted: #c9b9bd;
-      --text-dim: #7f6e72;
+      --text-muted: #9e9ea6;
+      --text-dim: #606068;
 
-      --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", sans-serif;
-      --font-doto: "Doto", sans-serif;
+      /* Terminal-Only Accent Colors */
+      --term-bg: #09090e;
+      --term-red: #ff453a;
+      --term-yellow: #ffd60a;
+      --term-green: #30d158;
+      --term-cyan: #64d2ff;
+      --term-purple: #bf5af2;
 
-      /* Transitions.dev — Tabs sliding */
+      /* Transitions.dev Tokens */
       --tabs-dur: 250ms;
       --tabs-ease: cubic-bezier(0.22, 1, 0.36, 1);
-      --tabs-text-muted: rgba(210, 195, 200, 0.75);
-      --tabs-text-active: #ffffff;
-      --tabs-bar-bg: rgba(20, 4, 8, 0.75);
-      --tabs-pill-bg: linear-gradient(135deg, rgba(229, 9, 20, 0.9), rgba(139, 0, 0, 0.95));
 
-      /* Transitions.dev — Shimmer text */
       --shimmer-dur: 2500ms;
-      --shimmer-base: #ff4d5d;
+      --shimmer-base: #a1a1aa;
       --shimmer-highlight: #ffffff;
       --shimmer-band: 350%;
       --shimmer-ease: linear;
 
-      /* Transitions.dev — Tooltip */
       --tt-in-dur: 150ms;
       --tt-out-dur: 50ms;
       --tt-scale: 0.98;
@@ -70,112 +56,42 @@
       --tt-out-ease: ease-out;
       --tt-move-dur: 160ms;
       --tt-move-ease: cubic-bezier(0.22, 1, 0.36, 1);
-      --tt-bg: #1c0307;
-      --tt-fg: #fde8ea;
+      --tt-bg: #141418;
+      --tt-fg: #ffffff;
 
-      /* Transitions.dev — Card hover tilt */
-      --tilt-perspective: 1000px;
-      --tilt-return: 1000ms;
-      --tilt-return-ease: cubic-bezier(0.22, 1, 0.36, 1);
-      --tilt-follow: 400ms;
-      --tilt-follow-ease: cubic-bezier(0.22, 1, 0.36, 1);
-      --tilt-glare-opacity: 0.38;
-      --tilt-glare-fade: 300ms;
-      --tilt-glare-ease: cubic-bezier(0.22, 1, 0.36, 1);
-
-      /* Transitions.dev — Plus to menu morph */
       --morph-open-dur: 350ms;
       --morph-close-dur: 250ms;
       --morph-ease: cubic-bezier(0.34, 1.25, 0.64, 1);
       --morph-close-ease: cubic-bezier(0.22, 1, 0.36, 1);
       --morph-r-closed: 48px;
       --morph-r-open: 20px;
-      --morph-fade-dur: 200ms;
-      --morph-slide: 30px;
-      --morph-rotate: 45deg;
-      --morph-scale: 0.97;
-      --morph-blur: 2px;
 
-      /* Transitions.dev — Toggle */
-      --toggle-dur: 350ms;
-      --toggle-travel: 16px;
-      --toggle-ov1: 1px;
-      --toggle-ov2: 0px;
-      --toggle-track: 200ms;
-      --toggle-ease: cubic-bezier(0.34, 1.35, 0.64, 1);
-
-      /* Transitions.dev — Thinking states */
       --think-hold: 2400ms;
       --think-swap: 180ms;
-      --think-gap: 50ms;
       --think-distance: 8px;
       --think-blur: 2px;
       --think-shimmer: 2200ms;
-      --think-base: #ff5e6e;
-      --think-highlight: #ffffff;
+      --think-base: #ffffff;
+      --think-highlight: #a0a0aa;
       --think-ease: ease-in-out;
 
-      /* Transitions.dev — Reasoning stream */
-      --reason-hold: 1200ms;
-      --reason-step: 500ms;
-      --reason-lines: 1;
-      --reason-fade: 24px;
-      --reason-ease: cubic-bezier(0.22, 1, 0.36, 1);
-
-      /* Transitions.dev — Streaming text */
-      --stream-gap: 40ms;
+      --stream-gap: 35ms;
       --stream-fade: 350ms;
       --stream-blur: 1px;
       --stream-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
-      /* Transitions.dev — Matrix dot loader */
       --matrix-cycle: 1200ms;
-      --matrix-base: #3a1118;
-      --matrix-active: #ff1a2d;
+      --matrix-base: #2a2a32;
+      --matrix-active: #ffffff;
       --matrix-ease: ease-in-out;
-    }
-
-    /* Light Theme (Apple Product(RED) Studio White) */
-    [data-theme="light"] {
-      --bg-black: #fbfbfd;
-      --bg-canvas: #f2f2f7;
-      --bg-obsidian: #e5e5ea;
-
-      --glass-bg: rgba(255, 255, 255, 0.85);
-      --glass-card: rgba(255, 255, 255, 0.78);
-      --glass-card-hover: rgba(255, 255, 255, 0.95);
-      --glass-border: rgba(229, 9, 20, 0.22);
-      --glass-border-focus: rgba(229, 9, 20, 0.65);
-      --glass-specular: rgba(255, 255, 255, 0.6);
-
-      --blood-red: #d70015;
-      --blood-bright: #e50914;
-      --blood-neon: #ff1a2d;
-      --blood-deep: #b30006;
-      --blood-dark: #6e0004;
-      --blood-glow: rgba(229, 9, 20, 0.22);
-      --blood-glow-strong: rgba(229, 9, 20, 0.45);
-
-      --text-main: #1d1d1f;
-      --text-muted: #515154;
-      --text-dim: #86868b;
-
-      --tabs-bar-bg: rgba(240, 240, 245, 0.9);
-      --tabs-text-muted: #6e6e73;
-      --tabs-text-active: #ffffff;
-      --tabs-pill-bg: linear-gradient(135deg, #e50914, #b30006);
-
-      --tt-bg: #2c0408;
-      --tt-fg: #ffffff;
-
-      --matrix-base: #e5c0c4;
-      --matrix-active: #e50914;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Doto', sans-serif !important;
+      font-variation-settings: "ROND" 0;
     }
 
     html {
@@ -185,24 +101,15 @@
     body {
       background-color: var(--bg-black);
       color: var(--text-main);
-      font-family: var(--font-system);
-      font-size: 16px;
-      line-height: 1.5;
-      letter-spacing: -0.3px;
+      font-size: 15.5px;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
       width: 100%;
       position: relative;
-      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    .font-doto {
-      font-family: var(--font-doto);
-      font-optical-sizing: auto;
-      font-variation-settings: "ROND" 0;
-    }
-
-    /* Container */
+    /* Full Width Container */
     .container {
       width: 100%;
       max-width: 1420px;
@@ -212,8 +119,8 @@
       z-index: 2;
     }
 
-    /* Particle Canvas Background */
-    #particle-canvas {
+    /* Constellation Starfield Background Canvas */
+    #constellation-canvas {
       position: fixed;
       top: 0;
       left: 0;
@@ -223,7 +130,7 @@
       z-index: 1;
     }
 
-    /* Ambient Lighting */
+    /* Subtle Silver Ambient Glow */
     .ambient-glow {
       position: absolute;
       top: 0;
@@ -237,322 +144,220 @@
     .glow-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(140px);
+      filter: blur(160px);
     }
     .orb-1 {
-      top: -120px;
-      left: 20%;
-      width: 750px;
-      height: 750px;
-      background: radial-gradient(circle, rgba(229, 9, 20, 0.28), rgba(139, 0, 0, 0.12) 60%, transparent 80%);
+      top: -140px;
+      left: 25%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 70%);
     }
     .orb-2 {
-      top: 340px;
-      right: 10%;
-      width: 650px;
-      height: 650px;
-      background: radial-gradient(circle, rgba(255, 26, 45, 0.18), rgba(74, 0, 4, 0.08) 60%, transparent 80%);
+      top: 360px;
+      right: 15%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(200, 200, 220, 0.04), transparent 70%);
     }
 
     /* ==========================================================================
-       Unified Apple Liquid-Glass Navigation Bar
+       Floating Capsule Navigation Bar (No full-width background strap!)
        ========================================================================== */
-    .unified-nav {
-      height: 56px;
-      background: var(--glass-bg);
-      backdrop-filter: blur(28px) saturate(190%);
-      -webkit-backdrop-filter: blur(28px) saturate(190%);
-      border-bottom: 1px solid var(--glass-border);
+    .nav-floating-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 22px 0 0;
       position: sticky;
-      top: 0;
+      top: 16px;
       z-index: 1000;
-      display: flex;
-      align-items: center;
       width: 100%;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
-      transition: background 0.3s ease, border-color 0.3s ease;
+      pointer-events: none; /* Allows click-through outside the pill */
     }
-    .nav-inner {
-      width: 100%;
-      max-width: 1420px;
-      margin: 0 auto;
-      padding: 0 40px;
-      display: flex;
-      justify-content: space-between;
+    .capsule-navbar {
+      pointer-events: auto;
+      display: inline-flex;
       align-items: center;
+      gap: 32px;
+      padding: 8px 24px;
+      border-radius: 9999px;
+      background: rgba(14, 14, 18, 0.82);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+      transition: all 0.25s ease;
     }
-    .nav-left {
+    .capsule-navbar:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    }
+    .nav-brand {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
-    .nav-logo-link {
+    .nav-brand a {
       display: flex;
       align-items: center;
       text-decoration: none;
-      transition: opacity 0.2s ease;
     }
-    .nav-logo-link:hover { opacity: 0.85; }
     .nav-logo-img {
-      height: 28px;
+      height: 24px;
       width: auto;
       display: block;
     }
     .nav-badge-ver {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       font-size: 11px;
       font-weight: 800;
-      color: var(--blood-bright);
-      background: rgba(229, 9, 20, 0.14);
-      border: 1px solid rgba(255, 26, 45, 0.35);
-      padding: 3px 9px;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 2px 8px;
       border-radius: 9999px;
-      letter-spacing: 0.5px;
-    }
-    .pulse-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--blood-bright);
-      box-shadow: 0 0 8px var(--blood-neon);
-      animation: pulse-glow 2s infinite;
-    }
-    @keyframes pulse-glow {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
     }
 
-    .nav-menu {
+    .nav-links {
       display: flex;
       align-items: center;
-      gap: 32px;
+      gap: 26px;
     }
-    .nav-menu a {
+    .nav-links a {
       color: var(--text-muted);
       text-decoration: none;
       font-size: 13.5px;
-      font-weight: 500;
-      letter-spacing: -0.15px;
+      font-weight: 600;
       transition: color 0.15s ease;
     }
-    .nav-menu a:hover {
-      color: var(--blood-bright);
+    .nav-links a:hover {
+      color: #ffffff;
     }
 
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
-
-    /* ==========================================================================
-       Transitions.dev: Light / Dark Mode Toggle
-       ========================================================================== */
-    .theme-toggle-wrap {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--glass-border);
-      padding: 3px 6px;
-      border-radius: 9999px;
-    }
-    .theme-icon {
-      font-size: 12px;
-      opacity: 0.75;
-      user-select: none;
-    }
-    .t-toggle {
-      appearance: none;
-      border: 0;
-      outline: none;
-      position: relative;
-      width: 34px;
-      height: 20px;
-      border-radius: 9999px;
-      background: #2a0b10;
-      border: 1px solid rgba(255, 50, 70, 0.3);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      padding: 1px 2px;
-      transition: background var(--toggle-track) var(--toggle-ease), border-color 0.2s ease;
-    }
-    .t-toggle[data-on="true"] {
-      background: var(--blood-bright);
-      border-color: var(--blood-bright);
-    }
-    .t-toggle-thumb {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #ffffff;
-      translate: 0 0;
-      will-change: translate;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    }
-    .t-toggle[data-on="true"] .t-toggle-thumb {
-      translate: var(--toggle-travel) 0;
-    }
-    .t-toggle.is-init[data-on="true"] .t-toggle-thumb {
-      animation: t-toggle-on var(--toggle-dur) var(--toggle-ease) both;
-    }
-    .t-toggle.is-init[data-on="false"] .t-toggle-thumb {
-      animation: t-toggle-off var(--toggle-dur) var(--toggle-ease) both;
-    }
-    @keyframes t-toggle-on {
-      0% { translate: 0 0; }
-      55% { translate: calc(var(--toggle-travel) + var(--toggle-ov1)) 0; }
-      80% { translate: calc(var(--toggle-travel) - var(--toggle-ov2)) 0; }
-      100% { translate: var(--toggle-travel) 0; }
-    }
-    @keyframes t-toggle-off {
-      0% { translate: var(--toggle-travel) 0; }
-      55% { translate: calc(0px - var(--toggle-ov1)) 0; }
-      80% { translate: var(--toggle-ov2) 0; }
-      100% { translate: 0 0; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .t-toggle-thumb { animation: none !important; }
-    }
-
-    .nav-btn-outline {
+    .nav-btn-gh {
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      color: var(--text-main);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--glass-border);
-      transition: all 0.2s ease;
-    }
-    .nav-btn-outline:hover {
-      background: rgba(229, 9, 20, 0.18);
-      border-color: var(--blood-bright);
-      box-shadow: 0 0 14px rgba(229, 9, 20, 0.3);
-    }
-    .nav-btn-primary {
-      background: linear-gradient(135deg, var(--blood-bright), var(--blood-red));
       color: #ffffff;
       text-decoration: none;
-      font-size: 13px;
-      font-weight: 600;
-      padding: 7px 18px;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 6px 14px;
       border-radius: 9999px;
-      box-shadow: 0 0 16px rgba(229, 9, 20, 0.35);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-subtle);
       transition: all 0.2s ease;
     }
-    .nav-btn-primary:hover {
-      box-shadow: 0 0 24px var(--blood-glow-strong);
+    .nav-btn-gh:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    .nav-btn-cta {
+      background: #ffffff;
+      color: #000000;
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 800;
+      padding: 7px 18px;
+      border-radius: 9999px;
+      transition: all 0.2s ease;
+    }
+    .nav-btn-cta:hover {
+      background: #e5e5ea;
       transform: translateY(-1px);
     }
 
     /* ==========================================================================
-       Hero Section
+       Hero Section (Two-Column Layout: Left Text & Terminal, Right Card Swipe Deck)
        ========================================================================== */
-    .hero {
-      padding: 96px 0 76px;
-      text-align: center;
+    .hero-split {
+      padding: 90px 0 80px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
       width: 100%;
       position: relative;
       z-index: 2;
     }
+    .hero-left {
+      text-align: left;
+    }
     .hero-badge-wrap {
       display: inline-flex;
       align-items: center;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      font-size: 12.5px;
-      font-weight: 700;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 800;
       letter-spacing: 1px;
-      background: rgba(229, 9, 20, 0.12);
-      border: 1px solid rgba(255, 26, 45, 0.4);
-      padding: 8px 24px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      padding: 7px 20px;
       border-radius: 9999px;
-      box-shadow: 0 0 20px rgba(229, 9, 20, 0.2);
     }
     .hero-h1 {
-      font-size: 68px;
-      font-weight: 800;
-      line-height: 1.05;
+      font-size: 58px;
+      font-weight: 900;
+      line-height: 1.08;
       letter-spacing: -0.04em;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
-    .grad-txt-blood {
-      background: linear-gradient(135deg, var(--text-main) 30%, #ff4d5d 70%, #e50914 95%);
+    .grad-txt {
+      background: linear-gradient(135deg, #ffffff 40%, #9e9ea6 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     .hero-p {
-      font-size: 21px;
+      font-size: 19px;
       color: var(--text-muted);
-      max-width: 860px;
-      margin: 0 auto 44px;
-      line-height: 1.5;
+      margin-bottom: 34px;
+      line-height: 1.55;
+      max-width: 640px;
     }
 
-    /* ==========================================================================
-       Transitions.dev: Streaming Text
-       ========================================================================== */
-    .t-stream-w {
-      display: inline-block;
-      opacity: 0;
-      filter: blur(var(--stream-blur));
-      transition:
-        opacity var(--stream-fade) var(--stream-ease),
-        filter var(--stream-fade) var(--stream-ease);
-    }
-    .t-stream-w.is-in {
-      opacity: 1;
-      filter: blur(0);
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .t-stream-w { transition: none !important; filter: none !important; opacity: 1 !important; }
-    }
-
-    .hero-actions {
+    .hero-btns {
       display: flex;
-      justify-content: center;
-      gap: 18px;
-      margin-bottom: 64px;
+      gap: 16px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
     }
-    .btn-main-blood {
-      background: linear-gradient(135deg, #ff1a2d 0%, #b30006 100%);
-      color: #ffffff;
-      font-size: 16.5px;
-      font-weight: 600;
-      padding: 14px 34px;
+    .btn-white {
+      background: #ffffff;
+      color: #000000;
+      font-size: 15px;
+      font-weight: 800;
+      padding: 13px 30px;
       border-radius: 9999px;
       text-decoration: none;
-      box-shadow: 0 0 26px var(--blood-glow-strong), inset 0 1px 1px rgba(255, 255, 255, 0.3);
-      transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      transition: all 0.2s ease;
     }
-    .btn-main-blood:hover {
-      box-shadow: 0 0 40px rgba(255, 26, 45, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    .btn-white:hover {
+      background: #e5e5ea;
       transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(255, 255, 255, 0.15);
     }
-    .btn-main-blood:active { transform: scale(0.97); }
-    
-    .btn-ghost-blood {
+    .btn-ghost-mono {
       background: rgba(255, 255, 255, 0.05);
-      color: var(--text-main);
-      border: 1px solid var(--glass-border);
-      font-size: 16.5px;
-      font-weight: 500;
-      padding: 14px 32px;
+      color: #ffffff;
+      border: 1px solid var(--border-subtle);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 13px 28px;
       border-radius: 9999px;
       text-decoration: none;
       display: inline-flex;
@@ -561,11 +366,230 @@
       backdrop-filter: blur(14px);
       transition: all 0.2s ease;
     }
-    .btn-ghost-blood:hover {
-      background: rgba(229, 9, 20, 0.15);
-      border-color: var(--blood-bright);
-      box-shadow: 0 0 20px rgba(229, 9, 20, 0.25);
+    .btn-ghost-mono:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
       transform: translateY(-2px);
+    }
+
+    /* ==========================================================================
+       Hero Right: 3D Stacked Card Swipe Deck (Architectural Advantages)
+       ========================================================================== */
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .deck-header {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .deck-title {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+    }
+    .deck-ctrl {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-swipe-next {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-subtle);
+      color: #ffffff;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-swipe-next:hover {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    .card-deck-stage {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      height: 380px;
+      perspective: 1200px;
+    }
+    .stack-card {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 360px;
+      background: rgba(20, 20, 26, 0.88);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 34px 30px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      user-select: none;
+      transition:
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .stack-card:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .sc-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 3px 10px;
+      border-radius: 6px;
+      margin-bottom: 18px;
+    }
+    .sc-title {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      color: #ffffff;
+    }
+    .sc-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+    .sc-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 18px;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    .sc-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .sc-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: background 0.3s ease;
+    }
+    .sc-dot.active {
+      background: #ffffff;
+    }
+
+    /* Swipe animations */
+    .stack-card.is-swiping {
+      transform: translateX(120%) rotate(18deg) scale(0.9) !important;
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       Terminal Stage (Vibrant Code Colors inside Monochrome Frame)
+       ========================================================================== */
+    .terminal-stage {
+      width: 100%;
+      margin-top: 24px;
+    }
+    .terminal-frame {
+      background: var(--term-bg);
+      border-radius: 18px;
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      text-align: left;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    }
+    .term-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: #101017;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .term-dots {
+      display: flex;
+      gap: 7px;
+    }
+    .t-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .t-red { background: var(--term-red); }
+    .t-yellow { background: var(--term-yellow); }
+    .t-green { background: var(--term-green); }
+
+    .term-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    .term-status-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .term-status {
+      font-size: 11px;
+      color: var(--term-green);
+      background: rgba(48, 209, 88, 0.15);
+      border: 1px solid rgba(48, 209, 88, 0.35);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 800;
+    }
+    .term-content {
+      padding: 20px 24px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #e5e5ea;
+    }
+    .term-row { margin-bottom: 4px; }
+    .c-cyan { color: var(--term-cyan); font-weight: 700; }
+    .c-green { color: var(--term-green); font-weight: 700; }
+    .c-yellow { color: var(--term-yellow); font-weight: 700; }
+    .c-red { color: var(--term-red); font-weight: 700; }
+    .c-dim { color: var(--text-dim); }
+    .t-hr {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.06);
+      margin: 10px 0;
+    }
+    .t-cursor {
+      color: var(--term-green);
+      animation: blink 0.8s infinite;
+    }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
     }
 
     /* ==========================================================================
@@ -633,9 +657,21 @@
       filter: blur(var(--think-blur));
       opacity: 0;
     }
-    @media (prefers-reduced-motion: reduce) {
-      .t-think-text { transition: none !important; transform: none !important; filter: none !important; }
-      .t-think-text::before { display: none !important; }
+
+    /* ==========================================================================
+       Transitions.dev: Streaming Text
+       ========================================================================== */
+    .t-stream-w {
+      display: inline-block;
+      opacity: 0;
+      filter: blur(var(--stream-blur));
+      transition:
+        opacity var(--stream-fade) var(--stream-ease),
+        filter var(--stream-fade) var(--stream-ease);
+    }
+    .t-stream-w.is-in {
+      opacity: 1;
+      filter: blur(0);
     }
 
     /* ==========================================================================
@@ -643,9 +679,9 @@
        ========================================================================== */
     .t-matrix {
       display: inline-grid;
-      grid-template-columns: repeat(4, 3px);
-      grid-auto-rows: 3px;
-      gap: 2.5px;
+      grid-template-columns: repeat(4, 2.5px);
+      grid-auto-rows: 2.5px;
+      gap: 2px;
       vertical-align: middle;
     }
     .t-matrix i {
@@ -655,329 +691,101 @@
       animation: t-matrix-pulse var(--matrix-cycle) var(--matrix-ease) infinite;
       animation-delay: calc(var(--d, 0) * 1ms);
     }
-    .t-matrix i.is-gap { visibility: hidden; animation: none; }
     @keyframes t-matrix-pulse {
       0%, 45%, 100% { background-color: var(--matrix-base); }
       15%           { background-color: var(--matrix-active); }
     }
-    @media (prefers-reduced-motion: reduce) {
-      .t-matrix i { animation: none !important; }
-    }
-
-    /* Terminal Stage */
-    .terminal-stage {
-      width: 100%;
-      max-width: 1120px;
-      margin: 0 auto;
-    }
-    .terminal-frame {
-      background: var(--glass-card);
-      border-radius: 20px;
-      border: 1px solid var(--glass-border);
-      overflow: hidden;
-      text-align: left;
-      box-shadow: 
-        0 30px 80px rgba(0, 0, 0, 0.7), 
-        0 0 50px rgba(229, 9, 20, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(30px);
-    }
-    .term-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 15px 24px;
-      background: rgba(18, 3, 6, 0.85);
-      border-bottom: 1px solid var(--glass-border);
-    }
-    .term-dots {
-      display: flex;
-      gap: 8px;
-    }
-    .t-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-    }
-    .t-red { background: #ff453a; box-shadow: 0 0 6px #ff453a; }
-    .t-yellow { background: #ff9f0a; }
-    .t-green { background: #32d74b; }
-    
-    .term-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 12.5px;
-      color: var(--text-dim);
-    }
-    .term-status-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .term-status {
-      font-size: 11px;
-      color: var(--blood-bright);
-      background: rgba(229, 9, 20, 0.15);
-      border: 1px solid rgba(255, 26, 45, 0.35);
-      padding: 3px 10px;
-      border-radius: 6px;
-      letter-spacing: 1px;
-      font-weight: 800;
-    }
-    .term-content {
-      padding: 26px 30px;
-      font-size: 14.5px;
-      line-height: 1.85;
-      color: #fce7e9;
-      background: rgba(6, 1, 3, 0.88);
-    }
-    .term-row { margin-bottom: 5px; }
-    .t-blood { color: var(--blood-bright); font-weight: 700; }
-    .t-dim { color: var(--text-dim); }
-    .t-hr {
-      height: 1px;
-      background: rgba(255, 255, 255, 0.08);
-      margin: 14px 0;
-    }
-    .t-cursor {
-      color: var(--blood-bright);
-      animation: blink 0.8s infinite;
-    }
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
 
     /* ==========================================================================
-       Transitions.dev: Reasoning Stream
+       Scroll Fade Animation Elements
        ========================================================================== */
-    .reason-box-wrap {
-      margin-top: 24px;
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      background: rgba(14, 2, 6, 0.8);
-      padding: 14px 18px;
+    .scroll-fade {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
     }
-    .reason-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--blood-bright);
-      letter-spacing: 1px;
-    }
-    .t-reason {
-      position: relative;
-      overflow: hidden;
-      height: 68px; /* Two lines view */
-    }
-    .t-reason-viewport {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      -webkit-mask-image: linear-gradient(
-        transparent 0,
-        black var(--reason-fade),
-        black calc(100% - var(--reason-fade)),
-        transparent 100%);
-      mask-image: linear-gradient(
-        transparent 0,
-        black var(--reason-fade),
-        black calc(100% - var(--reason-fade)),
-        transparent 100%);
-    }
-    .t-reason-scroll {
-      position: absolute;
-      left: 0;
-      right: 0;
+    .scroll-fade.is-visible {
+      opacity: 1;
       transform: translateY(0);
-      will-change: transform;
-    }
-    .t-reason-text p {
-      font-family: var(--font-doto);
-      font-size: 13px;
-      line-height: 24px;
-      color: #f7aab1;
-      margin: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .t-reason-text p span {
-      color: var(--blood-bright);
-      font-weight: 700;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .t-reason-scroll { transition: none !important; transform: none !important; }
     }
 
-    /* ==========================================================================
-       Sections
-       ========================================================================== */
+    /* Sections */
     .section {
-      padding: 104px 0;
+      padding: 100px 0;
       position: relative;
       width: 100%;
       z-index: 2;
     }
-    .section-dark {
-      background: rgba(5, 1, 3, 0.4);
-      border-top: 1px solid rgba(255, 26, 45, 0.08);
-      border-bottom: 1px solid rgba(255, 26, 45, 0.08);
-    }
     .sec-head {
       text-align: center;
       max-width: 820px;
-      margin: 0 auto 64px;
+      margin: 0 auto 56px;
     }
     .sec-tag {
       font-size: 12px;
       font-weight: 800;
       letter-spacing: 1.5px;
-      color: var(--blood-bright);
+      color: var(--text-muted);
       margin-bottom: 12px;
     }
     .sec-title {
-      font-size: 44px;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      margin-bottom: 16px;
+      font-size: 42px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
     }
     .sec-desc {
-      font-size: 19px;
+      font-size: 18px;
       color: var(--text-muted);
     }
 
-    /* ==========================================================================
-       Transitions.dev: Card Hover Tilt & Glare
-       ========================================================================== */
+    /* Metrics Grid */
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 28px;
     }
-    .t-tilt {
-      touch-action: none;
-    }
-    .t-tilt-card {
-      position: relative;
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
       border-radius: 20px;
-      overflow: hidden;
-      transform:
-        perspective(var(--tilt-perspective))
-        rotateX(var(--tilt-rx, 0deg))
-        rotateY(var(--tilt-ry, 0deg));
-      transform-style: preserve-3d;
-      transition: transform var(--tilt-return) var(--tilt-return-ease), border-color 0.25s ease;
-      will-change: transform;
-      background: var(--glass-card);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border: 1px solid var(--glass-border);
       padding: 44px 34px;
       text-align: center;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      transition: all 0.25s ease;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
     }
-    .t-tilt-card.is-tilting {
-      transition: transform var(--tilt-follow) var(--tilt-follow-ease);
-    }
-    .t-tilt.is-hover .t-tilt-card {
-      border-color: var(--blood-bright);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(229, 9, 20, 0.25);
-    }
-    .t-tilt-glare {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0;
-      mix-blend-mode: screen;
-      background:
-        radial-gradient(circle 120px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
-          rgba(255, 100, 120, 0.45), rgba(229, 9, 20, 0.1) 52%, rgba(229, 9, 20, 0) 84%),
-        radial-gradient(circle 240px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
-          rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.03) 58%, rgba(255, 255, 255, 0) 78%);
-      transition: opacity var(--tilt-glare-fade) var(--tilt-glare-ease);
-    }
-    .t-tilt.is-hover .t-tilt-glare {
-      opacity: var(--tilt-glare-opacity);
+    .metric-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-focus);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
     }
     .metric-num {
       font-size: 64px;
-      font-weight: 800;
-      color: var(--text-main);
+      font-weight: 900;
+      color: #ffffff;
       line-height: 1;
-      margin-bottom: 12px;
-      letter-spacing: -0.03em;
+      margin-bottom: 10px;
     }
     .metric-lbl {
       font-size: 18px;
       font-weight: 700;
-      color: var(--blood-bright);
-      margin-bottom: 12px;
+      color: #ffffff;
+      margin-bottom: 10px;
     }
     .metric-p {
       font-size: 15px;
       color: var(--text-muted);
       line-height: 1.6;
     }
-    @media (prefers-reduced-motion: reduce) {
-      .t-tilt-card { transform: none !important; transition: none !important; }
-    }
 
-    /* ==========================================================================
-       Features Grid
-       ========================================================================== */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-    }
-    .feat-card {
-      background: var(--glass-card);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 36px 30px;
-      transition: all 0.25s ease;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    }
-    .feat-card:hover {
-      background: var(--glass-card-hover);
-      border-color: var(--blood-bright);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(229, 9, 20, 0.2);
-    }
-    .feat-tag {
-      font-size: 11.5px;
-      font-weight: 800;
-      color: var(--blood-bright);
-      letter-spacing: 1.5px;
-      margin-bottom: 16px;
-    }
-    .feat-title {
-      font-size: 21px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-      margin-bottom: 12px;
-    }
-    .feat-p {
-      font-size: 15px;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    /* ==========================================================================
-       Comparison Table
-       ========================================================================== */
+    /* Comparison Table */
     .table-box {
-      background: var(--glass-card);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--glass-border);
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
       border-radius: 20px;
       overflow: hidden;
       width: 100%;
@@ -991,394 +799,102 @@
     }
     .comp-table th {
       padding: 22px 28px;
-      background: rgba(25, 4, 8, 0.4);
-      color: var(--text-main);
-      font-weight: 700;
-      border-bottom: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.04);
+      color: #ffffff;
+      font-weight: 800;
+      border-bottom: 1px solid var(--border-subtle);
     }
     .comp-table td {
       padding: 20px 28px;
-      border-bottom: 1px solid rgba(255, 26, 45, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       color: var(--text-muted);
     }
     .col-hi {
-      background: rgba(229, 9, 20, 0.1);
-      color: var(--blood-bright) !important;
-      font-weight: 700;
-    }
-
-    /* ==========================================================================
-       Transitions.dev: Sliding Tabs (Deployment Matrix)
-       ========================================================================== */
-    .tabs-wrapper {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 40px;
-    }
-    .t-tabs {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 5px;
-      border-radius: 48px;
-      background: var(--tabs-bar-bg);
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    }
-    .t-tab {
-      position: relative;
-      appearance: none;
-      border: 0;
-      background: transparent;
-      height: 38px;
-      padding: 6px 20px;
-      color: var(--tabs-text-muted);
-      cursor: pointer;
-      border-radius: 48px;
-      font-size: 14.5px;
-      font-weight: 600;
-      z-index: 1;
-      transition: color var(--tabs-dur) var(--tabs-ease);
-      white-space: nowrap;
-    }
-    .t-tab:not([aria-selected="true"]):hover,
-    .t-tab[aria-selected="true"] {
-      color: var(--tabs-text-active);
-    }
-    .t-tabs-pill {
-      position: absolute;
-      top: 5px;
-      left: 0;
-      height: 38px;
-      width: 0;
-      background: var(--tabs-pill-bg);
-      border-radius: 48px;
-      transform: translateX(0);
-      transition:
-        transform var(--tabs-dur) var(--tabs-ease),
-        width     var(--tabs-dur) var(--tabs-ease);
-      will-change: transform, width;
-      z-index: 0;
-      pointer-events: none;
-      box-shadow: 0 0 20px rgba(229, 9, 20, 0.45);
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .t-tabs-pill, .t-tab { transition: none !important; }
-    }
-
-    .pane-box {
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-    .pane {
-      display: none;
-    }
-    .pane.active {
-      display: block;
-      animation: fadeIn 0.3s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .step-card {
-      display: flex;
-      gap: 22px;
-      background: var(--glass-card);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 28px;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    }
-    .step-badge {
-      width: 38px;
-      height: 38px;
-      background: rgba(229, 9, 20, 0.16);
-      color: var(--blood-bright);
-      border: 1px solid rgba(255, 26, 45, 0.35);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff !important;
       font-weight: 800;
-      flex-shrink: 0;
-    }
-    .step-main { flex-grow: 1; }
-    .step-main h4 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .step-main p {
-      font-size: 15px;
-      color: var(--text-muted);
-      margin-bottom: 14px;
-      line-height: 1.55;
-    }
-    .code-box {
-      background: rgba(10, 2, 4, 0.88);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      padding: 16px 20px;
-      font-family: var(--font-doto);
-      font-size: 14px;
-      color: #fca5a5;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      line-height: 1.6;
-    }
-    .copy-pill {
-      background: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
-      border: 1px solid var(--glass-border);
-      border-radius: 6px;
-      font-size: 12.5px;
-      padding: 5px 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .copy-pill:hover {
-      background: var(--blood-bright);
-      border-color: var(--blood-bright);
-      box-shadow: 0 0 12px rgba(229, 9, 20, 0.4);
     }
 
-    /* ==========================================================================
-       Transitions.dev: Shimmer Text
-       ========================================================================== */
-    .t-shimmer {
-      position: relative;
-      display: inline-block;
-      color: var(--shimmer-base);
-    }
-    .t-shimmer::before {
-      content: attr(data-text);
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background-image: linear-gradient(
-        90deg,
-        transparent 0%,
-        transparent 35%,
-        var(--shimmer-highlight) 50%,
-        transparent 65%,
-        transparent 100%
-      );
-      background-size: var(--shimmer-band) 100%;
-      background-repeat: no-repeat;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      -webkit-text-fill-color: transparent;
-      animation: t-shimmer var(--shimmer-dur) var(--shimmer-ease) infinite;
-    }
-    @keyframes t-shimmer {
-      0%   { background-position: 100% 0; }
-      100% { background-position: 0% 0; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .t-shimmer::before { animation: none !important; }
-    }
-
-    /* ==========================================================================
-       Transitions.dev: Tooltip Open/Close
-       ========================================================================== */
-    .t-tt-group {
-      position: relative;
-      display: inline-flex;
-    }
-    .t-tt {
-      position: absolute;
-      bottom: calc(100% + 10px);
-      left: 0;
-      box-sizing: border-box;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 0;
-      overflow: hidden;
-      translate: var(--tt-x, 0px) 0;
-      scale: var(--tt-scale);
-      transform-origin: 50% 100%;
-      padding: 8px 14px;
-      border-radius: 8px;
-      background: var(--tt-bg);
-      color: var(--tt-fg);
-      border: 1px solid var(--glass-border);
-      white-space: nowrap;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 16px rgba(229, 9, 20, 0.25);
-      opacity: 0;
-      pointer-events: none;
-      font-size: 12.5px;
-      font-weight: 500;
-      z-index: 1000;
-      transition:
-        opacity   var(--tt-out-dur) var(--tt-out-ease),
-        scale     var(--tt-out-dur) var(--tt-out-ease),
-        translate var(--tt-move-dur) var(--tt-move-ease),
-        width     var(--tt-move-dur) var(--tt-move-ease);
-    }
-    .t-tt[data-show="true"] {
-      opacity: 1;
-      scale: 1;
-      transition:
-        opacity   var(--tt-in-dur) var(--tt-in-ease) var(--tt-delay),
-        scale     var(--tt-in-dur) var(--tt-in-ease) var(--tt-delay),
-        translate var(--tt-move-dur) var(--tt-move-ease),
-        width     var(--tt-move-dur) var(--tt-move-ease);
-    }
-    .t-tt-text { white-space: nowrap; }
-    @media (prefers-reduced-motion: reduce) {
-      .t-tt { transition: none !important; }
-    }
-
-    /* ==========================================================================
-       Transitions.dev: Plus to Menu Morph
-       ========================================================================== */
-    .morph-fixed-wrap {
-      position: fixed;
-      bottom: 32px;
-      right: 32px;
-      z-index: 999;
-    }
-    .t-morph {
-      position: relative;
-      width: 48px;
-      height: 48px;
-      border-radius: var(--morph-r-closed);
-      overflow: hidden;
-      background: linear-gradient(135deg, var(--blood-bright), #8b0000);
-      border: 1px solid rgba(255, 100, 120, 0.4);
-      box-shadow: 0 8px 30px rgba(229, 9, 20, 0.45);
-      transition:
-        width var(--morph-close-dur) var(--morph-close-ease),
-        height var(--morph-close-dur) var(--morph-close-ease),
-        border-radius var(--morph-close-dur) var(--morph-close-ease);
-    }
-    .t-morph[data-open="true"] {
-      width: 220px;
-      height: 200px;
-      border-radius: var(--morph-r-open);
-      background: rgba(25, 4, 8, 0.94);
-      backdrop-filter: blur(28px);
-      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(229, 9, 20, 0.3);
-      transition:
-        width var(--morph-open-dur) var(--morph-ease),
-        height var(--morph-open-dur) var(--morph-ease),
-        border-radius var(--morph-open-dur) var(--morph-ease);
-    }
-    .t-morph-plus {
-      position: absolute;
-      inset: auto 0 0 auto;
-      width: 48px;
-      height: 48px;
+    /* Dedicated Documentation Cards (Separated Pages!) */
+    .docs-grid {
       display: grid;
-      place-items: center;
-      border: 0;
-      background: transparent;
-      color: #ffffff;
-      cursor: pointer;
-      z-index: 2;
-      transition:
-        opacity var(--morph-fade-dur) var(--morph-close-ease),
-        transform var(--morph-open-dur) var(--morph-close-ease),
-        filter var(--morph-fade-dur) var(--morph-close-ease);
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
     }
-    .t-morph-plus svg {
-      transition: transform var(--morph-open-dur) var(--morph-close-ease);
-    }
-    .t-morph[data-open="true"] .t-morph-plus {
-      opacity: 0.85;
-      transform: none;
-      filter: none;
-      top: 10px;
-      right: 10px;
-      bottom: auto;
-      width: 28px;
-      height: 28px;
-    }
-    .t-morph[data-open="true"] .t-morph-plus svg {
-      transform: scale(var(--morph-scale)) rotate(var(--morph-rotate));
-    }
-    .t-morph-menu {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      padding: 16px;
-      transform: translateX(var(--morph-slide)) scale(var(--morph-scale));
-      filter: blur(var(--morph-blur));
-      pointer-events: none;
+    .doc-page-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 38px 30px;
+      backdrop-filter: blur(20px);
+      text-decoration: none;
+      color: inherit;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      transition:
-        opacity var(--morph-fade-dur) var(--morph-close-ease),
-        transform var(--morph-open-dur) var(--morph-close-ease),
-        filter var(--morph-fade-dur) var(--morph-close-ease);
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
     }
-    .t-morph[data-open="true"] .t-morph-menu {
-      opacity: 1;
-      transform: translateX(0) scale(1);
-      filter: blur(0);
-      pointer-events: auto;
+    .doc-page-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
     }
-    .morph-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .doc-tag {
+      font-size: 11.5px;
+      font-weight: 900;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+    }
+    .doc-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 12px;
       color: #ffffff;
-      text-decoration: none;
-      font-size: 13.5px;
-      font-weight: 500;
-      padding: 8px 12px;
-      border-radius: 8px;
-      transition: background 0.15s ease;
     }
-    .morph-item:hover {
-      background: rgba(229, 9, 20, 0.25);
-      color: var(--blood-bright);
+    .doc-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+      flex-grow: 1;
     }
-    @media (prefers-reduced-motion: reduce) {
-      .t-morph, .t-morph-plus, .t-morph-menu { transition: none !important; }
+    .doc-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #ffffff;
     }
 
-    /* ==========================================================================
-       FAQ Section
-       ========================================================================== */
+    /* FAQ */
     .faq-wrap {
       width: 100%;
-      max-width: 1000px;
+      max-width: 980px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
     .faq-card {
-      background: var(--glass-card);
+      background: var(--bg-card);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
+      border: 1px solid var(--border-subtle);
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
     .faq-q {
       width: 100%;
       text-align: left;
       background: none;
       border: none;
-      color: var(--text-main);
+      color: #ffffff;
       padding: 22px 28px;
-      font-size: 17.5px;
-      font-weight: 600;
+      font-size: 17px;
+      font-weight: 700;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -1386,26 +902,24 @@
     }
     .faq-sym {
       font-size: 20px;
-      color: var(--blood-bright);
+      color: var(--text-muted);
       transition: transform 0.25s ease;
     }
     .faq-a {
       display: none;
       padding: 0 28px 24px;
       color: var(--text-muted);
-      font-size: 15.5px;
+      font-size: 15px;
       line-height: 1.65;
     }
     .faq-card.open .faq-a { display: block; }
-    .faq-card.open .faq-sym { transform: rotate(45deg); }
+    .faq-card.open .faq-sym { transform: rotate(45deg); color: #ffffff; }
 
-    /* ==========================================================================
-       Footer
-       ========================================================================== */
+    /* Footer */
     .apple-footer {
-      background: rgba(4, 1, 2, 0.95);
+      background: #020204;
       padding: 80px 0 40px;
-      border-top: 1px solid var(--glass-border);
+      border-top: 1px solid var(--border-subtle);
       width: 100%;
       position: relative;
       z-index: 2;
@@ -1417,7 +931,7 @@
       margin-bottom: 54px;
     }
     .footer-logo {
-      height: 32px;
+      height: 28px;
       width: auto;
       margin-bottom: 16px;
     }
@@ -1429,8 +943,8 @@
     }
     .footer-col h5 {
       font-size: 14.5px;
-      font-weight: 700;
-      color: var(--text-main);
+      font-weight: 800;
+      color: #ffffff;
       margin-bottom: 16px;
     }
     .footer-col ul { list-style: none; }
@@ -1441,288 +955,322 @@
       line-height: 2.3;
       transition: color 0.15s ease;
     }
-    .footer-col ul li a:hover { color: var(--blood-bright); }
+    .footer-col ul li a:hover { color: #ffffff; }
     .footer-bottom {
-      border-top: 1px solid rgba(255, 26, 45, 0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
       padding-top: 28px;
       color: var(--text-dim);
       font-size: 13.5px;
       text-align: center;
     }
 
-    @media (max-width: 960px) {
-      .hero-h1 { font-size: 42px; }
-      .hero-p { font-size: 18px; }
-      .sec-title { font-size: 32px; }
+    @media (max-width: 1080px) {
+      .hero-split { grid-template-columns: 1fr; }
       .metrics-grid { grid-template-columns: 1fr; }
-      .features-grid { grid-template-columns: 1fr; }
+      .docs-grid { grid-template-columns: 1fr; }
       .footer-row { grid-template-columns: 1fr 1fr; }
-      .nav-menu { display: none; }
+      .nav-links { display: none; }
       .container { padding: 0 20px; }
+      .hero-h1 { font-size: 42px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Particle Scattering Canvas Background -->
-  <canvas id="particle-canvas"></canvas>
+  <!-- Constellation Starfield Background Canvas -->
+  <canvas id="constellation-canvas"></canvas>
 
-  <!-- Bloody Red Atmospheric Lighting -->
+  <!-- Ambient Glow -->
   <div class="ambient-glow">
     <div class="glow-orb orb-1"></div>
     <div class="glow-orb orb-2"></div>
   </div>
 
-  <!-- Unified Apple Liquid-Glass Navigation Bar -->
-  <nav class="unified-nav">
-    <div class="nav-inner">
-      <div class="nav-left">
-        <a href="#" class="nav-logo-link">
-          <img src="assets/logo-dark.png" alt="Mobata Logo" class="nav-logo-img" width="84" height="28" />
+  <!-- Floating Capsule Navigation Bar (No full-width background strap!) -->
+  <div class="nav-floating-wrap">
+    <nav class="capsule-navbar">
+      <div class="nav-brand">
+        <a href="index.html">
+          <img src="assets/logo-dark.png" alt="Mobata Logo" class="nav-logo-img" />
         </a>
-        <div class="nav-badge-ver font-doto">
-          <div class="t-matrix" data-variant="pulse"></div>
+        <div class="nav-badge-ver">
+          <div class="t-matrix" data-variant="scan"></div>
           <span>v1.0.0</span>
         </div>
       </div>
 
-      <div class="nav-menu">
+      <div class="nav-links">
         <a href="#overview">Overview</a>
-        <a href="#features">Features</a>
-        <a href="#comparison">Comparison</a>
-        <a href="#setup">Setup Guide</a>
+        <a href="#advantages">Advantages</a>
+        <a href="#benchmarks">Benchmarks</a>
+        <a href="#guides">Setup Guides</a>
         <a href="#faq">FAQ</a>
       </div>
 
       <div class="nav-actions">
-        <!-- Transitions.dev: Light / Dark Mode Toggle -->
-        <div class="theme-toggle-wrap">
-          <span class="theme-icon">🌙</span>
-          <button class="t-toggle" id="theme-toggle" role="switch" aria-label="Toggle theme" data-on="false">
-            <span class="t-toggle-thumb"></span>
-          </button>
-          <span class="theme-icon">☀️</span>
+        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="nav-btn-gh">
+          <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          <span>Star</span>
+        </a>
+        <a href="#guides" class="nav-btn-cta">Deploy Now</a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Hero Section: Left Text + Right 3D Card Swipe Deck -->
+  <main class="container" id="overview">
+    <div class="hero-split">
+      
+      <!-- Left Column: Hero Copy + Vibrant Live Terminal -->
+      <div class="hero-left">
+        <div class="hero-badge-wrap">
+          <div class="hero-badge">
+            <span class="t-matrix" data-variant="pulse"></span>
+            <span>MTPROTO ENGINE • 4GB UNLOCKED • ZERO DUPLICATES</span>
+          </div>
         </div>
 
-        <!-- Transitions.dev Tooltip Group -->
-        <span class="t-tt-group">
-          <a href="https://github.com/shikshiten/Mobata" target="_blank" class="nav-btn-outline t-tt-trigger" data-tooltip="Star shikshiten/Mobata" aria-describedby="tt-nav">
-            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-            </svg>
-            <span>GitHub</span>
+        <h1 class="hero-h1">
+          Upload Unlimited Media Files.<br>
+          <span class="grad-txt">Without Limits.</span>
+        </h1>
+
+        <!-- Streaming text paragraph -->
+        <p class="hero-p t-stream" id="hero-stream">
+          The autonomous Telegram batch uploader. Bypasses the 50 MB bot ceiling, handles multi-gigabyte 4K footage, self-heals on rate limits, and resumes with zero duplicates.
+        </p>
+
+        <div class="hero-btns">
+          <a href="#guides" class="btn-white">
+            <span>Explore Setup Guides</span>
+            <span>→</span>
           </a>
-          <span class="t-tt" id="tt-nav" role="tooltip" aria-hidden="true" data-show="false">
-            <span class="t-tt-text"></span>
-          </span>
-        </span>
-
-        <a href="#setup" class="nav-btn-primary">Get Started</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <main class="hero" id="overview">
-    <div class="container">
-      <div class="hero-badge-wrap">
-        <div class="hero-badge font-doto">
-          <span class="pulse-dot"></span>
-          <!-- Transitions.dev Shimmer Text -->
-          <span class="t-shimmer" data-text="MTPROTO ENGINE • 4GB UNLOCKED • ZERO DUPLICATES">
-            MTPROTO ENGINE • 4GB UNLOCKED • ZERO DUPLICATES
-          </span>
+          <a href="https://github.com/shikshiten/Mobata" target="_blank" class="btn-ghost-mono">
+            <span>View Source Code</span>
+            <span>›</span>
+          </a>
         </div>
-      </div>
-      
-      <h1 class="hero-h1">
-        Upload 5,000+ Media Files.<br>
-        <span class="grad-txt-blood">Without Limits.</span>
-      </h1>
-      
-      <!-- Transitions.dev Streaming Text -->
-      <p class="hero-p t-stream" id="hero-stream">
-        The automated Telegram batch uploader. Bypasses the 50 MB bot ceiling, handles multi-gigabyte 4K video, self-heals on rate limits, and resumes with zero duplicates.
-      </p>
 
-      <div class="hero-actions">
-        <a href="#setup" class="btn-main-blood">
-          <span>Start Local Upload</span>
-          <span>→</span>
-        </a>
-        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="btn-ghost-blood">
-          <span>View Source Code</span>
-          <span>›</span>
-        </a>
-      </div>
-
-      <!-- Terminal Stage (Expanded Liquid Glass) -->
-      <div class="terminal-stage">
-        <div class="terminal-frame">
-          <div class="term-top">
-            <div class="term-dots">
-              <span class="t-dot t-red"></span>
-              <span class="t-dot t-yellow"></span>
-              <span class="t-dot t-green"></span>
-            </div>
-            
-            <!-- Transitions.dev Thinking States in Terminal Meta -->
-            <div class="term-meta font-doto">
-              <span>mobata //</span>
-              <span class="t-think" id="engine-think" role="status">
-                <span class="t-think-sizer" aria-hidden="true">Streaming 4K video block 18/64…</span>
-                <span class="t-think-text" data-text="Analyzing media folder…">Analyzing media folder…</span>
-              </span>
-            </div>
-
-            <div class="term-status-wrap">
-              <!-- Transitions.dev Matrix Dot Loader -->
-              <div class="t-matrix" data-variant="scan"></div>
-              <div class="term-status font-doto">ONLINE</div>
-            </div>
-          </div>
-
-          <div class="term-content">
-            <div class="term-row"><span class="t-blood font-doto">[SYS]</span> Initializing Telethon MTProto Client... <span class="t-dim">Hardware AES-NI verified</span></div>
-            <div class="term-row"><span class="t-blood font-doto">[DIR]</span> Media Scan: C:\Photos\Master (5,242 items indexed)</div>
-            <div class="term-row"><span class="t-blood font-doto">[CHN]</span> Connected to channel: "Private Archive" (-1003099948239)</div>
-            <div class="t-hr"></div>
-            <div class="term-row font-doto t-dim">[4598/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - Done!</div>
-            <div class="term-row font-doto t-dim">[4599/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - Done!</div>
-            <div class="term-row font-doto">
-              <span class="t-blood font-doto" id="t-count">[4600/5242]</span>
-              <span id="t-file" class="font-doto">IMG_0812.jpg:</span>
-              <span id="t-meter" class="font-doto">94%|█████████ | 2.9M/3.1M [00:01, 3.2MB/s]</span>
-              <span class="t-cursor font-doto">_</span>
-            </div>
-
-            <!-- Transitions.dev: Reasoning Stream -->
-            <div class="reason-box-wrap">
-              <div class="reason-header font-doto">
-                <span>⚡ MTPROTO REASONING STREAM</span>
-                <span style="color:var(--text-dim)">AUTO-SCROLLING TELEMETRY</span>
+        <!-- Terminal Stage (Code colors preserved!) -->
+        <div class="terminal-stage">
+          <div class="terminal-frame">
+            <div class="term-top">
+              <div class="term-dots">
+                <span class="t-dot t-red"></span>
+                <span class="t-dot t-yellow"></span>
+                <span class="t-dot t-green"></span>
               </div>
-              <div class="t-reason" id="pipeline-reason">
-                <div class="t-reason-viewport">
-                  <div class="t-reason-scroll">
-                    <div class="t-reason-text">
-                      <p><span>[00:01.042]</span> Scanning folder: 5,242 items verified. 0-byte corrupt items purged.</p>
-                      <p><span>[00:01.120]</span> AES-NI Acceleration: Native cryptg 0.6.0 linked (80× throughput).</p>
-                      <p><span>[00:01.215]</span> MTProto Handshake: Connected to DC 4 with zero dropped packets.</p>
-                      <p><span>[00:01.380]</span> Obfuscation: ConnectionTcpObfuscated shielding traffic from ISP DPI.</p>
-                      <p><span>[00:01.490]</span> FloodWait: Intelligent backoff listener registered for server challenges.</p>
-                      <p><span>[00:01.710]</span> Video Stream: supports_streaming=True set for immediate channel playback.</p>
-                      <p><span>[00:01.890]</span> Process Lock: uploader.lock acquired on PID 9068 (concurrency protected).</p>
-                      <p><span>[00:02.050]</span> Persistence: Atomic flush to uploaded_history.txt after each file.</p>
-                    </div>
-                  </div>
-                </div>
+              <div class="term-meta">
+                <span>mobata //</span>
+                <!-- Transitions.dev Thinking States -->
+                <span class="t-think" id="engine-think" role="status">
+                  <span class="t-think-sizer" aria-hidden="true">Streaming 4K video block 18/64…</span>
+                  <span class="t-think-text" data-text="Analyzing media folder…">Analyzing media folder…</span>
+                </span>
+              </div>
+              <div class="term-status-wrap">
+                <span class="term-status">ONLINE</span>
               </div>
             </div>
 
+            <div class="term-content">
+              <div class="term-row"><span class="c-cyan">[SYS]</span> Initializing Telethon MTProto Client... <span class="c-dim">Hardware AES-NI verified</span></div>
+              <div class="term-row"><span class="c-cyan">[DIR]</span> Media Scan: C:\Photos\Master (5,242 items indexed)</div>
+              <div class="term-row"><span class="c-cyan">[CHN]</span> Connected to channel: "Private Archive" (-1003099948239)</div>
+              <div class="t-hr"></div>
+              <div class="term-row c-dim">[4678/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - <span class="c-green">Done!</span></div>
+              <div class="term-row c-dim">[4679/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - <span class="c-green">Done!</span></div>
+              <div class="term-row">
+                <span class="c-yellow" id="t-count">[4681/5242]</span>
+                <span id="t-file" class="c-cyan">IMG_0812.jpg:</span>
+                <span id="t-meter">96%|█████████ | 2.9M/3.1M [00:01, 3.2MB/s]</span>
+                <span class="t-cursor">_</span>
+              </div>
+            </div>
           </div>
         </div>
+
       </div>
+
+      <!-- Right Column: 3D Stacked Card Swipe Deck (Architectural Advantages) -->
+      <div class="hero-right" id="advantages">
+        <div class="deck-header">
+          <span class="deck-title">ARCHITECTURAL ADVANTAGES</span>
+          <div class="deck-ctrl">
+            <button class="btn-swipe-next" onclick="swipeDeckCard()">
+              <span>SWIPE CARD</span>
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card-deck-stage" id="deck-stage" onclick="swipeDeckCard()">
+          
+          <!-- Card 1 -->
+          <div class="stack-card" data-idx="0">
+            <div>
+              <span class="sc-tag">[TCP] NETWORK SHIELD</span>
+              <h3 class="sc-title">Anti-Throttling Protocol</h3>
+              <p class="sc-desc">Employs <code>ConnectionTcpObfuscated</code> to prevent restrictive Wi-Fi routers and ISP deep-packet inspection (DPI) from resetting connection handshakes.</p>
+            </div>
+            <div class="sc-footer">
+              <span>Card 1 of 6</span>
+              <div class="sc-dots">
+                <span class="sc-dot active"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="stack-card" data-idx="1">
+            <div>
+              <span class="sc-tag">[STREAM] PLAYBACK</span>
+              <h3 class="sc-title">In-App Video Streaming</h3>
+              <p class="sc-desc">Flags every uploaded video with <code>supports_streaming=True</code> so videos play immediately inside Telegram channels without waiting for full download.</p>
+            </div>
+            <div class="sc-footer">
+              <span>Card 2 of 6</span>
+              <div class="sc-dots">
+                <span class="sc-dot"></span>
+                <span class="sc-dot active"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="stack-card" data-idx="2">
+            <div>
+              <span class="sc-tag">[AUTO] RATE RESILIENCE</span>
+              <h3 class="sc-title">Self-Healing FloodWait</h3>
+              <p class="sc-desc">Automatically intercepts Telegram rate-limit challenges, sleeps for the exact server-requested seconds, and resumes without crashing or losing position.</p>
+            </div>
+            <div class="sc-footer">
+              <span>Card 3 of 6</span>
+              <div class="sc-dots">
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot active"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="stack-card" data-idx="3">
+            <div>
+              <span class="sc-tag">[LOCK] CONCURRENCY</span>
+              <h3 class="sc-title">Instance Protection</h3>
+              <p class="sc-desc">Integrated atomic process locking stops overlapping instances, completely eliminating the "Server replied with a wrong session ID" error.</p>
+            </div>
+            <div class="sc-footer">
+              <span>Card 4 of 6</span>
+              <div class="sc-dots">
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot active"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="stack-card" data-idx="4">
+            <div>
+              <span class="sc-tag">[QUEUE] SCHEDULER</span>
+              <h3 class="sc-title">Smart Priority Sorting</h3>
+              <p class="sc-desc">Prioritizes small photos first so thousands of files upload rapidly, ensuring continuous progress before tackling massive 4K video files.</p>
+            </div>
+            <div class="sc-footer">
+              <span>Card 5 of 6</span>
+              <div class="sc-dots">
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot active"></span>
+                <span class="sc-dot"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="stack-card" data-idx="5">
+            <div>
+              <span class="sc-tag">[SYNC] PERSISTENCE</span>
+              <h3 class="sc-title">Zero-Loss Persistence</h3>
+              <p class="sc-desc">Records uploaded paths to <code>uploaded_history.txt</code> after every success. Power cuts or laptop restarts won't re-upload duplicates.</p>
+            </div>
+            <div class="sc-footer">
+              <span>Card 6 of 6</span>
+              <div class="sc-dots">
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot"></span>
+                <span class="sc-dot active"></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <p style="font-size: 12px; color: var(--text-dim); margin-top: 12px;">Click card or swipe button to cycle through features.</p>
+      </div>
+
     </div>
   </main>
 
-  <!-- Metrics Section (Transitions.dev Card Tilt & Glare) -->
-  <section class="section section-dark">
+  <!-- Metrics Section (Scroll Fade Animation) -->
+  <section class="section scroll-fade">
     <div class="container">
       <div class="sec-head">
-        <div class="sec-tag font-doto">PERFORMANCE & SCALE</div>
+        <div class="sec-tag">PERFORMANCE & SCALE</div>
         <h2 class="sec-title">Bypasses the 50 MB Bot Wall.</h2>
         <p class="sec-desc">Standard bots crash on phone videos. Mobata connects via Telegram's direct MTProto user client.</p>
       </div>
 
       <div class="metrics-grid">
-        <!-- Tilt Card 1 -->
-        <div class="t-tilt">
-          <div class="t-tilt-card">
-            <div class="metric-num font-doto">4 GB</div>
-            <div class="metric-lbl">Max File Size</div>
-            <p class="metric-p">Full-length 4K footage and multi-gigabyte videos uploaded without compression or quality loss.</p>
-            <div class="t-tilt-glare"></div>
-          </div>
+        <div class="metric-card">
+          <div class="metric-num">4 GB</div>
+          <div class="metric-lbl">Max File Size</div>
+          <p class="metric-p">Full-length 4K footage and multi-gigabyte videos uploaded without compression or quality loss.</p>
         </div>
 
-        <!-- Tilt Card 2 -->
-        <div class="t-tilt">
-          <div class="t-tilt-card">
-            <div class="metric-num font-doto">80×</div>
-            <div class="metric-lbl">C-Accelerated Speed</div>
-            <p class="metric-p">Native compiled <code>cryptg</code> AES-NI hardware encryption eliminates software CPU bottlenecks.</p>
-            <div class="t-tilt-glare"></div>
-          </div>
+        <div class="metric-card">
+          <div class="metric-num">80×</div>
+          <div class="metric-lbl">C-Accelerated Speed</div>
+          <p class="metric-p">Native compiled <code>cryptg</code> AES-NI hardware encryption eliminates software CPU bottlenecks.</p>
         </div>
 
-        <!-- Tilt Card 3 -->
-        <div class="t-tilt">
-          <div class="t-tilt-card">
-            <div class="metric-num font-doto">0</div>
-            <div class="metric-lbl">Duplicate Uploads</div>
-            <p class="metric-p">Persistent state tracking flushes every file instantly. Restarts pick up at the exact next item.</p>
-            <div class="t-tilt-glare"></div>
-          </div>
+        <div class="metric-card">
+          <div class="metric-num">0</div>
+          <div class="metric-lbl">Duplicate Uploads</div>
+          <p class="metric-p">Persistent state tracking flushes every file instantly. Restarts pick up at the exact next item.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section class="section" id="features">
+  <!-- Benchmark Comparison (Scroll Fade Animation) -->
+  <section class="section scroll-fade" id="benchmarks">
     <div class="container">
       <div class="sec-head">
-        <div class="sec-tag font-doto">ARCHITECTURAL ADVANTAGES</div>
-        <h2 class="sec-title">Engineered For Real Networks.</h2>
-        <p class="sec-desc">Built to survive connection drops, strict firewalls, and aggressive Telegram rate limits.</p>
-      </div>
-
-      <div class="features-grid">
-        <div class="feat-card">
-          <div class="feat-tag font-doto">[TCP]</div>
-          <h3 class="feat-title">Anti-Throttling Protocol</h3>
-          <p class="feat-p">Employs <code>ConnectionTcpObfuscated</code> to prevent restrictive Wi-Fi routers and ISP deep-packet inspection (DPI) from resetting connections.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-tag font-doto">[STREAM]</div>
-          <h3 class="feat-title">In-App Video Streaming</h3>
-          <p class="feat-p">Flags every uploaded video with <code>supports_streaming=True</code> so videos play immediately inside Telegram channels without full download.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-tag font-doto">[AUTO]</div>
-          <h3 class="feat-title">Self-Healing FloodWait</h3>
-          <p class="feat-p">Automatically intercepts Telegram rate-limit challenges, sleeps for the exact server-requested seconds, and resumes without crashing.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-tag font-doto">[LOCK]</div>
-          <h3 class="feat-title">Instance Protection</h3>
-          <p class="feat-p">Integrated process locking stops overlapping instances, completely eliminating the "Server replied with a wrong session ID" error.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-tag font-doto">[QUEUE]</div>
-          <h3 class="feat-title">Smart Priority Sorting</h3>
-          <p class="feat-p">Prioritizes small photos first so thousands of files upload rapidly, ensuring continuous progress before tackling massive 4K video files.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-tag font-doto">[SYNC]</div>
-          <h3 class="feat-title">Zero-Loss Persistence</h3>
-          <p class="feat-p">Records uploaded paths to <code>uploaded_history.txt</code> after every success. Power cuts or laptop restarts won't re-upload duplicates.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Comparison Section -->
-  <section class="section section-dark" id="comparison">
-    <div class="container">
-      <div class="sec-head">
-        <div class="sec-tag font-doto">BENCHMARK COMPARISON</div>
+        <div class="sec-tag">BENCHMARK COMPARISON</div>
         <h2 class="sec-title">Why Traditional Methods Fail.</h2>
       </div>
 
@@ -1741,10 +1289,10 @@
               <td><strong>Max File Size</strong></td>
               <td>2 GB (Manual Drag-and-Drop)</td>
               <td>50 MB Strictly</td>
-              <td class="col-hi font-doto">2 GB – 4 GB</td>
+              <td class="col-hi">2 GB – 4 GB</td>
             </tr>
             <tr>
-              <td><strong>5,000+ Batch Queue</strong></td>
+              <td><strong>Unlimited Batch Queue</strong></td>
               <td>UI Freezes / Crashes</td>
               <td>Fails on large videos</td>
               <td class="col-hi">Autonomous Queue</td>
@@ -1753,7 +1301,7 @@
               <td><strong>Auto-Resume on Disconnect</strong></td>
               <td>❌ No</td>
               <td>❌ No</td>
-              <td class="col-hi font-doto">Zero Duplicates</td>
+              <td class="col-hi">Zero Duplicates</td>
             </tr>
             <tr>
               <td><strong>FloodWait Auto Recovery</strong></td>
@@ -1765,7 +1313,7 @@
               <td><strong>ISP DPI / Throttling Bypass</strong></td>
               <td>❌ No</td>
               <td>❌ No</td>
-              <td class="col-hi font-doto">Obfuscated TCP</td>
+              <td class="col-hi">Obfuscated TCP</td>
             </tr>
             <tr>
               <td><strong>Headless Server Support</strong></td>
@@ -1779,126 +1327,63 @@
     </div>
   </section>
 
-  <!-- Setup Section (Transitions.dev Sliding Tabs) -->
-  <section class="section" id="setup">
+  <!-- Dedicated Setup Guides (Separate Pages!) -->
+  <section class="section scroll-fade" id="guides">
     <div class="container">
       <div class="sec-head">
-        <div class="sec-tag font-doto">DEPLOYMENT MATRIX</div>
-        <h2 class="sec-title">Get Started in 3 Minutes.</h2>
-        <p class="sec-desc">Choose your preferred operating environment with animated tabs.</p>
+        <div class="sec-tag">DEPLOYMENT DIRECTORY</div>
+        <h2 class="sec-title">Setup Guides & Documentation.</h2>
+        <p class="sec-desc">Choose your environment for full step-by-step instructions.</p>
       </div>
 
-      <!-- Transitions.dev Tabs Sliding Component -->
-      <div class="tabs-wrapper">
-        <div class="t-tabs" role="tablist">
-          <span class="t-tabs-pill" aria-hidden="true"></span>
-          <button class="t-tab" role="tab" aria-selected="true" data-tab="tab-local">💻 Local Machine</button>
-          <button class="t-tab" role="tab" aria-selected="false" data-tab="tab-docker">🐳 Docker & NAS</button>
-          <button class="t-tab" role="tab" aria-selected="false" data-tab="tab-cloud">☁️ Koyeb / Heroku / VPS</button>
-          <button class="t-tab" role="tab" aria-selected="false" data-tab="tab-n8n">⚙️ n8n Automation</button>
-        </div>
-      </div>
-
-      <div class="pane-box">
-        <!-- Local Tab -->
-        <div class="pane active" id="tab-local">
-          <div class="step-card">
-            <div class="step-badge font-doto">01</div>
-            <div class="step-main">
-              <h4>Clone Repository & Install Requirements</h4>
-              <p>Requires Python 3.9 or higher (compatible with Windows, macOS, Linux).</p>
-              <div class="code-box">
-                <code>git clone https://github.com/shikshiten/Mobata.git<br>cd Mobata<br>pip install -r requirements.txt</code>
-                <button class="copy-pill" onclick="copySnippet(this)">Copy</button>
-              </div>
-            </div>
+      <div class="docs-grid">
+        <!-- Page 1: Local Setup -->
+        <a href="setup.html" class="doc-page-card">
+          <div>
+            <div class="doc-tag">LOCAL WORKSTATION</div>
+            <h3 class="doc-title">💻 Local Machine Setup</h3>
+            <p class="doc-desc">Deploy directly on Windows, macOS, or Linux. Obtain Telegram API keys, set up environment variables, and run one-click batch scripts.</p>
           </div>
-
-          <div class="step-card">
-            <div class="step-badge font-doto">02</div>
-            <div class="step-main">
-              <h4>Obtain Free Telegram API Credentials</h4>
-              <p>Visit <a href="https://my.telegram.org" target="_blank" style="color:var(--blood-bright)">my.telegram.org</a>, log in with your Telegram number, click <strong>API Development Tools</strong>, and copy your <code>API ID</code> and <code>API HASH</code>.</p>
-            </div>
+          <div class="doc-cta">
+            <span>Read Local Setup Guide</span>
+            <span>→</span>
           </div>
+        </a>
 
-          <div class="step-card">
-            <div class="step-badge font-doto">03</div>
-            <div class="step-main">
-              <h4>Configure Environment (.env)</h4>
-              <p>Copy <code>.env.example</code> to <code>.env</code> and insert your details:</p>
-              <div class="code-box">
-                <code>TELEGRAM_API_ID=your_api_id<br>TELEGRAM_API_HASH=your_api_hash<br>TELEGRAM_PHONE=+1234567890<br>TELEGRAM_CHANNEL_ID=-1001234567890<br>UPLOAD_FOLDER=C:\Pictures\Upload</code>
-                <button class="copy-pill" onclick="copySnippet(this)">Copy</button>
-              </div>
-            </div>
+        <!-- Page 2: Docker & NAS -->
+        <a href="docker.html" class="doc-page-card">
+          <div>
+            <div class="doc-tag">CONTAINER & STORAGE</div>
+            <h3 class="doc-title">🐳 Docker & NAS Setup</h3>
+            <p class="doc-desc">Run headless in the background 24/7 on Synology, Unraid, TrueNAS SCALE, or Ubuntu server using clean <code>docker-compose.yml</code>.</p>
           </div>
+          <div class="doc-cta">
+            <span>Read Docker Guide</span>
+            <span>→</span>
+          </div>
+        </a>
 
-          <div class="step-card">
-            <div class="step-badge font-doto">04</div>
-            <div class="step-main">
-              <h4>Start Uploading</h4>
-              <p>Double-click <code>run_uploader.bat</code> on Windows, or run in terminal:</p>
-              <div class="code-box">
-                <code>python uploader.py</code>
-                <button class="copy-pill" onclick="copySnippet(this)">Copy</button>
-              </div>
-            </div>
+        <!-- Page 3: Cloud & Automation -->
+        <a href="cloud.html" class="doc-page-card">
+          <div>
+            <div class="doc-tag">CLOUD WORKERS & N8N</div>
+            <h3 class="doc-title">☁️ Cloud & Automation</h3>
+            <p class="doc-desc">Deploy on Koyeb or Heroku workers, create Linux systemd daemon units, and automate smartphone photo syncing via n8n webhooks.</p>
           </div>
-        </div>
-
-        <!-- Docker Tab -->
-        <div class="pane" id="tab-docker">
-          <div class="step-card">
-            <div class="step-badge font-doto">01</div>
-            <div class="step-main">
-              <h4>Deploy on Docker / TrueNAS / Unraid</h4>
-              <p>Mount your local photo volume and run continuously in the background.</p>
-              <div class="code-box">
-                <code>docker compose up -d<br>docker compose logs -f</code>
-                <button class="copy-pill" onclick="copySnippet(this)">Copy</button>
-              </div>
-            </div>
+          <div class="doc-cta">
+            <span>Read Cloud & n8n Guide</span>
+            <span>→</span>
           </div>
-        </div>
-
-        <!-- Cloud Tab -->
-        <div class="pane" id="tab-cloud">
-          <div class="step-card">
-            <div class="step-badge font-doto">01</div>
-            <div class="step-main">
-              <h4>Deploy on Cloud Workers (Koyeb / Heroku / VPS)</h4>
-              <p>The repository includes a <code>Procfile</code> for background worker deployment:</p>
-              <div class="code-box">
-                <code>worker: python uploader.py</code>
-                <button class="copy-pill" onclick="copySnippet(this)">Copy</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- n8n Tab -->
-        <div class="pane" id="tab-n8n">
-          <div class="step-card">
-            <div class="step-badge font-doto">01</div>
-            <div class="step-main">
-              <h4>Automate Camera & Cloud Dumps</h4>
-              <p>Trigger uploads whenever new media arrives via Google Drive, Nextcloud, or Webhooks:</p>
-              <div class="code-box font-doto">
-                <code>[Google Drive / Camera Sync] ➔ [n8n Trigger] ➔ [Mobata Queue] ➔ [Telegram Channel]</code>
-              </div>
-            </div>
-          </div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- FAQ Section -->
-  <section class="section section-dark" id="faq">
+  <!-- FAQ Section (Scroll Fade Animation) -->
+  <section class="section scroll-fade" id="faq">
     <div class="container">
       <div class="sec-head">
-        <div class="sec-tag font-doto">FREQUENTLY ASKED QUESTIONS</div>
+        <div class="sec-tag">FREQUENTLY ASKED QUESTIONS</div>
         <h2 class="sec-title">Common Questions.</h2>
       </div>
 
@@ -1906,7 +1391,7 @@
         <div class="faq-card">
           <button class="faq-q">
             <span>Are credentials and session tokens kept private?</span>
-            <span class="faq-sym font-doto">+</span>
+            <span class="faq-sym">+</span>
           </button>
           <div class="faq-a">
             <p>Yes. Mobata executes completely on your own hardware or dedicated container. All sessions, history logs, and environment variables are strictly ignored in <code>.gitignore</code> and never transmitted to third parties.</p>
@@ -1916,7 +1401,7 @@
         <div class="faq-card">
           <button class="faq-q">
             <span>Can I safely pause and resume the upload process?</span>
-            <span class="faq-sym font-doto">+</span>
+            <span class="faq-sym">+</span>
           </button>
           <div class="faq-a">
             <p>Yes. Pressing <code>Ctrl + C</code> safely flushes progress immediately to <code>uploaded_history.txt</code>. Running the script again skips all completed files and continues from the exact next item.</p>
@@ -1926,7 +1411,7 @@
         <div class="faq-card">
           <button class="faq-q">
             <span>How does Mobata handle Telegram rate limits?</span>
-            <span class="faq-sym font-doto">+</span>
+            <span class="faq-sym">+</span>
           </button>
           <div class="faq-a">
             <p>When Telegram requests a cooldown period via <code>FloodWaitError</code>, Mobata automatically pauses execution for the exact server-requested seconds and seamlessly resumes the upload loop.</p>
@@ -1936,56 +1421,29 @@
     </div>
   </section>
 
-  <!-- Transitions.dev: Floating Plus to Menu Morph -->
-  <div class="morph-fixed-wrap">
-    <div class="t-morph" id="quick-morph" data-open="false">
-      <div class="t-morph-menu">
-        <div style="font-size: 11px; font-weight: 800; color: var(--blood-bright); letter-spacing: 1px; margin-bottom: 2px;">MOBATA QUICK MENU</div>
-        <a href="#setup" class="morph-item" onclick="toggleMorph(false)">
-          <span>⚡ Local Setup</span>
-        </a>
-        <a href="#comparison" class="morph-item" onclick="toggleMorph(false)">
-          <span>📊 Comparison</span>
-        </a>
-        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="morph-item">
-          <span>⭐ Star on GitHub</span>
-        </a>
-        <a href="https://github.com/shikshiten/Mobata/blob/main/README.md" target="_blank" class="morph-item">
-          <span>📖 Full Docs</span>
-        </a>
-      </div>
-      <button class="t-morph-plus" id="morph-btn" aria-expanded="false" onclick="toggleMorph()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-        </svg>
-      </button>
-    </div>
-  </div>
-
   <!-- Footer -->
   <footer class="apple-footer">
     <div class="container footer-row">
       <div>
-        <img src="assets/logo-dark.png" alt="Mobata Logo" class="footer-logo" width="80" height="auto" />
+        <img src="assets/logo-dark.png" alt="Mobata Logo" class="footer-logo" />
         <p class="footer-tag">High-performance automated media uploader for Telegram with native C-accelerated MTProto engine.</p>
       </div>
       <div class="footer-col">
-        <h5>Documentation</h5>
+        <h5>Setup Guides</h5>
         <ul>
-          <li><a href="https://github.com/shikshiten/Mobata/blob/main/README.md" target="_blank">Setup Guide</a></li>
-          <li><a href="https://github.com/shikshiten/Mobata/blob/main/WHY_MOBATA.md" target="_blank">Why Mobata?</a></li>
-          <li><a href="#setup">Local Quick Start</a></li>
-          <li><a href="#setup">Docker Compose</a></li>
+          <li><a href="setup.html">Local Machine Setup</a></li>
+          <li><a href="docker.html">Docker & NAS Sync</a></li>
+          <li><a href="cloud.html">Cloud & Koyeb Workers</a></li>
+          <li><a href="cloud.html">n8n Automation</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h5>Architecture</h5>
         <ul>
           <li><a href="#overview">MTProto Protocol</a></li>
-          <li><a href="#features">Hardware AES-NI</a></li>
-          <li><a href="#features">Anti-Throttling TCP</a></li>
-          <li><a href="#comparison">Benchmark Matrix</a></li>
+          <li><a href="#advantages">Anti-Throttling TCP</a></li>
+          <li><a href="#advantages">Hardware AES-NI</a></li>
+          <li><a href="#benchmarks">Benchmark Matrix</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -2003,84 +1461,46 @@
   </footer>
 
   <!-- ==========================================================================
-       Interactive Scripts & Transitions.dev Implementations
+       Interactive Scripts: Constellation Canvas, 3D Card Swipe, Scroll Fade
        ========================================================================== -->
   <script>
     // ---------------------------------------------------------
-    // 1. Particle Scattering Motion Background Canvas
+    // 1. Constellation Starfield Canvas
     // ---------------------------------------------------------
-    const canvas = document.getElementById('particle-canvas');
+    const canvas = document.getElementById('constellation-canvas');
     const ctx = canvas.getContext('2d');
-    let particles = [];
-    let mouse = { x: null, y: null, radius: 140 };
+    let stars = [];
+    let constellations = [];
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      initConstellations();
     }
     window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
 
-    window.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
-
-    window.addEventListener('mouseout', () => {
-      mouse.x = null;
-      mouse.y = null;
-    });
-
-    class Particle {
-      constructor() {
-        this.reset();
-      }
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.baseX = this.x;
-        this.baseY = this.y;
-        this.size = Math.random() * 2.2 + 0.6;
-        this.vx = (Math.random() - 0.5) * 0.6;
-        this.vy = -(Math.random() * 0.7 + 0.2); // Gentle upward float
-        this.density = Math.random() * 25 + 5;
-        this.alpha = Math.random() * 0.6 + 0.2;
+    class Star {
+      constructor(x, y, isNode = false) {
+        this.x = x !== undefined ? x : Math.random() * canvas.width;
+        this.y = y !== undefined ? y : Math.random() * canvas.height;
+        this.size = isNode ? Math.random() * 1.8 + 1.2 : Math.random() * 1.2 + 0.4;
+        this.alpha = Math.random() * 0.7 + 0.3;
+        this.baseAlpha = this.alpha;
+        this.pulseSpeed = Math.random() * 0.02 + 0.005;
+        this.pulseDir = 1;
+        this.isNode = isNode;
       }
       update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        // Wrap boundaries
-        if (this.y < 0) {
-          this.y = canvas.height;
-          this.x = Math.random() * canvas.width;
-        }
-        if (this.x < 0) this.x = canvas.width;
-        if (this.x > canvas.width) this.x = 0;
-
-        // Mouse scattering physics
-        if (mouse.x !== null && mouse.y !== null) {
-          let dx = mouse.x - this.x;
-          let dy = mouse.y - this.y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < mouse.radius) {
-            let forceDirectionX = dx / distance;
-            let forceDirectionY = dy / distance;
-            let force = (mouse.radius - distance) / mouse.radius;
-            let directionX = forceDirectionX * force * this.density * 0.6;
-            let directionY = forceDirectionY * force * this.density * 0.6;
-            this.x -= directionX;
-            this.y -= directionY;
-          }
-        }
+        this.alpha += this.pulseSpeed * this.pulseDir;
+        if (this.alpha > 0.95) this.pulseDir = -1;
+        if (this.alpha < 0.25) this.pulseDir = 1;
       }
       draw() {
-        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-        ctx.fillStyle = isLight 
-          ? `rgba(229, 9, 20, ${this.alpha * 0.75})` 
-          : `rgba(255, 35, 60, ${this.alpha})`;
-        ctx.shadowBlur = isLight ? 4 : 8;
-        ctx.shadowColor = '#e50914';
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+        if (this.isNode) {
+          ctx.shadowBlur = 6;
+          ctx.shadowColor = '#ffffff';
+        }
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -2088,68 +1508,200 @@
       }
     }
 
-    const particleCount = Math.min(Math.floor(window.innerWidth / 15), 110);
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
+    function initConstellations() {
+      stars = [];
+      constellations = [];
+      const starCount = Math.floor(canvas.width / 12);
+      for (let i = 0; i < starCount; i++) {
+        stars.push(new Star());
+      }
+
+      // Predefined recognizable constellation node patterns
+      const W = canvas.width, H = canvas.height;
+      
+      // Pattern 1: Cassiopeia (W shape)
+      const cas = [
+        { x: W * 0.15, y: H * 0.18 },
+        { x: W * 0.20, y: H * 0.26 },
+        { x: W * 0.25, y: H * 0.21 },
+        { x: W * 0.29, y: H * 0.30 },
+        { x: W * 0.35, y: H * 0.24 }
+      ];
+      constellations.push(cas);
+
+      // Pattern 2: Cygnus / Northern Cross
+      const cyg = [
+        { x: W * 0.75, y: H * 0.16 },
+        { x: W * 0.82, y: H * 0.24 },
+        { x: W * 0.89, y: H * 0.32 },
+        { x: W * 0.78, y: H * 0.28 },
+        { x: W * 0.86, y: H * 0.20 }
+      ];
+      constellations.push(cyg);
+
+      // Pattern 3: Ursa Major / Big Dipper
+      const um = [
+        { x: W * 0.12, y: H * 0.65 },
+        { x: W * 0.18, y: H * 0.68 },
+        { x: W * 0.23, y: H * 0.73 },
+        { x: W * 0.28, y: H * 0.74 },
+        { x: W * 0.34, y: H * 0.70 },
+        { x: W * 0.36, y: H * 0.80 },
+        { x: W * 0.30, y: H * 0.82 }
+      ];
+      constellations.push(um);
+
+      // Pattern 4: Orion
+      const ori = [
+        { x: W * 0.72, y: H * 0.62 },
+        { x: W * 0.84, y: H * 0.64 },
+        { x: W * 0.76, y: H * 0.72 },
+        { x: W * 0.78, y: H * 0.72 },
+        { x: W * 0.80, y: H * 0.72 },
+        { x: W * 0.73, y: H * 0.82 },
+        { x: W * 0.83, y: H * 0.81 }
+      ];
+      constellations.push(ori);
     }
+    resizeCanvas();
 
-    function animateParticles() {
+    function animateConstellations() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
 
-        // Subtle connecting constellation lines between close particles
-        for (let j = i + 1; j < particles.length; j++) {
-          let dx = particles[i].x - particles[j].x;
-          let dy = particles[i].y - particles[j].y;
-          let dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 90) {
-            ctx.strokeStyle = isLight
-              ? `rgba(229, 9, 20, ${0.1 * (1 - dist / 90)})`
-              : `rgba(229, 9, 20, ${0.15 * (1 - dist / 90)})`;
-            ctx.lineWidth = 0.6;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
+      // Draw background twinkling stars
+      for (let s of stars) {
+        s.update();
+        s.draw();
+      }
+
+      // Draw Constellations
+      ctx.lineWidth = 0.8;
+      for (let constell of constellations) {
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
+        ctx.beginPath();
+        for (let i = 0; i < constell.length; i++) {
+          const pt = constell[i];
+          if (i === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.stroke();
+
+        // Draw glowing nodes
+        for (let pt of constell) {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, 2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
         }
       }
-      requestAnimationFrame(animateParticles);
+
+      requestAnimationFrame(animateConstellations);
     }
-    animateParticles();
+    animateConstellations();
 
     // ---------------------------------------------------------
-    // 2. Transitions.dev: Light / Dark Mode Toggle Implementation
+    // 2. 3D Card Swipe Stacking Deck
     // ---------------------------------------------------------
-    const toggleBtn = document.getElementById('theme-toggle');
-    const savedTheme = localStorage.getItem('mobata_theme') || 'dark';
-    
-    function applyTheme(theme, animate = false) {
-      if (animate) toggleBtn.classList.add('is-init');
-      if (theme === 'light') {
-        document.documentElement.setAttribute('data-theme', 'light');
-        toggleBtn.setAttribute('data-on', 'true');
-      } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        toggleBtn.setAttribute('data-on', 'false');
-      }
-      localStorage.setItem('mobata_theme', theme);
+    const deckStage = document.getElementById('deck-stage');
+    const cards = Array.from(deckStage.querySelectorAll('.stack-card'));
+    let cardOrder = cards.map((_, i) => i);
+    let isSwiping = false;
+
+    function renderDeck() {
+      cardOrder.forEach((cardIdx, pos) => {
+        const card = cards[cardIdx];
+        card.classList.remove('is-swiping');
+        
+        if (pos === 0) {
+          // Top Active Card
+          card.style.transform = 'translateY(0px) scale(1) translateZ(0px)';
+          card.style.zIndex = '30';
+          card.style.opacity = '1';
+          card.style.pointerEvents = 'auto';
+        } else if (pos === 1) {
+          // Second Card
+          card.style.transform = 'translateY(18px) scale(0.95) translateZ(-40px)';
+          card.style.zIndex = '20';
+          card.style.opacity = '0.75';
+          card.style.pointerEvents = 'none';
+        } else if (pos === 2) {
+          // Third Card
+          card.style.transform = 'translateY(36px) scale(0.90) translateZ(-80px)';
+          card.style.zIndex = '10';
+          card.style.opacity = '0.45';
+          card.style.pointerEvents = 'none';
+        } else {
+          // Hidden Back Cards
+          card.style.transform = 'translateY(48px) scale(0.85) translateZ(-120px)';
+          card.style.zIndex = '5';
+          card.style.opacity = '0';
+          card.style.pointerEvents = 'none';
+        }
+      });
+    }
+    renderDeck();
+
+    function swipeDeckCard() {
+      if (isSwiping) return;
+      isSwiping = true;
+
+      const topCardIdx = cardOrder[0];
+      const topCard = cards[topCardIdx];
+      topCard.classList.add('is-swiping');
+
+      setTimeout(() => {
+        // Move front to back of queue
+        cardOrder.push(cardOrder.shift());
+        renderDeck();
+        setTimeout(() => {
+          isSwiping = false;
+        }, 150);
+      }, 420);
     }
 
-    // Initialize without animation
-    applyTheme(savedTheme, false);
-
-    toggleBtn.addEventListener('click', () => {
-      const isCurrentlyLight = toggleBtn.getAttribute('data-on') === 'true';
-      const nextTheme = isCurrentlyLight ? 'dark' : 'light';
-      applyTheme(nextTheme, true);
+    // Auto cycle cards every 4.8 seconds
+    let deckTimer = setInterval(swipeDeckCard, 4800);
+    deckStage.addEventListener('mouseenter', () => clearInterval(deckTimer));
+    deckStage.addEventListener('mouseleave', () => {
+      clearInterval(deckTimer);
+      deckTimer = setInterval(swipeDeckCard, 4800);
     });
 
     // ---------------------------------------------------------
-    // 3. Transitions.dev: Thinking States Implementation
+    // 3. Scroll-Driven Fade Animation (IntersectionObserver)
+    // ---------------------------------------------------------
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.scroll-fade').forEach(el => observer.observe(el));
+
+    // ---------------------------------------------------------
+    // 4. Transitions.dev: Streaming Text
+    // ---------------------------------------------------------
+    const streamContainer = document.getElementById('hero-stream');
+    if (streamContainer) {
+      const originalText = streamContainer.innerText.trim();
+      const words = originalText.split(/\s+/);
+      streamContainer.innerHTML = words.map(w => `<span class="t-stream-w">${w}</span> `).join('');
+      
+      const wordSpans = streamContainer.querySelectorAll('.t-stream-w');
+      wordSpans.forEach((span, index) => {
+        setTimeout(() => {
+          span.classList.add('is-in');
+        }, index * 35 + 80);
+      });
+    }
+
+    // ---------------------------------------------------------
+    // 5. Transitions.dev: Thinking States
     // ---------------------------------------------------------
     const thinkingStates = [
       "Analyzing media folder…",
@@ -2173,243 +1725,27 @@
           textSpan.classList.add('is-enter-start');
           textSpan.textContent = nextText;
           textSpan.setAttribute('data-text', nextText);
-          void textSpan.offsetHeight; // force reflow
+          void textSpan.offsetHeight;
           textSpan.classList.remove('is-enter-start');
         }, 180);
       }, 2600);
     }
 
     // ---------------------------------------------------------
-    // 4. Transitions.dev: Reasoning Stream Implementation
-    // ---------------------------------------------------------
-    const reasonScroll = document.querySelector('.t-reason-scroll');
-    const reasonText = document.querySelector('.t-reason-text');
-    if (reasonScroll && reasonText) {
-      // Clone text block once for seamless infinite wrapping
-      const clone = reasonText.cloneNode(true);
-      reasonScroll.appendChild(clone);
-
-      let offset = 0;
-      const lineHeight = 24;
-      const singleBlockHeight = reasonText.offsetHeight;
-
-      setInterval(() => {
-        offset += lineHeight;
-        reasonScroll.style.transition = 'transform 500ms cubic-bezier(0.22, 1, 0.36, 1)';
-        reasonScroll.style.transform = `translateY(-${offset}px)`;
-
-        // Seamless wrap when reaching half height
-        if (offset >= singleBlockHeight) {
-          setTimeout(() => {
-            reasonScroll.style.transition = 'none';
-            offset = 0;
-            reasonScroll.style.transform = 'translateY(0)';
-          }, 520);
-        }
-      }, 1200);
-    }
-
-    // ---------------------------------------------------------
-    // 5. Transitions.dev: Streaming Text Implementation
-    // ---------------------------------------------------------
-    const streamContainer = document.getElementById('hero-stream');
-    if (streamContainer) {
-      const originalText = streamContainer.innerText.trim();
-      const words = originalText.split(/\s+/);
-      streamContainer.innerHTML = words.map(w => `<span class="t-stream-w">${w}</span> `).join('');
-      
-      const wordSpans = streamContainer.querySelectorAll('.t-stream-w');
-      wordSpans.forEach((span, index) => {
-        setTimeout(() => {
-          span.classList.add('is-in');
-        }, index * 40 + 100);
-      });
-    }
-
-    // ---------------------------------------------------------
     // 6. Transitions.dev: Matrix Dot Loader Builder
     // ---------------------------------------------------------
-    const matrixDelayTables = {
-      scan: (col, row) => col * 120,
-      twinkle: (col, row, i) => [7,2,11,5,14,9,0,12,3,15,6,10,13,1,8,4][i] * (1200 / 16),
-      pulse: (col, row, i) => [5,6,9,10].includes(i) ? 0 : 200,
-      orbit: (col, row, i) => [1,2,7,11,14,13,8,4].indexOf(i) !== -1 ? [1,2,7,11,14,13,8,4].indexOf(i) * 150 : 0
-    };
-
     document.querySelectorAll('.t-matrix').forEach(matrix => {
-      const variant = matrix.dataset.variant || 'scan';
-      const delayFn = matrixDelayTables[variant] || matrixDelayTables.scan;
       matrix.innerHTML = '';
       for (let i = 0; i < 16; i++) {
         const dot = document.createElement('i');
         const col = i % 4;
-        const row = Math.floor(i / 4);
-        const delay = delayFn(col, row, i);
-        dot.style.setProperty('--d', Math.round(delay));
+        dot.style.setProperty('--d', Math.round(col * 120));
         matrix.appendChild(dot);
       }
     });
 
     // ---------------------------------------------------------
-    // 7. Transitions.dev: Tabs Sliding Implementation
-    // ---------------------------------------------------------
-    const tabsContainer = document.querySelector('.t-tabs');
-    const tabsPill = document.querySelector('.t-tabs-pill');
-    const tabs = document.querySelectorAll('.t-tab');
-
-    function snapTabsPill(activeTab, animate = true) {
-      if (!tabsPill || !activeTab) return;
-      if (!animate) {
-        tabsPill.style.transition = 'none';
-      }
-      tabsPill.style.transform = `translateX(${activeTab.offsetLeft}px)`;
-      tabsPill.style.width = `${activeTab.offsetWidth}px`;
-      if (!animate) {
-        void tabsPill.offsetHeight; // Force reflow
-        tabsPill.style.transition = '';
-      }
-    }
-
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
-        tab.setAttribute('aria-selected', 'true');
-        snapTabsPill(tab, true);
-
-        // Switch panels
-        const targetId = tab.dataset.tab;
-        document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
-        const targetPane = document.getElementById(targetId);
-        if (targetPane) targetPane.classList.add('active');
-      });
-    });
-
-    window.addEventListener('load', () => {
-      const activeTab = document.querySelector('.t-tab[aria-selected="true"]');
-      snapTabsPill(activeTab, false);
-    });
-    window.addEventListener('resize', () => {
-      const activeTab = document.querySelector('.t-tab[aria-selected="true"]');
-      snapTabsPill(activeTab, false);
-    });
-
-    // ---------------------------------------------------------
-    // 8. Transitions.dev: Card Hover Tilt & Glare Implementation
-    // ---------------------------------------------------------
-    document.querySelectorAll('.t-tilt').forEach(wrapper => {
-      const card = wrapper.querySelector('.t-tilt-card');
-      if (!card) return;
-
-      wrapper.addEventListener('pointerenter', () => {
-        wrapper.classList.add('is-hover');
-        card.classList.add('is-tilting');
-      });
-
-      wrapper.addEventListener('pointermove', (e) => {
-        const rect = wrapper.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        const px = (x / rect.width) * 2 - 1;   // -1 to 1
-        const py = (y / rect.height) * 2 - 1;  // -1 to 1
-
-        const rx = -py * 12;
-        const ry = px * 12;
-
-        const gx = (x / rect.width) * 100;
-        const gy = (y / rect.height) * 100;
-
-        wrapper.style.setProperty('--tilt-rx', `${rx.toFixed(2)}deg`);
-        wrapper.style.setProperty('--tilt-ry', `${ry.toFixed(2)}deg`);
-        wrapper.style.setProperty('--tilt-gx', `${gx.toFixed(1)}%`);
-        wrapper.style.setProperty('--tilt-gy', `${gy.toFixed(1)}%`);
-      });
-
-      wrapper.addEventListener('pointerleave', () => {
-        wrapper.classList.remove('is-hover');
-        card.classList.remove('is-tilting');
-        wrapper.style.setProperty('--tilt-rx', '0deg');
-        wrapper.style.setProperty('--tilt-ry', '0deg');
-      });
-    });
-
-    // ---------------------------------------------------------
-    // 9. Transitions.dev: Tooltip Open/Close Implementation
-    // ---------------------------------------------------------
-    document.querySelectorAll('.t-tt-group').forEach(group => {
-      const tooltip = group.querySelector('.t-tt');
-      const textElem = tooltip ? tooltip.querySelector('.t-tt-text') : null;
-      if (!tooltip || !textElem) return;
-
-      const triggers = group.querySelectorAll('.t-tt-trigger');
-      triggers.forEach(trigger => {
-        trigger.addEventListener('mouseenter', () => {
-          const text = trigger.getAttribute('data-tooltip') || '';
-          textElem.textContent = text;
-          tooltip.dataset.show = 'true';
-          tooltip.setAttribute('aria-hidden', 'false');
-
-          const trigRect = trigger.getBoundingClientRect();
-          const grpRect = group.getBoundingClientRect();
-          const x = trigRect.left - grpRect.left;
-          tooltip.style.setProperty('--tt-x', `${x}px`);
-          tooltip.style.width = `${trigRect.width}px`;
-        });
-
-        trigger.addEventListener('mouseleave', () => {
-          tooltip.dataset.show = 'false';
-          tooltip.setAttribute('aria-hidden', 'true');
-        });
-      });
-    });
-
-    // ---------------------------------------------------------
-    // 10. Transitions.dev: Plus to Menu Morph
-    // ---------------------------------------------------------
-    function toggleMorph(force) {
-      const morph = document.getElementById('quick-morph');
-      const btn = document.getElementById('morph-btn');
-      if (!morph || !btn) return;
-      const isOpen = force !== undefined ? force : morph.getAttribute('data-open') === 'true';
-      const next = !isOpen;
-      morph.setAttribute('data-open', next ? 'true' : 'false');
-      btn.setAttribute('aria-expanded', next ? 'true' : 'false');
-    }
-
-    document.addEventListener('click', (e) => {
-      const morph = document.getElementById('quick-morph');
-      if (morph && !morph.contains(e.target) && morph.getAttribute('data-open') === 'true') {
-        toggleMorph(false);
-      }
-    });
-
-    // ---------------------------------------------------------
-    // 11. FAQ Accordion
-    // ---------------------------------------------------------
-    document.querySelectorAll('.faq-q').forEach(btn => {
-      btn.addEventListener('click', () => {
-        btn.closest('.faq-card').classList.toggle('open');
-      });
-    });
-
-    // ---------------------------------------------------------
-    // 12. Copy Code Snippet
-    // ---------------------------------------------------------
-    function copySnippet(btn) {
-      const code = btn.closest('.code-box').querySelector('code').innerText;
-      navigator.clipboard.writeText(code).then(() => {
-        const orig = btn.innerText;
-        btn.innerText = 'Copied';
-        btn.style.backgroundColor = '#ff1a2d';
-        setTimeout(() => {
-          btn.innerText = orig;
-          btn.style.backgroundColor = '';
-        }, 2000);
-      });
-    }
-
-    // ---------------------------------------------------------
-    // 13. Live Terminal Telemetry Animation
+    // 7. Live Terminal Progress Simulation
     // ---------------------------------------------------------
     const queue = [
       { name: 'IMG_2026_0918.jpg', size: '3.4M', speed: '3.2MB/s' },
@@ -2417,7 +1753,7 @@
       { name: 'DSC_NIGHT_RAW.jpg', size: '4.1M', speed: '3.1MB/s' },
       { name: 'TRIP_DOCUMENTARY.mkv', size: '1.2G', speed: '8.4MB/s' }
     ];
-    let qI = 0, qP = 30, qCnt = 4600;
+    let qI = 0, qP = 30, qCnt = 4681;
     setInterval(() => {
       const f = document.getElementById('t-file'), m = document.getElementById('t-meter'), c = document.getElementById('t-count');
       if (!f || !m) return;
@@ -2425,7 +1761,7 @@
       if (qP >= 100) {
         qP = 100;
         const cur = queue[qI % queue.length];
-        m.innerText = `100%|██████████| ${cur.size}/${cur.size} [00:01, ${cur.speed}] - Done!`;
+        m.innerHTML = `100%|██████████| ${cur.size}/${cur.size} [00:01, ${cur.speed}] - <span class="c-green">Done!</span>`;
         setTimeout(() => {
           qP = 15; qCnt++; qI++;
           const next = queue[qI % queue.length];
@@ -2439,6 +1775,15 @@
         m.innerText = `${qP}%|${'█'.repeat(bc)}${' '.repeat(10 - bc)}| ... [${cur.speed}]`;
       }
     }, 550);
+
+    // ---------------------------------------------------------
+    // 8. FAQ Accordion
+    // ---------------------------------------------------------
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.closest('.faq-card').classList.toggle('open');
+      });
+    });
   </script>
 </body>
 </html>

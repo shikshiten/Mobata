@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docker & NAS Setup Guide — Mobata</title>
+  <meta name="description" content="Deploy Mobata using Docker and docker-compose for headless 24/7 background media syncing on servers and NAS." />
+  <link rel="icon" type="image/png" href="assets/logo-dark.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #050508;
+      --card: rgba(22, 22, 28, 0.7);
+      --card-hover: rgba(30, 30, 38, 0.85);
+      --border: rgba(255, 255, 255, 0.1);
+      --border-focus: rgba(255, 255, 255, 0.3);
+      --text: #ffffff;
+      --text-muted: #9a9aa2;
+      --text-dim: #606068;
+      --term-bg: #0b0b10;
+      --code-red: #ff453a;
+      --code-green: #30d158;
+      --code-yellow: #ffd60a;
+      --code-cyan: #64d2ff;
+    }
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Doto', sans-serif;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding-bottom: 80px;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .nav-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .capsule-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 28px;
+      padding: 10px 28px;
+      border-radius: 9999px;
+      background: rgba(18, 18, 24, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+    .capsule-nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+    .capsule-nav a:hover, .capsule-nav a.active {
+      color: #ffffff;
+    }
+    .capsule-logo {
+      height: 22px;
+      width: auto;
+      display: block;
+    }
+
+    .page-head {
+      padding: 50px 0 40px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    h1 {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    .desc {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 32px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(16px);
+      transition: border-color 0.2s ease;
+    }
+    .step-card:hover { border-color: var(--border-focus); }
+    .step-head {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #ffffff;
+      color: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 900;
+    }
+    .step-title {
+      font-size: 22px;
+      font-weight: 800;
+    }
+    .step-text {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+
+    .code-box {
+      background: var(--term-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 18px 22px;
+      position: relative;
+      overflow-x: auto;
+    }
+    .code-box pre {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #e5e5ea;
+    }
+    .c-green { color: var(--code-green); }
+    .c-yellow { color: var(--code-yellow); }
+    .c-cyan { color: var(--code-cyan); }
+    .c-red { color: var(--code-red); }
+    .c-dim { color: var(--text-dim); }
+
+    .btn-copy {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border);
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .btn-copy:hover {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    .btn-bar {
+      display: flex;
+      gap: 14px;
+      margin-top: 36px;
+      justify-content: center;
+    }
+    .btn-main {
+      padding: 12px 28px;
+      border-radius: 9999px;
+      background: #ffffff;
+      color: #000000;
+      font-size: 15px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+    .btn-main:hover { opacity: 0.9; }
+    .btn-ghost {
+      padding: 12px 28px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+      border: 1px solid var(--border);
+      font-size: 15px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .btn-ghost:hover { background: rgba(255, 255, 255, 0.12); }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Capsule Nav -->
+  <div class="nav-wrap">
+    <nav class="capsule-nav">
+      <a href="index.html">
+        <img src="assets/logo-dark.png" alt="Mobata" class="capsule-logo" />
+      </a>
+      <a href="index.html">← Back to Overview</a>
+      <a href="setup.html">Local Setup</a>
+      <a href="docker.html" class="active">Docker & NAS</a>
+      <a href="cloud.html">Cloud / VPS</a>
+      <a href="https://github.com/shikshiten/Mobata" target="_blank">GitHub ⭐</a>
+    </nav>
+  </div>
+
+  <div class="container">
+    <header class="page-head">
+      <span class="badge">CONTAINERIZED 24/7 BACKGROUND SYNC</span>
+      <h1>Docker & NAS Setup</h1>
+      <p class="desc">Run Mobata headlessly on home servers, TrueNAS SCALE, Unraid, Synology, or Ubuntu VPS with volume persistence.</p>
+    </header>
+
+    <!-- Step 1 -->
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-num">01</div>
+        <div class="step-title">Docker Compose Configuration</div>
+      </div>
+      <p class="step-text">Mobata includes a production-ready <code>docker-compose.yml</code> file with volume mounts for media and session caching:</p>
+      <div class="code-box">
+        <button class="btn-copy" onclick="copyCode(this)">COPY</button>
+        <pre><span class="c-yellow">version:</span> <span class="c-green">'3.8'</span>
+
+<span class="c-yellow">services:</span>
+  <span class="c-cyan">mobata:</span>
+    <span class="c-yellow">build:</span> .
+    <span class="c-yellow">container_name:</span> mobata_uploader
+    <span class="c-yellow">restart:</span> unless-stopped
+    <span class="c-yellow">env_file:</span>
+      - .env
+    <span class="c-yellow">volumes:</span>
+      <span class="c-dim"># Mount your local photos/videos directory into the container</span>
+      - /path/to/your/media:/app/media:ro
+      <span class="c-dim"># Persist session & uploaded history on host storage</span>
+      - ./data:/app/data</pre>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-num">02</div>
+        <div class="step-title">Initial Session Login (Interactive Mode)</div>
+      </div>
+      <p class="step-text">Telegram authentication requires entering a verification SMS/Telegram code once. Run the container interactively for the first launch:</p>
+      <div class="code-box">
+        <button class="btn-copy" onclick="copyCode(this)">COPY</button>
+        <pre><span class="c-dim"># Build and run interactively for one-time code entry:</span>
+docker compose run --rm mobata python uploader.py</pre>
+      </div>
+      <p class="step-text" style="margin-top: 14px;">Once your session is generated in <code>telethon_upload_session.session</code>, it is stored in the mounted volume and never prompts again.</p>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-num">03</div>
+        <div class="step-title">Start 24/7 Background Daemon</div>
+      </div>
+      <p class="step-text">Now launch the container in detached background mode:</p>
+      <div class="code-box">
+        <button class="btn-copy" onclick="copyCode(this)">COPY</button>
+        <pre><span class="c-dim"># Start in detached background mode</span>
+docker compose up -d
+
+<span class="c-dim"># View live upload telemetry and progress:</span>
+docker compose logs -f</pre>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-num">04</div>
+        <div class="step-title">Synology & Unraid Native Templates</div>
+      </div>
+      <p class="step-text">For Unraid or Synology Container Manager, configure the container with:</p>
+      <ul style="margin-left: 20px; color: var(--text-muted); font-size: 14.5px;">
+        <li style="margin-bottom: 6px;"><strong>Network Type:</strong> Bridge or Host</li>
+        <li style="margin-bottom: 6px;"><strong>Volume Path 1:</strong> <code>/mnt/user/photos</code> ➔ <code>/app/media</code> (Read-Only)</li>
+        <li><strong>Volume Path 2:</strong> <code>/mnt/user/appdata/mobata</code> ➔ <code>/app/data</code> (Read-Write)</li>
+      </ul>
+    </div>
+
+    <div class="btn-bar">
+      <a href="cloud.html" class="btn-main">Next: Cloud & Koyeb Setup →</a>
+      <a href="setup.html" class="btn-ghost">← Local Setup</a>
+    </div>
+  </div>
+
+  <script>
+    function copyCode(btn) {
+      const code = btn.nextElementSibling.innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.innerText = 'COPIED!';
+        setTimeout(() => btn.innerText = 'COPY', 2000);
+      });
+    }
+  </script>
+</body>
+</html>
