@@ -214,6 +214,54 @@
       text-decoration: none;
     }
     .btn-ghost:hover { background: rgba(255, 255, 255, 0.12); }
+
+    .hide-desktop { display: none; }
+    .hide-mobile { display: inline; }
+
+    @media (max-width: 768px) {
+      body {
+        padding-bottom: 95px;
+      }
+      .nav-wrap {
+        position: fixed;
+        top: auto;
+        bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        left: 0;
+        right: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        z-index: 9999;
+        pointer-events: none;
+        padding: 0;
+      }
+      .capsule-nav {
+        pointer-events: auto;
+        width: calc(100% - 24px);
+        max-width: 440px;
+        padding: 8px 12px;
+        gap: 6px;
+        justify-content: space-around;
+        background: rgba(10, 10, 15, 0.90);
+        backdrop-filter: blur(32px) saturate(200%);
+        -webkit-backdrop-filter: blur(32px) saturate(200%);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 16px 45px rgba(0, 0, 0, 0.85);
+      }
+      .capsule-nav a {
+        font-size: 11.5px;
+        padding: 4px 6px;
+      }
+      .hide-desktop { display: inline; }
+      .hide-mobile { display: none; }
+      h1 { font-size: 30px; }
+      .desc { font-size: 14.5px; }
+      .container { padding: 0 16px; }
+      .step-title { font-size: 18px; }
+      .code-box { font-size: 12px; }
+      .btn-bar { flex-direction: column; width: 100%; }
+      .btn-bar a { width: 100%; text-align: center; }
+    }
   </style>
 </head>
 <body>
@@ -225,11 +273,11 @@
         <img src="assets/mobata-icon.png" alt="Mobata" class="capsule-logo" />
         <span style="font-weight:900; font-size:16px; color:#ffffff;">Mobata</span>
       </a>
-      <a href="index.html">← Back to Overview</a>
-      <a href="setup.html">Local Setup</a>
-      <a href="docker.html" class="active">Docker & NAS</a>
-      <a href="cloud.html">Cloud / VPS</a>
-      <a href="https://github.com/shikshiten/Mobata" target="_blank">GitHub ⭐</a>
+      <a href="index.html"><span class="hide-desktop">Overview</span><span class="hide-mobile">← Back to Overview</span></a>
+      <a href="setup.html"><span class="hide-desktop">Local</span><span class="hide-mobile">Local Setup</span></a>
+      <a href="docker.html" class="active"><span class="hide-desktop">Docker</span><span class="hide-mobile">Docker & NAS</span></a>
+      <a href="cloud.html"><span class="hide-desktop">Cloud</span><span class="hide-mobile">Cloud / VPS</span></a>
+      <a href="https://github.com/shikshiten/Mobata" target="_blank" class="hide-mobile">GitHub ⭐</a>
     </nav>
   </div>
 
