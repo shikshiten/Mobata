@@ -1,34 +1,34 @@
-// Apple Configurator Option Chips Switching
-document.querySelectorAll('.configurator-chip').forEach(button => {
+// Tab Switching
+document.querySelectorAll('.config-tab').forEach(button => {
   button.addEventListener('click', () => {
-    document.querySelectorAll('.configurator-chip').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.config-panel').forEach(panel => panel.classList.remove('active'));
+    document.querySelectorAll('.config-tab').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.config-pane').forEach(panel => panel.classList.remove('active'));
 
     button.classList.add('active');
     const targetId = button.getAttribute('data-target');
-    const targetPanel = document.getElementById(targetId);
-    if (targetPanel) {
-      targetPanel.classList.add('active');
+    const targetPane = document.getElementById(targetId);
+    if (targetPane) {
+      targetPane.classList.add('active');
     }
   });
 });
 
 // FAQ Accordion
-document.querySelectorAll('.faq-trigger').forEach(button => {
+document.querySelectorAll('.faq-btn').forEach(button => {
   button.addEventListener('click', () => {
-    const row = button.parentElement;
-    row.classList.toggle('open');
+    const item = button.closest('.faq-item');
+    item.classList.toggle('open');
   });
 });
 
 // Copy Code Button
-function copySnippet(btn) {
-  const codeBox = btn.closest('.code-chassis');
+function copyCode(btn) {
+  const codeBox = btn.closest('.apple-code-box');
   const code = codeBox.querySelector('code').innerText;
   navigator.clipboard.writeText(code).then(() => {
     const originalText = btn.innerText;
     btn.innerText = 'Copied';
-    btn.style.backgroundColor = '#0066cc';
+    btn.style.backgroundColor = '#0071e3';
     setTimeout(() => {
       btn.innerText = originalText;
       btn.style.backgroundColor = '';
@@ -36,7 +36,7 @@ function copySnippet(btn) {
   });
 }
 
-// Live Terminal Upload Telemetry Animation
+// Live Terminal Simulation Animation
 const queueFiles = [
   { name: 'IMG_2026_0918.jpg', size: '3.4M', speed: '3.2MB/s' },
   { name: 'PXL_VACATION_4K.mp4', size: '142M', speed: '7.8MB/s' },
@@ -49,9 +49,9 @@ let qPercent = 30;
 let qBase = 3483;
 
 setInterval(() => {
-  const fileEl = document.getElementById('term-file');
-  const meterEl = document.getElementById('term-meter');
-  const countEl = document.querySelector('.tv-count');
+  const fileEl = document.getElementById('term-filename');
+  const meterEl = document.getElementById('term-progress');
+  const countEl = document.getElementById('term-counter');
   if (!fileEl || !meterEl) return;
 
   qPercent += 20;
