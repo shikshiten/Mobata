@@ -14,14 +14,13 @@
   
   <style>
     /* ==========================================================================
-       Mobata — Dark Monochrome & Constellation Glass Design System
+       Mobata — Dark Monochrome & Celestial Morphing Design System
        ========================================================================== */
     :root {
-      /* Pure Dark Monochrome Theme */
       --bg-black: #030306;
       --bg-canvas: #07070b;
-      --bg-card: rgba(18, 18, 24, 0.72);
-      --bg-card-hover: rgba(28, 28, 36, 0.85);
+      --bg-card: rgba(18, 18, 24, 0.75);
+      --bg-card-hover: rgba(28, 28, 36, 0.88);
       
       --border-subtle: rgba(255, 255, 255, 0.1);
       --border-focus: rgba(255, 255, 255, 0.35);
@@ -30,7 +29,7 @@
       --text-muted: #9e9ea6;
       --text-dim: #606068;
 
-      /* Terminal-Only Accent Colors */
+      /* Terminal Code-Only Accent Colors */
       --term-bg: #09090e;
       --term-red: #ff453a;
       --term-yellow: #ffd60a;
@@ -38,33 +37,9 @@
       --term-cyan: #64d2ff;
       --term-purple: #bf5af2;
 
-      /* Transitions.dev Tokens */
-      --tabs-dur: 250ms;
-      --tabs-ease: cubic-bezier(0.22, 1, 0.36, 1);
-
-      --shimmer-dur: 2500ms;
-      --shimmer-base: #a1a1aa;
-      --shimmer-highlight: #ffffff;
-      --shimmer-band: 350%;
-      --shimmer-ease: linear;
-
-      --tt-in-dur: 150ms;
-      --tt-out-dur: 50ms;
-      --tt-scale: 0.98;
-      --tt-delay: 80ms;
-      --tt-in-ease: ease-out;
-      --tt-out-ease: ease-out;
-      --tt-move-dur: 160ms;
-      --tt-move-ease: cubic-bezier(0.22, 1, 0.36, 1);
-      --tt-bg: #141418;
-      --tt-fg: #ffffff;
-
-      --morph-open-dur: 350ms;
-      --morph-close-dur: 250ms;
-      --morph-ease: cubic-bezier(0.34, 1.25, 0.64, 1);
-      --morph-close-ease: cubic-bezier(0.22, 1, 0.36, 1);
-      --morph-r-closed: 48px;
-      --morph-r-open: 20px;
+      /* Motion */
+      --swipe-dur: 280ms;
+      --swipe-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
       --think-hold: 2400ms;
       --think-swap: 180ms;
@@ -109,7 +84,7 @@
       position: relative;
     }
 
-    /* Full Width Container */
+    /* Container */
     .container {
       width: 100%;
       max-width: 1420px;
@@ -119,8 +94,8 @@
       z-index: 2;
     }
 
-    /* Constellation Starfield Background Canvas */
-    #constellation-canvas {
+    /* Celestial Morphing Canvas Background */
+    #celestial-canvas {
       position: fixed;
       top: 0;
       left: 0;
@@ -151,14 +126,14 @@
       left: 25%;
       width: 700px;
       height: 700px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 70%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.05), transparent 70%);
     }
     .orb-2 {
       top: 360px;
       right: 15%;
       width: 600px;
       height: 600px;
-      background: radial-gradient(circle, rgba(200, 200, 220, 0.04), transparent 70%);
+      background: radial-gradient(circle, rgba(200, 200, 220, 0.03), transparent 70%);
     }
 
     /* ==========================================================================
@@ -167,12 +142,12 @@
     .nav-floating-wrap {
       display: flex;
       justify-content: center;
-      padding: 22px 0 0;
+      padding: 20px 0 0;
       position: sticky;
       top: 16px;
       z-index: 1000;
       width: 100%;
-      pointer-events: none; /* Allows click-through outside the pill */
+      pointer-events: none;
     }
     .capsule-navbar {
       pointer-events: auto;
@@ -181,7 +156,7 @@
       gap: 32px;
       padding: 8px 24px;
       border-radius: 9999px;
-      background: rgba(14, 14, 18, 0.82);
+      background: rgba(14, 14, 18, 0.84);
       backdrop-filter: blur(28px) saturate(180%);
       -webkit-backdrop-filter: blur(28px) saturate(180%);
       border: 1px solid var(--border-subtle);
@@ -192,20 +167,22 @@
       border-color: rgba(255, 255, 255, 0.25);
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.2);
     }
-    .nav-brand {
+    .nav-brand-link {
       display: flex;
       align-items: center;
-      gap: 12px;
-    }
-    .nav-brand a {
-      display: flex;
-      align-items: center;
+      gap: 10px;
       text-decoration: none;
     }
     .nav-logo-img {
       height: 24px;
       width: auto;
       display: block;
+    }
+    .nav-brand-name {
+      font-size: 17px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.4px;
     }
     .nav-badge-ver {
       display: inline-flex;
@@ -220,6 +197,7 @@
       border-radius: 9999px;
     }
 
+    /* Navigation links (Overview & Advantages removed as requested) */
     .nav-links {
       display: flex;
       align-items: center;
@@ -278,11 +256,11 @@
        Hero Section (Two-Column Layout: Left Text & Terminal, Right Card Swipe Deck)
        ========================================================================== */
     .hero-split {
-      padding: 90px 0 80px;
+      padding: 60px 0 80px; /* Pulled up closer to the top */
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
       gap: 48px;
-      align-items: center;
+      align-items: flex-start; /* Aligns cards directly with top header */
       width: 100%;
       position: relative;
       z-index: 2;
@@ -293,7 +271,7 @@
     .hero-badge-wrap {
       display: inline-flex;
       align-items: center;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
     .hero-badge {
       display: inline-flex;
@@ -320,9 +298,9 @@
       -webkit-text-fill-color: transparent;
     }
     .hero-p {
-      font-size: 19px;
+      font-size: 18.5px;
       color: var(--text-muted);
-      margin-bottom: 34px;
+      margin-bottom: 32px;
       line-height: 1.55;
       max-width: 640px;
     }
@@ -330,7 +308,7 @@
     .hero-btns {
       display: flex;
       gap: 16px;
-      margin-bottom: 40px;
+      margin-bottom: 36px;
       flex-wrap: wrap;
     }
     .btn-white {
@@ -373,14 +351,15 @@
     }
 
     /* ==========================================================================
-       Hero Right: 3D Stacked Card Swipe Deck (Architectural Advantages)
+       Hero Right: 3D Stacked Card Swipe Deck (Positioned Higher Up & Snappy)
        ========================================================================== */
     .hero-right {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       position: relative;
+      margin-top: 6px; /* Pulled up */
     }
     .deck-header {
       width: 100%;
@@ -388,7 +367,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .deck-title {
       font-size: 12px;
@@ -413,42 +392,47 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
     }
     .btn-swipe-next:hover {
       background: #ffffff;
       color: #000000;
     }
 
+    /* Fixed Deck Stage: Prevents Any Layout Shift / Reflow */
     .card-deck-stage {
       position: relative;
       width: 100%;
       max-width: 440px;
-      height: 380px;
+      height: 360px;
+      min-height: 360px;
+      max-height: 360px;
       perspective: 1200px;
+      overflow: visible; /* Prevents scrollbar flashes */
+      contain: layout size; /* Strictly isolates geometry from rest of page! */
     }
     .stack-card {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 360px;
-      background: rgba(20, 20, 26, 0.88);
+      height: 350px;
+      background: rgba(20, 20, 26, 0.9);
       backdrop-filter: blur(28px) saturate(180%);
       -webkit-backdrop-filter: blur(28px) saturate(180%);
       border: 1px solid var(--border-subtle);
       border-radius: 24px;
-      padding: 34px 30px;
+      padding: 32px 28px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.1);
       cursor: pointer;
       user-select: none;
       transition:
-        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.5s ease;
+        transform var(--swipe-dur) var(--swipe-ease),
+        opacity var(--swipe-dur) var(--swipe-ease);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      will-change: transform, opacity;
     }
     .stack-card:hover {
       border-color: rgba(255, 255, 255, 0.3);
@@ -463,17 +447,17 @@
       border: 1px solid rgba(255, 255, 255, 0.14);
       padding: 3px 10px;
       border-radius: 6px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
     .sc-title {
-      font-size: 24px;
+      font-size: 23px;
       font-weight: 800;
       letter-spacing: -0.02em;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       color: #ffffff;
     }
     .sc-desc {
-      font-size: 15px;
+      font-size: 14.5px;
       color: var(--text-muted);
       line-height: 1.6;
       flex-grow: 1;
@@ -483,7 +467,7 @@
       justify-content: space-between;
       align-items: center;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding-top: 18px;
+      padding-top: 16px;
       font-size: 12px;
       color: var(--text-dim);
     }
@@ -496,15 +480,15 @@
       height: 6px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.2);
-      transition: background 0.3s ease;
+      transition: background 0.2s ease;
     }
     .sc-dot.active {
       background: #ffffff;
     }
 
-    /* Swipe animations */
+    /* Fast, Snappy Swipe Keyframe */
     .stack-card.is-swiping {
-      transform: translateX(120%) rotate(18deg) scale(0.9) !important;
+      transform: translateX(115%) rotate(14deg) scale(0.92) !important;
       opacity: 0 !important;
       pointer-events: none;
     }
@@ -712,7 +696,7 @@
 
     /* Sections */
     .section {
-      padding: 100px 0;
+      padding: 90px 0;
       position: relative;
       width: 100%;
       z-index: 2;
@@ -720,7 +704,7 @@
     .sec-head {
       text-align: center;
       max-width: 820px;
-      margin: 0 auto 56px;
+      margin: 0 auto 52px;
     }
     .sec-tag {
       font-size: 12px;
@@ -965,7 +949,8 @@
     }
 
     @media (max-width: 1080px) {
-      .hero-split { grid-template-columns: 1fr; }
+      .hero-split { grid-template-columns: 1fr; padding: 40px 0 60px; }
+      .hero-right { margin-top: 30px; }
       .metrics-grid { grid-template-columns: 1fr; }
       .docs-grid { grid-template-columns: 1fr; }
       .footer-row { grid-template-columns: 1fr 1fr; }
@@ -977,8 +962,8 @@
 </head>
 <body>
 
-  <!-- Constellation Starfield Background Canvas -->
-  <canvas id="constellation-canvas"></canvas>
+  <!-- Morphing Celestial Starfield Background Canvas -->
+  <canvas id="celestial-canvas"></canvas>
 
   <!-- Ambient Glow -->
   <div class="ambient-glow">
@@ -989,19 +974,19 @@
   <!-- Floating Capsule Navigation Bar (No full-width background strap!) -->
   <div class="nav-floating-wrap">
     <nav class="capsule-navbar">
-      <div class="nav-brand">
-        <a href="index.html">
-          <img src="assets/logo-dark.png" alt="Mobata Logo" class="nav-logo-img" />
-        </a>
-        <div class="nav-badge-ver">
-          <div class="t-matrix" data-variant="scan"></div>
-          <span>v1.0.0</span>
-        </div>
+      <!-- Logo + Mobata Brand Text -->
+      <a href="index.html" class="nav-brand-link">
+        <img src="assets/logo-dark.png" alt="Mobata Logo" class="nav-logo-img" />
+        <span class="nav-brand-name">Mobata</span>
+      </a>
+
+      <div class="nav-badge-ver">
+        <div class="t-matrix" data-variant="scan"></div>
+        <span>v1.0.0</span>
       </div>
 
+      <!-- Navigation links (Overview & Advantages removed!) -->
       <div class="nav-links">
-        <a href="#overview">Overview</a>
-        <a href="#advantages">Advantages</a>
         <a href="#benchmarks">Benchmarks</a>
         <a href="#guides">Setup Guides</a>
         <a href="#faq">FAQ</a>
@@ -1020,7 +1005,7 @@
   </div>
 
   <!-- Hero Section: Left Text + Right 3D Card Swipe Deck -->
-  <main class="container" id="overview">
+  <main class="container">
     <div class="hero-split">
       
       <!-- Left Column: Hero Copy + Vibrant Live Terminal -->
@@ -1080,10 +1065,10 @@
               <div class="term-row"><span class="c-cyan">[DIR]</span> Media Scan: C:\Photos\Master (5,242 items indexed)</div>
               <div class="term-row"><span class="c-cyan">[CHN]</span> Connected to channel: "Private Archive" (-1003099948239)</div>
               <div class="t-hr"></div>
-              <div class="term-row c-dim">[4678/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - <span class="c-green">Done!</span></div>
-              <div class="term-row c-dim">[4679/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - <span class="c-green">Done!</span></div>
+              <div class="term-row c-dim">[4728/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - <span class="c-green">Done!</span></div>
+              <div class="term-row c-dim">[4729/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - <span class="c-green">Done!</span></div>
               <div class="term-row">
-                <span class="c-yellow" id="t-count">[4681/5242]</span>
+                <span class="c-yellow" id="t-count">[4730/5242]</span>
                 <span id="t-file" class="c-cyan">IMG_0812.jpg:</span>
                 <span id="t-meter">96%|█████████ | 2.9M/3.1M [00:01, 3.2MB/s]</span>
                 <span class="t-cursor">_</span>
@@ -1094,19 +1079,19 @@
 
       </div>
 
-      <!-- Right Column: 3D Stacked Card Swipe Deck (Architectural Advantages) -->
-      <div class="hero-right" id="advantages">
+      <!-- Right Column: 3D Stacked Card Swipe Deck (Positioned Higher Up & Smooth) -->
+      <div class="hero-right">
         <div class="deck-header">
           <span class="deck-title">ARCHITECTURAL ADVANTAGES</span>
           <div class="deck-ctrl">
-            <button class="btn-swipe-next" onclick="swipeDeckCard()">
+            <button class="btn-swipe-next" id="btn-next-swipe">
               <span>SWIPE CARD</span>
               <span>→</span>
             </button>
           </div>
         </div>
 
-        <div class="card-deck-stage" id="deck-stage" onclick="swipeDeckCard()">
+        <div class="card-deck-stage" id="deck-stage">
           
           <!-- Card 1 -->
           <div class="stack-card" data-idx="0">
@@ -1229,7 +1214,7 @@
           </div>
 
         </div>
-        <p style="font-size: 12px; color: var(--text-dim); margin-top: 12px;">Click card or swipe button to cycle through features.</p>
+        <p style="font-size: 12px; color: var(--text-dim); margin-top: 14px;">Click card or swipe button to cycle through features.</p>
       </div>
 
     </div>
@@ -1440,10 +1425,10 @@
       <div class="footer-col">
         <h5>Architecture</h5>
         <ul>
-          <li><a href="#overview">MTProto Protocol</a></li>
-          <li><a href="#advantages">Anti-Throttling TCP</a></li>
-          <li><a href="#advantages">Hardware AES-NI</a></li>
           <li><a href="#benchmarks">Benchmark Matrix</a></li>
+          <li><a href="setup.html">Anti-Throttling TCP</a></li>
+          <li><a href="setup.html">Hardware AES-NI</a></li>
+          <li><a href="docker.html">Docker Deployment</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1461,135 +1446,107 @@
   </footer>
 
   <!-- ==========================================================================
-       Interactive Scripts: Constellation Canvas, 3D Card Swipe, Scroll Fade
+       Interactive Scripts: Morphing Celestial Canvas, Glitch-Free 3D Card Swipe
        ========================================================================== -->
   <script>
     // ---------------------------------------------------------
-    // 1. Constellation Starfield Canvas
+    // 1. Morphing Celestial Starfield Background Canvas
     // ---------------------------------------------------------
-    const canvas = document.getElementById('constellation-canvas');
+    const canvas = document.getElementById('celestial-canvas');
     const ctx = canvas.getContext('2d');
     let stars = [];
-    let constellations = [];
+    let patterns = [];
+    let curPatternIdx = 0;
+    let nextPatternIdx = 1;
+    let patternProgress = 0; // 0 to 1 cross-fade
+    let isPatternFading = false;
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      initConstellations();
+      initStarsAndPatterns();
     }
     window.addEventListener('resize', resizeCanvas);
 
     class Star {
-      constructor(x, y, isNode = false) {
-        this.x = x !== undefined ? x : Math.random() * canvas.width;
-        this.y = y !== undefined ? y : Math.random() * canvas.height;
-        this.size = isNode ? Math.random() * 1.8 + 1.2 : Math.random() * 1.2 + 0.4;
-        this.alpha = Math.random() * 0.7 + 0.3;
-        this.baseAlpha = this.alpha;
-        this.pulseSpeed = Math.random() * 0.02 + 0.005;
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 1.3 + 0.4;
+        this.alpha = Math.random() * 0.7 + 0.25;
+        this.pulseSpeed = Math.random() * 0.015 + 0.005;
         this.pulseDir = 1;
-        this.isNode = isNode;
       }
       update() {
         this.alpha += this.pulseSpeed * this.pulseDir;
         if (this.alpha > 0.95) this.pulseDir = -1;
-        if (this.alpha < 0.25) this.pulseDir = 1;
+        if (this.alpha < 0.2) this.pulseDir = 1;
       }
       draw() {
         ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-        if (this.isNode) {
-          ctx.shadowBlur = 6;
-          ctx.shadowColor = '#ffffff';
-        }
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
-        ctx.shadowBlur = 0;
       }
     }
 
-    function initConstellations() {
+    function initStarsAndPatterns() {
       stars = [];
-      constellations = [];
       const starCount = Math.floor(canvas.width / 12);
       for (let i = 0; i < starCount; i++) {
         stars.push(new Star());
       }
 
-      // Predefined recognizable constellation node patterns
       const W = canvas.width, H = canvas.height;
-      
-      // Pattern 1: Cassiopeia (W shape)
-      const cas = [
-        { x: W * 0.15, y: H * 0.18 },
-        { x: W * 0.20, y: H * 0.26 },
-        { x: W * 0.25, y: H * 0.21 },
-        { x: W * 0.29, y: H * 0.30 },
-        { x: W * 0.35, y: H * 0.24 }
-      ];
-      constellations.push(cas);
 
-      // Pattern 2: Cygnus / Northern Cross
-      const cyg = [
-        { x: W * 0.75, y: H * 0.16 },
-        { x: W * 0.82, y: H * 0.24 },
-        { x: W * 0.89, y: H * 0.32 },
-        { x: W * 0.78, y: H * 0.28 },
-        { x: W * 0.86, y: H * 0.20 }
+      // Pattern 0: Constellation Network (Cassiopeia, Cygnus, Orion)
+      const p0 = [
+        [{ x: W*0.15, y: H*0.2 }, { x: W*0.2, y: H*0.28 }, { x: W*0.25, y: H*0.23 }, { x: W*0.3, y: H*0.32 }, { x: W*0.36, y: H*0.25 }],
+        [{ x: W*0.72, y: H*0.18 }, { x: W*0.8, y: H*0.26 }, { x: W*0.88, y: H*0.34 }, { x: W*0.76, y: H*0.3 }, { x: W*0.84, y: H*0.22 }],
+        [{ x: W*0.12, y: H*0.68 }, { x: W*0.18, y: H*0.7 }, { x: W*0.24, y: H*0.75 }, { x: W*0.3, y: H*0.76 }, { x: W*0.36, y: H*0.72 }, { x: W*0.38, y: H*0.82 }, { x: W*0.32, y: H*0.84 }]
       ];
-      constellations.push(cyg);
 
-      // Pattern 3: Ursa Major / Big Dipper
-      const um = [
-        { x: W * 0.12, y: H * 0.65 },
-        { x: W * 0.18, y: H * 0.68 },
-        { x: W * 0.23, y: H * 0.73 },
-        { x: W * 0.28, y: H * 0.74 },
-        { x: W * 0.34, y: H * 0.70 },
-        { x: W * 0.36, y: H * 0.80 },
-        { x: W * 0.30, y: H * 0.82 }
+      // Pattern 1: Orbital Planetary Ellipses
+      const p1 = [
+        [{ x: W*0.25, y: H*0.25 }, { x: W*0.32, y: H*0.22 }, { x: W*0.38, y: H*0.28 }, { x: W*0.33, y: H*0.36 }, { x: W*0.25, y: H*0.25 }],
+        [{ x: W*0.75, y: H*0.65 }, { x: W*0.84, y: H*0.6 }, { x: W*0.9, y: H*0.68 }, { x: W*0.82, y: H*0.78 }, { x: W*0.75, y: H*0.65 }],
+        [{ x: W*0.5, y: H*0.45 }, { x: W*0.58, y: H*0.5 }, { x: W*0.52, y: H*0.58 }, { x: W*0.44, y: H*0.52 }, { x: W*0.5, y: H*0.45 }]
       ];
-      constellations.push(um);
 
-      // Pattern 4: Orion
-      const ori = [
-        { x: W * 0.72, y: H * 0.62 },
-        { x: W * 0.84, y: H * 0.64 },
-        { x: W * 0.76, y: H * 0.72 },
-        { x: W * 0.78, y: H * 0.72 },
-        { x: W * 0.80, y: H * 0.72 },
-        { x: W * 0.73, y: H * 0.82 },
-        { x: W * 0.83, y: H * 0.81 }
+      // Pattern 2: Neural Cosmic Web
+      const p2 = [
+        [{ x: W*0.18, y: H*0.3 }, { x: W*0.28, y: H*0.38 }, { x: W*0.22, y: H*0.52 }, { x: W*0.18, y: H*0.3 }],
+        [{ x: W*0.78, y: H*0.25 }, { x: W*0.88, y: H*0.35 }, { x: W*0.72, y: H*0.42 }, { x: W*0.78, y: H*0.25 }],
+        [{ x: W*0.45, y: H*0.7 }, { x: W*0.55, y: H*0.65 }, { x: W*0.62, y: H*0.78 }, { x: W*0.45, y: H*0.7 }]
       ];
-      constellations.push(ori);
+
+      patterns = [p0, p1, p2];
     }
     resizeCanvas();
 
-    function animateConstellations() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Smoothly cycle patterns every 6 seconds
+    setInterval(() => {
+      isPatternFading = true;
+    }, 6000);
 
-      // Draw background twinkling stars
-      for (let s of stars) {
-        s.update();
-        s.draw();
-      }
-
-      // Draw Constellations
+    function drawPatternGroup(group, alpha) {
+      if (!group || alpha <= 0.001) return;
       ctx.lineWidth = 0.8;
-      for (let constell of constellations) {
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
+      ctx.strokeStyle = `rgba(255, 255, 255, ${0.14 * alpha})`;
+
+      for (let line of group) {
         ctx.beginPath();
-        for (let i = 0; i < constell.length; i++) {
-          const pt = constell[i];
+        for (let i = 0; i < line.length; i++) {
+          const pt = line[i];
           if (i === 0) ctx.moveTo(pt.x, pt.y);
           else ctx.lineTo(pt.x, pt.y);
         }
         ctx.stroke();
 
-        // Draw glowing nodes
-        for (let pt of constell) {
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-          ctx.shadowBlur = 8;
+        // Glowing nodes
+        for (let pt of line) {
+          ctx.fillStyle = `rgba(255, 255, 255, ${0.85 * alpha})`;
+          ctx.shadowBlur = 6 * alpha;
           ctx.shadowColor = '#ffffff';
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, 2, 0, Math.PI * 2);
@@ -1597,18 +1554,47 @@
           ctx.shadowBlur = 0;
         }
       }
-
-      requestAnimationFrame(animateConstellations);
     }
-    animateConstellations();
+
+    function animateCelestial() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 1. Draw twinkling background stars
+      for (let s of stars) {
+        s.update();
+        s.draw();
+      }
+
+      // 2. Cross-fade between patterns
+      if (isPatternFading) {
+        patternProgress += 0.015;
+        if (patternProgress >= 1) {
+          patternProgress = 0;
+          isPatternFading = false;
+          curPatternIdx = nextPatternIdx;
+          nextPatternIdx = (nextPatternIdx + 1) % patterns.length;
+        }
+      }
+
+      if (isPatternFading) {
+        drawPatternGroup(patterns[curPatternIdx], 1 - patternProgress);
+        drawPatternGroup(patterns[nextPatternIdx], patternProgress);
+      } else {
+        drawPatternGroup(patterns[curPatternIdx], 1);
+      }
+
+      requestAnimationFrame(animateCelestial);
+    }
+    animateCelestial();
 
     // ---------------------------------------------------------
-    // 2. 3D Card Swipe Stacking Deck
+    // 2. Glitch-Free 3D Card Swipe Stacking Deck (Strict Debounce)
     // ---------------------------------------------------------
     const deckStage = document.getElementById('deck-stage');
     const cards = Array.from(deckStage.querySelectorAll('.stack-card'));
+    const btnSwipe = document.getElementById('btn-next-swipe');
     let cardOrder = cards.map((_, i) => i);
-    let isSwiping = false;
+    let isSwiping = false; // Prevents double click / rapid spam
 
     function renderDeck() {
       cardOrder.forEach((cardIdx, pos) => {
@@ -1616,26 +1602,22 @@
         card.classList.remove('is-swiping');
         
         if (pos === 0) {
-          // Top Active Card
-          card.style.transform = 'translateY(0px) scale(1) translateZ(0px)';
+          card.style.transform = 'translate3d(0, 0, 0) scale(1)';
           card.style.zIndex = '30';
           card.style.opacity = '1';
           card.style.pointerEvents = 'auto';
         } else if (pos === 1) {
-          // Second Card
-          card.style.transform = 'translateY(18px) scale(0.95) translateZ(-40px)';
+          card.style.transform = 'translate3d(0, 16px, -30px) scale(0.95)';
           card.style.zIndex = '20';
           card.style.opacity = '0.75';
           card.style.pointerEvents = 'none';
         } else if (pos === 2) {
-          // Third Card
-          card.style.transform = 'translateY(36px) scale(0.90) translateZ(-80px)';
+          card.style.transform = 'translate3d(0, 32px, -60px) scale(0.90)';
           card.style.zIndex = '10';
           card.style.opacity = '0.45';
           card.style.pointerEvents = 'none';
         } else {
-          // Hidden Back Cards
-          card.style.transform = 'translateY(48px) scale(0.85) translateZ(-120px)';
+          card.style.transform = 'translate3d(0, 42px, -90px) scale(0.85)';
           card.style.zIndex = '5';
           card.style.opacity = '0';
           card.style.pointerEvents = 'none';
@@ -1644,30 +1626,44 @@
     }
     renderDeck();
 
-    function swipeDeckCard() {
-      if (isSwiping) return;
+    function triggerCardSwipe(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      if (isSwiping) return; // Strict lock: completely prevents double click / jump
       isSwiping = true;
 
       const topCardIdx = cardOrder[0];
       const topCard = cards[topCardIdx];
       topCard.classList.add('is-swiping');
 
+      // Snappy, quick 280ms duration
       setTimeout(() => {
-        // Move front to back of queue
         cardOrder.push(cardOrder.shift());
         renderDeck();
         setTimeout(() => {
-          isSwiping = false;
-        }, 150);
-      }, 420);
+          isSwiping = false; // Release lock cleanly
+        }, 50);
+      }, 280);
     }
 
-    // Auto cycle cards every 4.8 seconds
-    let deckTimer = setInterval(swipeDeckCard, 4800);
+    if (btnSwipe) {
+      btnSwipe.addEventListener('click', triggerCardSwipe);
+    }
+    deckStage.addEventListener('click', triggerCardSwipe);
+
+    // Auto cycle cards every 4.8 seconds safely
+    let deckTimer = setInterval(() => {
+      if (!isSwiping) triggerCardSwipe();
+    }, 4800);
+
     deckStage.addEventListener('mouseenter', () => clearInterval(deckTimer));
     deckStage.addEventListener('mouseleave', () => {
       clearInterval(deckTimer);
-      deckTimer = setInterval(swipeDeckCard, 4800);
+      deckTimer = setInterval(() => {
+        if (!isSwiping) triggerCardSwipe();
+      }, 4800);
     });
 
     // ---------------------------------------------------------
@@ -1753,7 +1749,7 @@
       { name: 'DSC_NIGHT_RAW.jpg', size: '4.1M', speed: '3.1MB/s' },
       { name: 'TRIP_DOCUMENTARY.mkv', size: '1.2G', speed: '8.4MB/s' }
     ];
-    let qI = 0, qP = 30, qCnt = 4681;
+    let qI = 0, qP = 30, qCnt = 4730;
     setInterval(() => {
       const f = document.getElementById('t-file'), m = document.getElementById('t-meter'), c = document.getElementById('t-count');
       if (!f || !m) return;
