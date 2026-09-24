@@ -4,42 +4,767 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mobata — High-Performance Automated Media Uploader for Telegram</title>
-  <meta name="description" content="Upload thousands of photos and multi-gigabyte 4K videos to private Telegram channels autonomously. Zero duplicates, auto-resume, FloodWait handling, and ISP anti-throttling." />
+  <meta name="description" content="Upload thousands of photos and multi-gigabyte 4K videos to private Telegram channels autonomously." />
   <link rel="icon" type="image/png" href="assets/logo-dark.png" />
   
-  <!-- Apple Typography & Google Font Doto -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="style.css?v=3.0" />
+  <style>
+    /* ==========================================================================
+       Mobata — Apple Pro Studio Dark Design System (Self-Contained)
+       ========================================================================== */
+    :root {
+      --bg-black: #000000;
+      --bg-canvas: #07080c;
+      --bg-card: rgba(255, 255, 255, 0.04);
+      --bg-card-hover: rgba(255, 255, 255, 0.07);
+      --border-subtle: rgba(255, 255, 255, 0.1);
+      --border-focus: rgba(41, 151, 255, 0.4);
+
+      --apple-blue: #0071e3;
+      --apple-blue-hover: #0077ed;
+      --apple-sky: #2997ff;
+      --apple-cyan: #00f2fe;
+
+      --text-main: #ffffff;
+      --text-muted: #a1a1a6;
+      --text-dim: #6e6e73;
+
+      --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", sans-serif;
+      --font-doto: "Doto", sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-black);
+      color: var(--text-main);
+      font-family: var(--font-system);
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: -0.3px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .font-doto {
+      font-family: var(--font-doto);
+      font-optical-sizing: auto;
+      font-variation-settings: "ROND" 0;
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Ambient Lighting */
+    .ambient-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 900px;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+    }
+    .orb-1 {
+      top: -120px;
+      left: 30%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0, 113, 227, 0.22), transparent 70%);
+    }
+    .orb-2 {
+      top: 250px;
+      right: 15%;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(142, 45, 226, 0.14), transparent 70%);
+    }
+
+    /* Global Nav */
+    .global-nav {
+      height: 44px;
+      background-color: var(--bg-black);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+    }
+    .nav-container {
+      max-width: 1040px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+    }
+    .nav-brand img {
+      height: 22px;
+      width: auto;
+      display: block;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 28px;
+    }
+    .nav-menu a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: -0.12px;
+      transition: color 0.15s ease;
+    }
+    .nav-menu a:hover {
+      color: #ffffff;
+    }
+    .nav-github-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
+    }
+    .nav-github-pill:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Sub-Nav */
+    .sub-nav {
+      height: 52px;
+      background: rgba(7, 8, 12, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 44px;
+      z-index: 990;
+      display: flex;
+      align-items: center;
+    }
+    .sub-nav-content {
+      max-width: 1040px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sub-nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sub-brand-logo {
+      height: 28px;
+      width: auto;
+    }
+    .doto-ver {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--apple-sky);
+      background: rgba(41, 151, 255, 0.12);
+      border: 1px solid rgba(41, 151, 255, 0.25);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .sub-nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .sub-nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      transition: color 0.15s ease;
+    }
+    .sub-nav-link:hover {
+      color: var(--apple-sky);
+    }
+    .apple-pill-btn {
+      background-color: var(--apple-blue);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      transition: all 0.15s ease;
+    }
+    .apple-pill-btn:hover {
+      background-color: var(--apple-blue-hover);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 70px 0 60px;
+      text-align: center;
+    }
+    .doto-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--apple-sky);
+      background: rgba(41, 151, 255, 0.1);
+      border: 1px solid rgba(41, 151, 255, 0.3);
+      padding: 6px 18px;
+      border-radius: 9999px;
+      margin-bottom: 24px;
+    }
+    .dot-light {
+      width: 7px;
+      height: 7px;
+      background-color: var(--apple-cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--apple-cyan);
+    }
+    .hero-h1 {
+      font-size: 54px;
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .grad-txt {
+      background: linear-gradient(135deg, #ffffff 40%, var(--apple-sky) 75%, var(--apple-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-p {
+      font-size: 20px;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 36px;
+      line-height: 1.45;
+    }
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+    .btn-main {
+      background-color: var(--apple-blue);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 500;
+      padding: 12px 26px;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+    }
+    .btn-main:hover {
+      background-color: var(--apple-blue-hover);
+      box-shadow: 0 0 24px rgba(0, 113, 227, 0.4);
+    }
+    .btn-main:active {
+      transform: scale(0.95);
+    }
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border: 1px solid var(--border-subtle);
+      font-size: 16px;
+      font-weight: 500;
+      padding: 12px 26px;
+      border-radius: 9999px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Terminal Stage */
+    .terminal-stage {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .terminal-frame {
+      background: #090a10;
+      border-radius: 18px;
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      text-align: left;
+      box-shadow: rgba(0, 0, 0, 0.7) 0 24px 60px, rgba(41, 151, 255, 0.15) 0 0 40px;
+    }
+    .term-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: #111219;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .term-dots {
+      display: flex;
+      gap: 8px;
+    }
+    .t-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+    .t-red { background: #ff5f56; }
+    .t-yellow { background: #ffbd2e; }
+    .t-green { background: #27c93f; }
+    .term-meta {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
+    }
+    .term-status {
+      font-size: 10px;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.15);
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+    .term-content {
+      padding: 22px 24px;
+      font-size: 13.5px;
+      line-height: 1.8;
+      color: #e5e7eb;
+    }
+    .term-row { margin-bottom: 4px; }
+    .t-cyan { color: var(--apple-sky); font-weight: 700; }
+    .t-dim { color: var(--text-dim); }
+    .t-hr {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+      margin: 10px 0;
+    }
+    .t-cursor {
+      color: var(--apple-cyan);
+      animation: blink 0.8s infinite;
+    }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    /* Sections */
+    .section {
+      padding: 80px 0;
+      position: relative;
+    }
+    .section-dark {
+      background: #06070a;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .sec-head {
+      text-align: center;
+      max-width: 660px;
+      margin: 0 auto 50px;
+    }
+    .sec-tag {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--apple-sky);
+      margin-bottom: 12px;
+    }
+    .sec-title {
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .sec-desc {
+      font-size: 17px;
+      color: var(--text-muted);
+    }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 36px 24px;
+      text-align: center;
+      transition: all 0.25s ease;
+    }
+    .metric-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-focus);
+      transform: translateY(-2px);
+    }
+    .metric-num {
+      font-size: 52px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .metric-lbl {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--apple-sky);
+      margin-bottom: 8px;
+    }
+    .metric-p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .feat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 28px 24px;
+      transition: all 0.25s ease;
+    }
+    .feat-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-focus);
+      transform: translateY(-2px);
+    }
+    .feat-tag {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--apple-sky);
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+    .feat-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      margin-bottom: 8px;
+    }
+    .feat-p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Comparison Table */
+    .table-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 15px;
+    }
+    .comp-table th {
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      color: #ffffff;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .comp-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+    }
+    .col-hi {
+      background: rgba(41, 151, 255, 0.08);
+      color: var(--apple-sky) !important;
+      font-weight: 600;
+    }
+
+    /* Setup Tabs */
+    .tab-bar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: var(--bg-card);
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover {
+      background: var(--bg-card-hover);
+      color: #ffffff;
+    }
+    .tab-btn.active {
+      background: rgba(0, 113, 227, 0.2);
+      border-color: var(--apple-blue);
+      color: #ffffff;
+    }
+
+    .pane-box {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .pane {
+      display: none;
+    }
+    .pane.active {
+      display: block;
+    }
+    .step-card {
+      display: flex;
+      gap: 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+    .step-badge {
+      width: 32px;
+      height: 32px;
+      background: rgba(41, 151, 255, 0.15);
+      color: var(--apple-sky);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .step-main {
+      flex-grow: 1;
+    }
+    .step-main h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .step-main p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .code-box {
+      background: #090a10;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: var(--font-doto);
+      font-size: 13px;
+      color: #93c5fd;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      line-height: 1.6;
+    }
+    .copy-pill {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      font-size: 12px;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .copy-pill:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* FAQ */
+    .faq-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .faq-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .faq-q {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      color: #ffffff;
+      padding: 18px 22px;
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .faq-sym {
+      font-size: 16px;
+      color: var(--apple-sky);
+      transition: transform 0.2s ease;
+    }
+    .faq-a {
+      display: none;
+      padding: 0 22px 18px;
+      color: var(--text-muted);
+      font-size: 14.5px;
+      line-height: 1.5;
+    }
+    .faq-card.open .faq-a {
+      display: block;
+    }
+    .faq-card.open .faq-sym {
+      transform: rotate(45deg);
+    }
+
+    /* Footer */
+    .apple-footer {
+      background: #040507;
+      padding: 60px 0 30px;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .footer-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    .footer-logo {
+      height: 30px;
+      width: auto;
+      margin-bottom: 12px;
+    }
+    .footer-tag {
+      color: var(--text-dim);
+      font-size: 13px;
+      max-width: 260px;
+    }
+    .footer-col h5 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+    .footer-col ul {
+      list-style: none;
+    }
+    .footer-col ul li a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 13px;
+      line-height: 2.2;
+      transition: color 0.15s ease;
+    }
+    .footer-col ul li a:hover {
+      color: var(--apple-sky);
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 24px;
+      color: var(--text-dim);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .hero-h1 { font-size: 38px; }
+      .hero-p { font-size: 17px; }
+      .sec-title { font-size: 30px; }
+      .metrics-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .footer-row { grid-template-columns: 1fr 1fr; }
+      .nav-menu { display: none; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Apple Atmospheric Glow -->
-  <div class="apple-glow-mesh">
-    <div class="glow-orb orb-blue"></div>
-    <div class="glow-orb orb-indigo"></div>
+  <!-- Ambient Light -->
+  <div class="ambient-glow">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
   </div>
 
-  <!-- Global Nav (Apple 44px True Black) -->
+  <!-- Global Nav -->
   <nav class="global-nav">
     <div class="nav-container">
-      <div class="nav-brand-wrap">
-        <a href="#" class="brand-link">
-          <img src="assets/logo-dark.png" alt="Mobata Logo" class="nav-logo" />
+      <div class="nav-brand">
+        <a href="#">
+          <img src="assets/logo-dark.png" alt="Mobata Logo" width="80" height="auto" />
         </a>
       </div>
-      <div class="nav-links">
+      <div class="nav-menu">
         <a href="#overview">Overview</a>
         <a href="#features">Features</a>
         <a href="#comparison">Comparison</a>
         <a href="#setup">Setup Guide</a>
         <a href="#faq">FAQ</a>
       </div>
-      <div class="nav-actions">
-        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="nav-github-btn">
-          <svg height="15" width="15" viewBox="0 0 16 16" fill="currentColor">
+      <div>
+        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="nav-github-pill">
+          <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
           </svg>
           <span>Star on GitHub</span>
@@ -48,70 +773,70 @@
     </div>
   </nav>
 
-  <!-- Sub-Nav Frosted Glass Strip -->
-  <header class="sub-nav-frosted">
-    <div class="sub-nav-container">
+  <!-- Sub-Nav -->
+  <header class="sub-nav">
+    <div class="sub-nav-content">
       <div class="sub-nav-left">
-        <span class="sub-nav-title">Mobata</span>
-        <span class="doto-chip font-doto">v1.0.0</span>
+        <img src="assets/logo-dark.png" alt="Mobata Logo" class="sub-brand-logo" width="70" height="auto" />
+        <span class="doto-ver font-doto">v1.0.0</span>
       </div>
       <div class="sub-nav-right">
         <a href="#setup" class="sub-nav-link">Local Setup</a>
-        <a href="#docker" class="sub-nav-link">Docker</a>
-        <a href="#cloud" class="sub-nav-link">Cloud & VPS</a>
-        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="apple-btn-compact">Clone Repo</a>
+        <a href="#setup" class="sub-nav-link">Docker</a>
+        <a href="#setup" class="sub-nav-link">Cloud & VPS</a>
+        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="apple-pill-btn">Clone Repo</a>
       </div>
     </div>
   </header>
 
   <!-- Hero Section -->
-  <main class="hero-section" id="overview">
-    <div class="container hero-inner">
+  <main class="hero" id="overview">
+    <div class="container">
       <div class="doto-pill font-doto">
-        <span class="dot-pulse"></span> MTPROTO ENGINE • 4GB UNLOCKED • ZERO DUPLICATES
+        <span class="dot-light"></span> MTPROTO ENGINE • 4GB UNLOCKED • ZERO DUPLICATES
       </div>
       
-      <h1 class="hero-headline">
+      <h1 class="hero-h1">
         Upload 5,000+ Media Files.<br>
-        <span class="hero-gradient-text">Without Limits.</span>
+        <span class="grad-txt">Without Limits.</span>
       </h1>
       
-      <p class="hero-subheadline">
-        The automated batch uploader for massive collections. Bypasses the 50 MB bot ceiling, handles multi-gigabyte 4K video, self-heals on rate limits, and resumes with zero duplicates.
+      <p class="hero-p">
+        The automated Telegram batch uploader. Bypasses the 50 MB bot ceiling, handles multi-gigabyte 4K video, self-heals on rate limits, and resumes with zero duplicates.
       </p>
 
-      <div class="hero-cta-group">
-        <a href="#setup" class="apple-btn-primary">Start Local Upload</a>
-        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="apple-btn-secondary">
+      <div class="hero-actions">
+        <a href="#setup" class="btn-main">Start Local Upload</a>
+        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="btn-ghost">
           <span>View Source Code</span>
-          <span class="arrow-icon">›</span>
+          <span>›</span>
         </a>
       </div>
 
-      <!-- Live Terminal Simulation Stage -->
-      <div class="hero-product-stage">
-        <div class="apple-terminal-chassis">
-          <div class="terminal-titlebar">
-            <div class="window-dots">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
+      <!-- Terminal Stage -->
+      <div class="terminal-stage">
+        <div class="terminal-frame">
+          <div class="term-top">
+            <div class="term-dots">
+              <span class="t-dot t-red"></span>
+              <span class="t-dot t-yellow"></span>
+              <span class="t-dot t-green"></span>
             </div>
-            <div class="terminal-meta font-doto">mobata // live-telemetry</div>
-            <div class="terminal-status-badge font-doto">ONLINE</div>
+            <div class="term-meta font-doto">mobata // live-telemetry</div>
+            <div class="term-status font-doto">ONLINE</div>
           </div>
-          <div class="terminal-screen">
-            <div class="term-row"><span class="term-cyan font-doto">[SYS]</span> Initializing Telethon MTProto Client... <span class="term-dim">Hardware AES-NI verified</span></div>
-            <div class="term-row"><span class="term-cyan font-doto">[DIR]</span> Media Scan: C:\Photos\Master (5,242 items indexed)</div>
-            <div class="term-row"><span class="term-cyan font-doto">[CHN]</span> Connected to channel: "Private Archive" (-1003099948239)</div>
-            <div class="term-divider"></div>
-            <div class="term-row font-doto term-dim">[3481/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - Done!</div>
-            <div class="term-row font-doto term-dim">[3482/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - Done!</div>
-            <div class="term-row font-doto term-live">
-              <span class="term-cyan font-doto" id="term-counter">[3483/5242]</span>
-              <span id="term-filename" class="font-doto">IMG_0812.jpg:</span>
-              <span id="term-progress" class="font-doto">94%|█████████ | 2.9M/3.1M [00:01, 3.2MB/s]</span>
-              <span class="term-blinker font-doto">_</span>
+          <div class="term-content">
+            <div class="term-row"><span class="t-cyan font-doto">[SYS]</span> Initializing Telethon MTProto Client... <span class="t-dim">Hardware AES-NI verified</span></div>
+            <div class="term-row"><span class="t-cyan font-doto">[DIR]</span> Media Scan: C:\Photos\Master (5,242 items indexed)</div>
+            <div class="term-row"><span class="t-cyan font-doto">[CHN]</span> Connected to channel: "Private Archive" (-1003099948239)</div>
+            <div class="t-hr"></div>
+            <div class="term-row font-doto t-dim">[3481/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - Done!</div>
+            <div class="term-row font-doto t-dim">[3482/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - Done!</div>
+            <div class="term-row font-doto">
+              <span class="t-cyan font-doto" id="t-count">[3483/5242]</span>
+              <span id="t-file" class="font-doto">IMG_0812.jpg:</span>
+              <span id="t-meter" class="font-doto">94%|█████████ | 2.9M/3.1M [00:01, 3.2MB/s]</span>
+              <span class="t-cursor font-doto">_</span>
             </div>
           </div>
         </div>
@@ -119,102 +844,102 @@
     </div>
   </main>
 
-  <!-- Big Numbers Section (Apple Dark Tile Style) -->
-  <section class="section-dark-tile">
+  <!-- Metrics Section -->
+  <section class="section section-dark">
     <div class="container">
-      <div class="tile-header">
-        <div class="doto-badge-blue font-doto">PERFORMANCE & SCALE</div>
-        <h2 class="tile-title">Bypasses the 50 MB Bot Wall.</h2>
-        <p class="tile-desc">Standard bots crash on phone videos. Mobata connects via Telegram's direct MTProto user client.</p>
+      <div class="sec-head">
+        <div class="sec-tag font-doto">PERFORMANCE & SCALE</div>
+        <h2 class="sec-title">Bypasses the 50 MB Bot Wall.</h2>
+        <p class="sec-desc">Standard bots crash on phone videos. Mobata connects via Telegram's direct MTProto user client.</p>
       </div>
 
       <div class="metrics-grid">
         <div class="metric-card">
-          <div class="metric-val font-doto">4 GB</div>
-          <div class="metric-label">Max File Size</div>
-          <p class="metric-text">Full-length 4K footage and multi-gigabyte videos uploaded without compression or quality loss.</p>
+          <div class="metric-num font-doto">4 GB</div>
+          <div class="metric-lbl">Max File Size</div>
+          <p class="metric-p">Full-length 4K footage and multi-gigabyte videos uploaded without compression or quality loss.</p>
         </div>
 
         <div class="metric-card">
-          <div class="metric-val font-doto">80×</div>
-          <div class="metric-label">C-Accelerated Speed</div>
-          <p class="metric-text">Native compiled <code>cryptg</code> AES-NI hardware encryption eliminates software CPU bottlenecks.</p>
+          <div class="metric-num font-doto">80×</div>
+          <div class="metric-lbl">C-Accelerated Speed</div>
+          <p class="metric-p">Native compiled <code>cryptg</code> AES-NI hardware encryption eliminates software CPU bottlenecks.</p>
         </div>
 
         <div class="metric-card">
-          <div class="metric-val font-doto">0</div>
-          <div class="metric-label">Duplicate Uploads</div>
-          <p class="metric-text">Persistent state tracking flushes every file instantly. Restarts pick up at the exact next item.</p>
+          <div class="metric-num font-doto">0</div>
+          <div class="metric-lbl">Duplicate Uploads</div>
+          <p class="metric-p">Persistent state tracking flushes every file instantly. Restarts pick up at the exact next item.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Core Features Section -->
-  <section class="section-features" id="features">
+  <!-- Features Section -->
+  <section class="section" id="features">
     <div class="container">
-      <div class="tile-header">
-        <div class="doto-badge-blue font-doto">ARCHITECTURAL ADVANTAGES</div>
-        <h2 class="tile-title">Engineered For Real Networks.</h2>
-        <p class="tile-desc">Built to survive connection drops, strict firewalls, and aggressive Telegram rate limits.</p>
+      <div class="sec-head">
+        <div class="sec-tag font-doto">ARCHITECTURAL ADVANTAGES</div>
+        <h2 class="sec-title">Engineered For Real Networks.</h2>
+        <p class="sec-desc">Built to survive connection drops, strict firewalls, and aggressive Telegram rate limits.</p>
       </div>
 
       <div class="features-grid">
-        <div class="apple-card">
-          <div class="card-tag font-doto">[TCP]</div>
-          <h3 class="card-title">Anti-Throttling Protocol</h3>
-          <p class="card-desc">Employs <code>ConnectionTcpObfuscated</code> to prevent restrictive Wi-Fi routers and ISP deep-packet inspection (DPI) from resetting connections.</p>
+        <div class="feat-card">
+          <div class="feat-tag font-doto">[TCP]</div>
+          <h3 class="feat-title">Anti-Throttling Protocol</h3>
+          <p class="feat-p">Employs <code>ConnectionTcpObfuscated</code> to prevent restrictive Wi-Fi routers and ISP deep-packet inspection (DPI) from resetting connections.</p>
         </div>
 
-        <div class="apple-card">
-          <div class="card-tag font-doto">[STREAM]</div>
-          <h3 class="card-title">In-App Video Streaming</h3>
-          <p class="card-desc">Flags every uploaded video with <code>supports_streaming=True</code> so videos play immediately inside Telegram channels without full download.</p>
+        <div class="feat-card">
+          <div class="feat-tag font-doto">[STREAM]</div>
+          <h3 class="feat-title">In-App Video Streaming</h3>
+          <p class="feat-p">Flags every uploaded video with <code>supports_streaming=True</code> so videos play immediately inside Telegram channels without full download.</p>
         </div>
 
-        <div class="apple-card">
-          <div class="card-tag font-doto">[AUTO]</div>
-          <h3 class="card-title">Self-Healing FloodWait</h3>
-          <p class="card-desc">Automatically intercepts Telegram rate-limit challenges, sleeps for the exact server-requested seconds, and resumes without crashing.</p>
+        <div class="feat-card">
+          <div class="feat-tag font-doto">[AUTO]</div>
+          <h3 class="feat-title">Self-Healing FloodWait</h3>
+          <p class="feat-p">Automatically intercepts Telegram rate-limit challenges, sleeps for the exact server-requested seconds, and resumes without crashing.</p>
         </div>
 
-        <div class="apple-card">
-          <div class="card-tag font-doto">[LOCK]</div>
-          <h3 class="card-title">Instance Protection</h3>
-          <p class="card-desc">Integrated process locking stops overlapping instances, completely eliminating the "Server replied with a wrong session ID" error.</p>
+        <div class="feat-card">
+          <div class="feat-tag font-doto">[LOCK]</div>
+          <h3 class="feat-title">Instance Protection</h3>
+          <p class="feat-p">Integrated process locking stops overlapping instances, completely eliminating the "Server replied with a wrong session ID" error.</p>
         </div>
 
-        <div class="apple-card">
-          <div class="card-tag font-doto">[QUEUE]</div>
-          <h3 class="card-title">Smart Priority Sorting</h3>
-          <p class="card-desc">Prioritizes small photos first so thousands of files upload rapidly, ensuring continuous progress before tackling massive 4K video files.</p>
+        <div class="feat-card">
+          <div class="feat-tag font-doto">[QUEUE]</div>
+          <h3 class="feat-title">Smart Priority Sorting</h3>
+          <p class="feat-p">Prioritizes small photos first so thousands of files upload rapidly, ensuring continuous progress before tackling massive 4K video files.</p>
         </div>
 
-        <div class="apple-card">
-          <div class="card-tag font-doto">[SYNC]</div>
-          <h3 class="card-title">Zero-Loss Persistence</h3>
-          <p class="card-desc">Records uploaded paths to <code>uploaded_history.txt</code> after every success. Power cuts or laptop restarts won't re-upload duplicates.</p>
+        <div class="feat-card">
+          <div class="feat-tag font-doto">[SYNC]</div>
+          <h3 class="feat-title">Zero-Loss Persistence</h3>
+          <p class="feat-p">Records uploaded paths to <code>uploaded_history.txt</code> after every success. Power cuts or laptop restarts won't re-upload duplicates.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Comparison Table -->
-  <section class="section-comparison" id="comparison">
+  <!-- Comparison Section -->
+  <section class="section section-dark" id="comparison">
     <div class="container">
-      <div class="tile-header">
-        <div class="doto-badge-blue font-doto">BENCHMARK COMPARISON</div>
-        <h2 class="tile-title">Why Traditional Methods Fail.</h2>
+      <div class="sec-head">
+        <div class="sec-tag font-doto">BENCHMARK COMPARISON</div>
+        <h2 class="sec-title">Why Traditional Methods Fail.</h2>
       </div>
 
-      <div class="table-frame">
-        <table class="apple-table">
+      <div class="table-box">
+        <table class="comp-table">
           <thead>
             <tr>
               <th>Feature</th>
               <th>Telegram Desktop App</th>
               <th>Standard Bot API</th>
-              <th class="col-highlight">Mobata (MTProto)</th>
+              <th class="col-hi">Mobata (MTProto)</th>
             </tr>
           </thead>
           <tbody>
@@ -222,37 +947,37 @@
               <td><strong>Max File Size</strong></td>
               <td>2 GB (Manual Drag-and-Drop)</td>
               <td>50 MB Strictly</td>
-              <td class="col-highlight font-doto">2 GB – 4 GB</td>
+              <td class="col-hi font-doto">2 GB – 4 GB</td>
             </tr>
             <tr>
               <td><strong>5,000+ Batch Queue</strong></td>
               <td>UI Freezes / Crashes</td>
               <td>Fails on large videos</td>
-              <td class="col-highlight">Autonomous Queue</td>
+              <td class="col-hi">Autonomous Queue</td>
             </tr>
             <tr>
               <td><strong>Auto-Resume on Disconnect</strong></td>
               <td>❌ No</td>
               <td>❌ No</td>
-              <td class="col-highlight font-doto">Zero Duplicates</td>
+              <td class="col-hi font-doto">Zero Duplicates</td>
             </tr>
             <tr>
               <td><strong>FloodWait Auto Recovery</strong></td>
               <td>❌ Manual retry</td>
               <td>❌ Crashes Script</td>
-              <td class="col-highlight">Self-Healing</td>
+              <td class="col-hi">Self-Healing</td>
             </tr>
             <tr>
               <td><strong>ISP DPI / Throttling Bypass</strong></td>
               <td>❌ No</td>
               <td>❌ No</td>
-              <td class="col-highlight font-doto">Obfuscated TCP</td>
+              <td class="col-hi font-doto">Obfuscated TCP</td>
             </tr>
             <tr>
               <td><strong>Headless Server Support</strong></td>
               <td>❌ Requires GUI</td>
               <td>✅ Yes</td>
-              <td class="col-highlight">CLI / Docker / VPS</td>
+              <td class="col-hi">CLI / Docker / VPS</td>
             </tr>
           </tbody>
         </table>
@@ -260,108 +985,104 @@
     </div>
   </section>
 
-  <!-- Setup Configurator -->
-  <section class="section-setup" id="setup">
+  <!-- Setup Section -->
+  <section class="section" id="setup">
     <div class="container">
-      <div class="tile-header">
-        <div class="doto-badge-blue font-doto">DEPLOYMENT MATRIX</div>
-        <h2 class="tile-title">Get Started in 3 Minutes.</h2>
-        <p class="tile-desc">Choose your preferred operating environment.</p>
+      <div class="sec-head">
+        <div class="sec-tag font-doto">DEPLOYMENT MATRIX</div>
+        <h2 class="sec-title">Get Started in 3 Minutes.</h2>
+        <p class="sec-desc">Choose your preferred operating environment.</p>
       </div>
 
-      <div class="configurator-tabs">
-        <button class="config-tab active" data-target="tab-local">💻 Local Machine</button>
-        <button class="config-tab" data-target="tab-docker">🐳 Docker & NAS</button>
-        <button class="config-tab" data-target="tab-cloud">☁️ Koyeb / Heroku / VPS</button>
-        <button class="config-tab" data-target="tab-n8n">⚙️ n8n Automation</button>
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="tab-local">💻 Local Machine</button>
+        <button class="tab-btn" data-tab="tab-docker">🐳 Docker & NAS</button>
+        <button class="tab-btn" data-tab="tab-cloud">☁️ Koyeb / Heroku / VPS</button>
+        <button class="tab-btn" data-tab="tab-n8n">⚙️ n8n Automation</button>
       </div>
 
-      <div class="config-content-box">
-        <!-- Local Tab -->
-        <div class="config-pane active" id="tab-local">
-          <div class="setup-step-row">
+      <div class="pane-box">
+        <div class="pane active" id="tab-local">
+          <div class="step-card">
             <div class="step-badge font-doto">01</div>
-            <div class="step-info">
+            <div class="step-main">
               <h4>Clone Repository & Install Requirements</h4>
               <p>Requires Python 3.9 or higher (compatible with Windows, macOS, Linux).</p>
-              <div class="apple-code-box">
+              <div class="code-box">
                 <code>git clone https://github.com/shikshiten/Mobata.git<br>cd Mobata<br>pip install -r requirements.txt</code>
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <button class="copy-pill" onclick="copySnippet(this)">Copy</button>
               </div>
             </div>
           </div>
 
-          <div class="setup-step-row">
+          <div class="step-card">
             <div class="step-badge font-doto">02</div>
-            <div class="step-info">
+            <div class="step-main">
               <h4>Obtain Free Telegram API Credentials</h4>
-              <p>Visit <a href="https://my.telegram.org" target="_blank" class="apple-link">my.telegram.org</a>, log in with your Telegram number, click <strong>API Development Tools</strong>, and copy your <code>API ID</code> and <code>API HASH</code>.</p>
+              <p>Visit <a href="https://my.telegram.org" target="_blank" style="color:var(--apple-sky)">my.telegram.org</a>, log in with your Telegram number, click <strong>API Development Tools</strong>, and copy your <code>API ID</code> and <code>API HASH</code>.</p>
             </div>
           </div>
 
-          <div class="setup-step-row">
+          <div class="step-card">
             <div class="step-badge font-doto">03</div>
-            <div class="step-info">
+            <div class="step-main">
               <h4>Configure Environment (.env)</h4>
               <p>Copy <code>.env.example</code> to <code>.env</code> and insert your details:</p>
-              <div class="apple-code-box">
+              <div class="code-box">
                 <code>TELEGRAM_API_ID=your_api_id<br>TELEGRAM_API_HASH=your_api_hash<br>TELEGRAM_PHONE=+1234567890<br>TELEGRAM_CHANNEL_ID=-1001234567890<br>UPLOAD_FOLDER=C:\Pictures\Upload</code>
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <button class="copy-pill" onclick="copySnippet(this)">Copy</button>
               </div>
             </div>
           </div>
 
-          <div class="setup-step-row">
+          <div class="step-card">
             <div class="step-badge font-doto">04</div>
-            <div class="step-info">
+            <div class="step-main">
               <h4>Start Uploading</h4>
               <p>Double-click <code>run_uploader.bat</code> on Windows, or run in terminal:</p>
-              <div class="apple-code-box">
+              <div class="code-box">
                 <code>python uploader.py</code>
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <button class="copy-pill" onclick="copySnippet(this)">Copy</button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Docker Tab -->
-        <div class="config-pane" id="tab-docker">
-          <div class="setup-step-row">
+        <div class="pane" id="tab-docker">
+          <div class="step-card">
             <div class="step-badge font-doto">01</div>
-            <div class="step-info">
+            <div class="step-main">
               <h4>Deploy on Docker / TrueNAS / Unraid</h4>
               <p>Mount your local photo volume and run continuously in the background.</p>
-              <div class="apple-code-box">
+              <div class="code-box">
                 <code>docker compose up -d<br>docker compose logs -f</code>
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <button class="copy-pill" onclick="copySnippet(this)">Copy</button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Cloud Tab -->
-        <div class="config-pane" id="tab-cloud">
-          <div class="setup-step-row">
+        <div class="pane" id="tab-cloud">
+          <div class="step-card">
             <div class="step-badge font-doto">01</div>
-            <div class="step-info">
+            <div class="step-main">
               <h4>Deploy on Cloud Workers (Koyeb / Heroku / VPS)</h4>
-              <p>The repository includes a <code>Procfile</code> for seamless background worker deployment:</p>
-              <div class="apple-code-box">
+              <p>The repository includes a <code>Procfile</code> for background worker deployment:</p>
+              <div class="code-box">
                 <code>worker: python uploader.py</code>
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <button class="copy-pill" onclick="copySnippet(this)">Copy</button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- n8n Tab -->
-        <div class="config-pane" id="tab-n8n">
-          <div class="setup-step-row">
+        <div class="pane" id="tab-n8n">
+          <div class="step-card">
             <div class="step-badge font-doto">01</div>
-            <div class="step-info">
+            <div class="step-main">
               <h4>Automate Camera & Cloud Dumps</h4>
               <p>Trigger uploads whenever new media arrives via Google Drive, Nextcloud, or Webhooks:</p>
-              <div class="apple-code-box font-doto">
+              <div class="code-box font-doto">
                 <code>[Google Drive / Camera Sync] ➔ [n8n Trigger] ➔ [Mobata Queue] ➔ [Telegram Channel]</code>
               </div>
             </div>
@@ -372,40 +1093,40 @@
   </section>
 
   <!-- FAQ Section -->
-  <section class="section-faq" id="faq">
+  <section class="section section-dark" id="faq">
     <div class="container">
-      <div class="tile-header">
-        <div class="doto-badge-blue font-doto">FREQUENTLY ASKED QUESTIONS</div>
-        <h2 class="tile-title">Common Questions.</h2>
+      <div class="sec-head">
+        <div class="sec-tag font-doto">FREQUENTLY ASKED QUESTIONS</div>
+        <h2 class="sec-title">Common Questions.</h2>
       </div>
 
-      <div class="faq-container">
-        <div class="faq-item">
-          <button class="faq-btn">
+      <div class="faq-wrap">
+        <div class="faq-card">
+          <button class="faq-q">
             <span>Are credentials and session tokens kept private?</span>
-            <span class="faq-icon font-doto">+</span>
+            <span class="faq-sym font-doto">+</span>
           </button>
-          <div class="faq-body">
+          <div class="faq-a">
             <p>Yes. Mobata executes completely on your own hardware or dedicated container. All sessions, history logs, and environment variables are strictly ignored in <code>.gitignore</code> and never transmitted to third parties.</p>
           </div>
         </div>
 
-        <div class="faq-item">
-          <button class="faq-btn">
+        <div class="faq-card">
+          <button class="faq-q">
             <span>Can I safely pause and resume the upload process?</span>
-            <span class="faq-icon font-doto">+</span>
+            <span class="faq-sym font-doto">+</span>
           </button>
-          <div class="faq-body">
+          <div class="faq-a">
             <p>Yes. Pressing <code>Ctrl + C</code> safely flushes progress immediately to <code>uploaded_history.txt</code>. Running the script again skips all completed files and continues from the exact next item.</p>
           </div>
         </div>
 
-        <div class="faq-item">
-          <button class="faq-btn">
+        <div class="faq-card">
+          <button class="faq-q">
             <span>How does Mobata handle Telegram rate limits?</span>
-            <span class="faq-icon font-doto">+</span>
+            <span class="faq-sym font-doto">+</span>
           </button>
-          <div class="faq-body">
+          <div class="faq-a">
             <p>When Telegram requests a cooldown period via <code>FloodWaitError</code>, Mobata automatically pauses execution for the exact server-requested seconds and seamlessly resumes the upload loop.</p>
           </div>
         </div>
@@ -413,12 +1134,12 @@
     </div>
   </section>
 
-  <!-- Apple Global Footer -->
+  <!-- Footer -->
   <footer class="apple-footer">
-    <div class="container footer-grid">
-      <div class="footer-col">
-        <img src="assets/logo-dark.png" alt="Mobata Logo" class="footer-logo" />
-        <p class="footer-tagline">High-performance automated media uploader for Telegram.</p>
+    <div class="container footer-row">
+      <div>
+        <img src="assets/logo-dark.png" alt="Mobata Logo" class="footer-logo" width="70" height="auto" />
+        <p class="footer-tag">High-performance automated media uploader for Telegram.</p>
       </div>
       <div class="footer-col">
         <h5>Documentation</h5>
@@ -452,6 +1173,68 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        const target = document.getElementById(btn.dataset.tab);
+        if (target) target.classList.add('active');
+      });
+    });
+
+    // FAQ Accordion
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.closest('.faq-card').classList.toggle('open');
+      });
+    });
+
+    // Copy Code Snippet
+    function copySnippet(btn) {
+      const code = btn.closest('.code-box').querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = 'Copied';
+        btn.style.backgroundColor = '#0071e3';
+        setTimeout(() => {
+          btn.innerText = orig;
+          btn.style.backgroundColor = '';
+        }, 2000);
+      });
+    }
+
+    // Live terminal animation
+    const queue = [
+      { name: 'IMG_2026_0918.jpg', size: '3.4M', speed: '3.2MB/s' },
+      { name: 'PXL_VACATION_4K.mp4', size: '142M', speed: '7.8MB/s' },
+      { name: 'DSC_NIGHT_RAW.jpg', size: '4.1M', speed: '3.1MB/s' },
+      { name: 'TRIP_DOCUMENTARY.mkv', size: '1.2G', speed: '8.4MB/s' }
+    ];
+    let qI = 0, qP = 30, qCnt = 3483;
+    setInterval(() => {
+      const f = document.getElementById('t-file'), m = document.getElementById('t-meter'), c = document.getElementById('t-count');
+      if (!f || !m) return;
+      qP += 20;
+      if (qP >= 100) {
+        qP = 100;
+        const cur = queue[qI % queue.length];
+        m.innerText = `100%|██████████| ${cur.size}/${cur.size} [00:01, ${cur.speed}] - Done!`;
+        setTimeout(() => {
+          qP = 15; qCnt++; qI++;
+          const next = queue[qI % queue.length];
+          if (c) c.innerText = `[${qCnt}/5242]`;
+          f.innerText = next.name + ':';
+          m.innerText = `${qP}%|██        | ...`;
+        }, 700);
+      } else {
+        const cur = queue[qI % queue.length];
+        const bc = Math.floor(qP / 10);
+        m.innerText = `${qP}%|${'█'.repeat(bc)}${' '.repeat(10 - bc)}| ... [${cur.speed}]`;
+      }
+    }, 550);
+  </script>
 </body>
 </html>
