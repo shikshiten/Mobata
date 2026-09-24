@@ -9,6 +9,7 @@
   # Mobata
   ### High-Performance Automated Media Uploader for Telegram
   
+  [![Website](https://img.shields.io/badge/Website-mobata.unaux.com-18181b?style=for-the-badge&logo=google-chrome&logoColor=white)](http://mobata.unaux.com)
   [![Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.14-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
   [![Telegram MTProto](https://img.shields.io/badge/Telegram-MTProto%20Telethon-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://core.telegram.org/api)
   [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
@@ -19,9 +20,22 @@
     Zero duplicates • Auto-resume • FloodWait handling • ISP anti-throttling
   </p>
 
-  [📖 Read the Story: Why Mobata?](WHY_MOBATA.md) • [🚀 Quick Start](#-quick-start-local) • [🐳 Docker](#-docker-deployment) • [☁️ Cloud & Koyeb](#-cloud-deployment-koyeb--heroku--vps) • [⚙️ n8n Automation](#-automation--webhooks-n8n)
+  [🌐 Live Website](http://mobata.unaux.com) • [📖 Read the Story: Why Mobata?](WHY_MOBATA.md) • [🚀 Quick Start](#-quick-start-local) • [🐳 Docker](#-docker-deployment) • [☁️ Cloud & Koyeb](#-cloud-deployment-koyeb--heroku--vps) • [⚙️ n8n Automation](#-automation--webhooks-n8n)
 
 </div>
+
+---
+
+## ℹ️ About Mobata
+
+**Mobata** is an autonomous, high-throughput media backup system engineered to archive thousands of high-resolution photos and multi-gigabyte 4K videos directly into private Telegram channels with zero manual drag-and-drop effort.
+
+Unlike standard Telegram bots that are artificially throttled and strictly capped at 50 MB, Mobata establishes direct client connections via Telegram's MTProto protocol using native C hardware acceleration (`cryptg`). It features intelligent self-healing FloodWait recovery, connection obfuscation to bypass restrictive ISP deep-packet inspection, in-app video streaming flags, and persistent atomic state tracking ensuring zero duplicate uploads across machine restarts.
+
+* 🌐 **Interactive Showcase & Documentation**: [http://mobata.unaux.com](http://mobata.unaux.com) *(Mirror: [http://7cee79.ezyro.com](http://7cee79.ezyro.com))*
+* 💻 **Local Setup Guide**: [mobata.unaux.com/setup.html](http://mobata.unaux.com/setup.html)
+* 🐳 **Docker & NAS Sync Guide**: [mobata.unaux.com/docker.html](http://mobata.unaux.com/docker.html)
+* ☁️ **Cloud VPS & n8n Guide**: [mobata.unaux.com/cloud.html](http://mobata.unaux.com/cloud.html)
 
 ---
 
