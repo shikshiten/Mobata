@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mobata — High-Performance Automated Media Uploader for Telegram</title>
+  <meta name="description" content="Upload thousands of photos and multi-gigabyte 4K videos to private Telegram channels autonomously. Zero duplicates, auto-resume, FloodWait handling, and ISP anti-throttling." />
+  <link rel="icon" type="image/png" href="assets/logo-dark.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Ambient Glow Effects -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="#" class="brand">
+        <img src="assets/logo-dark.png" alt="Mobata Logo" class="brand-logo" />
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#why-mobata">Why Mobata?</a>
+        <a href="#setup">Setup Guide</a>
+        <a href="#cloud">Cloud & Docker</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="nav-actions">
+        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="btn btn-github">
+          <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          <span>Star on GitHub</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container hero-content">
+      <div class="badge-pill">
+        <span class="badge-dot"></span>
+        <span>v1.0.0 • Production Ready MTProto Uploader</span>
+      </div>
+      <h1 class="hero-title">
+        Upload 5,000+ Photos & Videos to Telegram <span class="gradient-text">Without Limits.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Bypass the strict 50 MB bot limit. Mobata handles multi-gigabyte 4K media, self-heals on rate limits, circumvents ISP throttling, and resumes seamlessly with zero duplicates.
+      </p>
+      <div class="hero-buttons">
+        <a href="#setup" class="btn btn-primary">Start Local Upload</a>
+        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="btn btn-secondary">
+          <span>View Source Code</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Live Terminal Simulation Preview -->
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <span class="terminal-title">mobata — python uploader.py</span>
+          <span class="terminal-badge">LIVE DEMO</span>
+        </div>
+        <div class="terminal-body" id="terminal-output">
+          <div class="term-line"><span class="c-cyan">[*]</span> Media Directory: C:\Media\Camera_Roll (5,242 items found)</div>
+          <div class="term-line"><span class="c-green">[✓]</span> Authenticated with Telegram MTProto session!</div>
+          <div class="term-line"><span class="c-green">[✓]</span> Connected to channel: "Private Archive" (-1003099948239)</div>
+          <div class="term-line term-sub">[*] Photos prioritized first for rapid transfer...</div>
+          <div class="term-line" id="term-progress-1">[3481/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - Done!</div>
+          <div class="term-line" id="term-progress-2">[3482/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - Done!</div>
+          <div class="term-line cursor-line"><span class="c-cyan">[3483/5242]</span> <span id="term-active-file">IMG_0812.jpg:</span> <span class="term-bar" id="term-bar">94%|█████████ | 2.9M/3.1M [00:01, 3.2MB/s]</span><span class="cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Core Features -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Engineered For Massive Media Batches</h2>
+        <p class="section-subtitle">Everything you need to archive gigabytes of personal footage with zero friction.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3>2 GB – 4 GB Unlocked</h3>
+          <p>Powered by native Telegram MTProto (Telethon User API). Eliminates the 50 MB bot barrier so you can upload full 4K videos without compression.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Zero-Loss Auto Resume</h3>
+          <p>Real-time persistent state tracking. If power cuts or your Wi-Fi disconnects, Mobata picks up at the exact file where it stopped without duplicating messages.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Hardware Acceleration</h3>
+          <p>Integrates compiled C <code>cryptg</code> AES-NI hardware encryption, delivering 20x to 80x faster uploads than standard pure-Python software encoders.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <h3>Anti-Throttling Protocol</h3>
+          <p>Uses <code>ConnectionTcpObfuscated</code> to bypass restrictive network firewalls and deep-packet inspection (DPI) that cause <code>WinError 64</code> drops.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🎥</div>
+          <h3>In-App Video Streaming</h3>
+          <p>Automatically flags uploaded videos with <code>supports_streaming=True</code> so they play instantly inside Telegram channels without waiting to download.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>Self-Healing Rate Limits</h3>
+          <p>Catches Telegram's <code>FloodWaitError</code> dynamically, pauses safely for the required duration, and resumes automatically without crashing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Matrix -->
+  <section class="section section-alt" id="why-mobata">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Why Mobata? Comparison Matrix</h2>
+        <p class="section-subtitle">See why traditional methods fall short when uploading thousands of files.</p>
+      </div>
+
+      <div class="table-container">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Telegram Desktop App</th>
+              <th>Standard Bot API</th>
+              <th class="col-highlight">Mobata (MTProto)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Max File Size</strong></td>
+              <td>2 GB (Manual Drag-and-Drop)</td>
+              <td>50 MB Strict Limit</td>
+              <td class="col-highlight"><strong>2 GB – 4 GB</strong></td>
+            </tr>
+            <tr>
+              <td><strong>5,000+ Batch Queue</strong></td>
+              <td>Freezes / UI Crashes</td>
+              <td>Fails on large videos</td>
+              <td class="col-highlight"><span class="tag-yes">Autonomous</span></td>
+            </tr>
+            <tr>
+              <td><strong>Auto-Resume on Disconnect</strong></td>
+              <td>❌ No</td>
+              <td>❌ No</td>
+              <td class="col-highlight"><span class="tag-yes">Zero Duplicates</span></td>
+            </tr>
+            <tr>
+              <td><strong>FloodWait Auto Recovery</strong></td>
+              <td>❌ Manual retry</td>
+              <td>❌ Crashes script</td>
+              <td class="col-highlight"><span class="tag-yes">Self-Healing</span></td>
+            </tr>
+            <tr>
+              <td><strong>ISP DPI / Throttling Bypass</strong></td>
+              <td>❌ No</td>
+              <td>❌ No</td>
+              <td class="col-highlight"><span class="tag-yes">Obfuscated TCP</span></td>
+            </tr>
+            <tr>
+              <td><strong>Headless / Cloud Support</strong></td>
+              <td>❌ Requires Desktop GUI</td>
+              <td>✅ Yes</td>
+              <td class="col-highlight"><span class="tag-yes">CLI / Docker / VPS</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Setup Guide Tabs -->
+  <section class="section" id="setup">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Get Started in 3 Minutes</h2>
+        <p class="section-subtitle">Choose your preferred setup method below.</p>
+      </div>
+
+      <div class="tab-container">
+        <div class="tab-nav">
+          <button class="tab-btn active" data-tab="local">💻 Local Machine</button>
+          <button class="tab-btn" data-tab="docker">🐳 Docker & NAS</button>
+          <button class="tab-btn" data-tab="cloud">☁️ Cloud (Koyeb / VPS)</button>
+          <button class="tab-btn" data-tab="n8n">⚙️ n8n Automation</button>
+        </div>
+
+        <!-- Local Tab -->
+        <div class="tab-pane active" id="tab-local">
+          <div class="setup-steps">
+            <div class="step-card">
+              <span class="step-num">1</span>
+              <div>
+                <h4>Clone Repository & Install Dependencies</h4>
+                <p>Ensure you have Python 3.9+ installed on Windows, macOS, or Linux.</p>
+                <div class="code-box">
+                  <code>git clone https://github.com/shikshiten/Mobata.git<br>cd Mobata<br>pip install -r requirements.txt</code>
+                  <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <span class="step-num">2</span>
+              <div>
+                <h4>Get Telegram API Credentials</h4>
+                <p>Visit <a href="https://my.telegram.org" target="_blank">my.telegram.org</a>, log in, open <strong>API Development Tools</strong>, and copy your <code>API ID</code> and <code>API HASH</code>.</p>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <span class="step-num">3</span>
+              <div>
+                <h4>Configure Environment (.env)</h4>
+                <p>Copy <code>.env.example</code> to <code>.env</code> and insert your details:</p>
+                <div class="code-box">
+                  <code>TELEGRAM_API_ID=12345678<br>TELEGRAM_API_HASH=your_api_hash_here<br>TELEGRAM_PHONE=+1234567890<br>TELEGRAM_CHANNEL_ID=-1001234567890<br>UPLOAD_FOLDER=C:\Pictures\Upload</code>
+                  <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <span class="step-num">4</span>
+              <div>
+                <h4>Run the Uploader</h4>
+                <p>Double-click <code>run_uploader.bat</code> on Windows or run:</p>
+                <div class="code-box">
+                  <code>python uploader.py</code>
+                  <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Docker Tab -->
+        <div class="tab-pane" id="tab-docker">
+          <div class="setup-steps">
+            <p>Deploy Mobata on TrueNAS, Unraid, Synology, or any local Docker engine.</p>
+            <div class="code-box">
+              <code>docker compose up -d<br>docker compose logs -f</code>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <p>Your media folder is mounted as a volume inside the container for continuous uploads.</p>
+          </div>
+        </div>
+
+        <!-- Cloud Tab -->
+        <div class="tab-pane" id="tab-cloud">
+          <div class="setup-steps">
+            <h4>Deploy on Koyeb / Heroku / Linux VPS</h4>
+            <p>Mobata includes a ready-to-use <code>Procfile</code> for background worker deployment:</p>
+            <div class="code-box">
+              <code>worker: python uploader.py</code>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <p>Set your environment variables in Koyeb/Heroku dashboard and trigger the deployment!</p>
+          </div>
+        </div>
+
+        <!-- n8n Tab -->
+        <div class="tab-pane" id="tab-n8n">
+          <div class="setup-steps">
+            <h4>Automate with n8n / Webhooks</h4>
+            <p>Automatically upload to Telegram whenever new photos arrive in Google Drive or Nextcloud:</p>
+            <div class="flow-diagram">
+              [Google Drive / Camera Sync] ➔ [n8n Trigger Node] ➔ [Save to Folder] ➔ [Mobata Uploads to Telegram Channel]
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section section-alt" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Is my account credentials or session file safe?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes, 100%. Mobata runs entirely on your local machine or private server. Credentials and sessions are strictly protected in <code>.gitignore</code> and never uploaded anywhere.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I pause and resume the upload process at any time?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. Press <code>Ctrl + C</code> at any time. Mobata saves every completed file immediately to <code>uploaded_history.txt</code>. Running the script again will skip already uploaded items.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What happens if Telegram rate limits (FloodWait) occur?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Mobata catches Telegram's FloodWait exception automatically, pauses the queue for the exact number of seconds required by the Telegram server, and then resumes cleanly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-left">
+        <img src="assets/logo-dark.png" alt="Mobata Logo" class="footer-logo" />
+        <p>High-performance automated media uploader for Telegram.</p>
+      </div>
+      <div class="footer-right">
+        <a href="https://github.com/shikshiten/Mobata" target="_blank">GitHub Repository</a>
+        <a href="https://github.com/shikshiten/Mobata/blob/main/LICENSE" target="_blank">MIT License</a>
+        <a href="http://mobata.unaux.com">Live Mirror</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Mobata. Open source software under the MIT License.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
