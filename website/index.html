@@ -585,6 +585,7 @@
       overflow: hidden;
       text-align: left;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      contain: layout paint;
     }
     .term-top {
       display: flex;
@@ -629,12 +630,42 @@
       font-weight: 800;
     }
     .term-content {
-      padding: 20px 24px;
-      font-size: 14px;
-      line-height: 1.8;
+      padding: 18px 22px;
+      font-size: 12.5px;
+      line-height: 24px;
       color: #e5e5ea;
+      height: 236px;
+      min-height: 236px;
+      max-height: 236px;
+      box-sizing: border-box;
+      overflow: hidden;
+      contain: layout paint;
     }
-    .term-row { margin-bottom: 4px; }
+    .term-row {
+      height: 24px;
+      line-height: 24px;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-sizing: border-box;
+    }
+    .term-row.live-upload-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    #t-file { flex-shrink: 0; }
+    #t-count { flex-shrink: 0; }
+    #t-meter {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1 1 auto;
+    }
+    .t-cursor { flex-shrink: 0; }
     .c-cyan { color: var(--term-cyan); font-weight: 700; }
     .c-green { color: var(--term-green); font-weight: 700; }
     .c-yellow { color: var(--term-yellow); font-weight: 700; }
@@ -1028,6 +1059,7 @@
       .nav-links { display: none; }
       .container { padding: 0 20px; }
       .hero-h1 { font-size: 40px; }
+      .term-content { font-size: 11px; padding: 14px 16px; }
     }
   </style>
 </head>
@@ -1136,12 +1168,12 @@
               <div class="term-row"><span class="c-cyan">[DIR]</span> Media Scan: C:\Photos\Master (5,242 items indexed)</div>
               <div class="term-row"><span class="c-cyan">[CHN]</span> Connected to channel: "Private Archive" (-1003099948239)</div>
               <div class="t-hr"></div>
-              <div class="term-row c-dim">[4776/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - <span class="c-green">Done!</span></div>
-              <div class="term-row c-dim">[4777/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - <span class="c-green">Done!</span></div>
-              <div class="term-row">
+              <div class="term-row c-dim">[4776/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [2.8MB/s] - <span class="c-green">Done!</span></div>
+              <div class="term-row c-dim">[4777/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [7.7MB/s] - <span class="c-green">Done!</span></div>
+              <div class="term-row live-upload-row">
                 <span class="c-yellow" id="t-count">[4778/5242]</span>
                 <span id="t-file" class="c-cyan">IMG_0812.jpg:</span>
-                <span id="t-meter">96%|█████████ | 2.9M/3.1M [00:01, 3.2MB/s]</span>
+                <span id="t-meter">96%|█████████ | 2.9M/3.1M [3.2MB/s]</span>
                 <span class="t-cursor">_</span>
               </div>
             </div>
@@ -1879,18 +1911,22 @@
       if (qP >= 100) {
         qP = 100;
         const cur = queue[qI % queue.length];
-        m.innerHTML = `100%|██████████| ${cur.size}/${cur.size} [00:01, ${cur.speed}] - <span class="c-green">Done!</span>`;
+        m.innerHTML = `100%|██████████| ${cur.size}/${cur.size} [${cur.speed}] - <span class="c-green">Done!</span>`;
         setTimeout(() => {
           qP = 15; qCnt++; qI++;
           const next = queue[qI % queue.length];
           if (c) c.innerText = `[${qCnt}/5242]`;
           f.innerText = next.name + ':';
-          m.innerText = `${qP}%|██        | ...`;
-        }, 700);
+          const nextVal = (parseFloat(next.size) * 0.15).toFixed(1);
+          const nextUnit = next.size.slice(-1);
+          m.innerText = `${qP}%|█         | ${nextVal}${nextUnit}/${next.size} [${next.speed}]`;
+        }, 800);
       } else {
         const cur = queue[qI % queue.length];
         const bc = Math.floor(qP / 10);
-        m.innerText = `${qP}%|${'█'.repeat(bc)}${' '.repeat(10 - bc)}| ... [${cur.speed}]`;
+        const curVal = (parseFloat(cur.size) * (qP / 100)).toFixed(1);
+        const unit = cur.size.slice(-1);
+        m.innerText = `${qP}%|${'█'.repeat(bc)}${' '.repeat(10 - bc)}| ${curVal}${unit}/${cur.size} [${cur.speed}]`;
       }
     }, 550);
 
