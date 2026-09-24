@@ -28,6 +28,11 @@
       --code-yellow: #ffd60a;
       --code-cyan: #64d2ff;
     }
+    html {
+      overflow-x: hidden;
+      max-width: 100vw;
+      width: 100%;
+    }
     * {
       margin: 0; padding: 0; box-sizing: border-box;
       font-family: 'Doto', sans-serif;
@@ -38,11 +43,15 @@
       line-height: 1.6;
       padding-bottom: 80px;
       overflow-x: hidden;
+      max-width: 100vw;
+      width: 100%;
     }
     .container {
       max-width: 1080px;
       margin: 0 auto;
       padding: 0 24px;
+      width: 100%;
+      box-sizing: border-box;
     }
     .nav-wrap {
       display: flex;
@@ -73,6 +82,25 @@
     }
     .capsule-nav a:hover, .capsule-nav a.active {
       color: #ffffff;
+    }
+    .nav-page-links {
+      display: inline-flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .nav-star-btn {
+      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 9999px;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .nav-star-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
     }
     .capsule-logo {
       height: 22px;
@@ -220,47 +248,110 @@
 
     @media (max-width: 768px) {
       body {
-        padding-bottom: 95px;
+        padding-bottom: 84px;
+        overflow-x: hidden;
+      }
+      .container {
+        padding: 0 16px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
       }
       .nav-wrap {
-        position: fixed;
-        top: auto;
-        bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-        left: 0;
-        right: 0;
+        position: sticky;
+        top: 8px;
+        padding: 0 12px;
         width: 100%;
         display: flex;
         justify-content: center;
         z-index: 9999;
-        pointer-events: none;
-        padding: 0;
       }
       .capsule-nav {
-        pointer-events: auto;
-        width: calc(100% - 24px);
-        max-width: 440px;
-        padding: 8px 12px;
-        gap: 6px;
-        justify-content: space-around;
-        background: rgba(10, 10, 15, 0.90);
-        backdrop-filter: blur(32px) saturate(200%);
-        -webkit-backdrop-filter: blur(32px) saturate(200%);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        box-shadow: 0 16px 45px rgba(0, 0, 0, 0.85);
+        width: 100%;
+        max-width: 100%;
+        padding: 6px 12px;
+        gap: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 9999px;
+        background: rgba(12, 12, 16, 0.92);
+        backdrop-filter: blur(28px) saturate(180%);
+        -webkit-backdrop-filter: blur(28px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75);
       }
-      .capsule-nav a {
-        font-size: 11.5px;
-        padding: 4px 6px;
+      .nav-page-links {
+        display: none;
       }
-      .hide-desktop { display: inline; }
-      .hide-mobile { display: none; }
-      h1 { font-size: 30px; }
-      .desc { font-size: 14.5px; }
-      .container { padding: 0 16px; }
-      .step-title { font-size: 18px; }
-      .code-box { font-size: 12px; }
-      .btn-bar { flex-direction: column; width: 100%; }
+      .nav-star-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 5px 10px;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 9999px;
+      }
+      .mobile-bottom-nav {
+        display: flex;
+      }
+      h1 { font-size: 28px; line-height: 1.2; word-break: break-word; }
+      .desc { font-size: 14px; max-width: 100%; }
+      .step-title { font-size: 17px; }
+      .code-box { font-size: 12px; padding: 12px 14px; }
+      .btn-bar { flex-direction: column; width: 100%; gap: 10px; }
       .btn-bar a { width: 100%; text-align: center; }
+    }
+
+    /* Apple-style Floating Bottom Pill Dock */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      background: rgba(12, 12, 16, 0.90);
+      backdrop-filter: blur(28px) saturate(200%);
+      -webkit-backdrop-filter: blur(28px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.16);
+      border-radius: 9999px;
+      padding: 5px 8px;
+      gap: 4px;
+      align-items: center;
+      max-width: calc(100% - 24px);
+    }
+    .mobile-bottom-nav a {
+      color: #9ca3af;
+      text-decoration: none;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 7px 11px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .mobile-bottom-nav a svg {
+      opacity: 0.8;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .mobile-bottom-nav a:hover,
+    .mobile-bottom-nav a:active {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .mobile-bottom-nav a.active {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.16);
+    }
+    .mobile-bottom-nav a:active svg {
+      transform: scale(1.15);
+      opacity: 1;
     }
   </style>
 </head>
@@ -269,15 +360,17 @@
   <!-- Floating Capsule Nav -->
   <div class="nav-wrap">
     <nav class="capsule-nav">
-      <a href="index.html" style="display:flex; align-items:center; gap:8px;">
+      <a href="index.html" class="nav-brand" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
         <img src="assets/mobata-icon.png" alt="Mobata" class="capsule-logo" />
-        <span style="font-weight:900; font-size:16px; color:#ffffff;">Mobata</span>
+        <span style="font-weight:900; font-size:15px; color:#ffffff;">Mobata</span>
       </a>
-      <a href="index.html"><span class="hide-desktop">Overview</span><span class="hide-mobile">← Back to Overview</span></a>
-      <a href="setup.html"><span class="hide-desktop">Local</span><span class="hide-mobile">Local Setup</span></a>
-      <a href="docker.html" class="active"><span class="hide-desktop">Docker</span><span class="hide-mobile">Docker & NAS</span></a>
-      <a href="cloud.html"><span class="hide-desktop">Cloud</span><span class="hide-mobile">Cloud / VPS</span></a>
-      <a href="https://github.com/shikshiten/Mobata" target="_blank" class="hide-mobile">GitHub ⭐</a>
+      <div class="nav-page-links">
+        <a href="index.html">← Back to Overview</a>
+        <a href="setup.html">Local Setup</a>
+        <a href="docker.html" class="active">Docker & NAS</a>
+        <a href="cloud.html">Cloud / VPS</a>
+      </div>
+      <a href="https://github.com/shikshiten/Mobata" target="_blank" class="nav-star-btn">GitHub ⭐</a>
     </nav>
   </div>
 
@@ -375,5 +468,37 @@ docker compose logs -f</pre>
       });
     }
   </script>
+  <!-- Mobile-only floating bottom pill navigation dock (visible < 768px) -->
+  <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+    <a href="index.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+      <span>Overview</span>
+    </a>
+    <a href="setup.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+        <line x1="8" y1="21" x2="16" y2="21"></line>
+        <line x1="12" y1="17" x2="12" y2="21"></line>
+      </svg>
+      <span>Local</span>
+    </a>
+    <a href="docker.html" class="active">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+      </svg>
+      <span>Docker</span>
+    </a>
+    <a href="cloud.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+      </svg>
+      <span>Cloud</span>
+    </a>
+  </nav>
+
 </body>
 </html>

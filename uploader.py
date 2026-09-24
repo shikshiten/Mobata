@@ -23,7 +23,7 @@ API_HASH = os.getenv("TELEGRAM_API_HASH", "").strip()
 PHONE = os.getenv("TELEGRAM_PHONE", "").strip()
 CHANNEL_ID = os.getenv("TELEGRAM_CHANNEL_ID", "").strip()
 INVITE_LINK = os.getenv("TELEGRAM_INVITE_LINK", "").strip()
-UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", r"C:\Users\jites\Documents\Upload").strip()
+UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "./media_uploads").strip()
 UPLOAD_DELAY = float(os.getenv("UPLOAD_DELAY", "0.5"))
 
 SESSION_NAME = "telethon_upload_session"
@@ -163,6 +163,7 @@ async def main():
         return
 
     # Use ConnectionTcpObfuscated to bypass ISP packet filtering
+    # timeout=300 prevents TimeoutError on large video uploads (50-250MB)
     client = TelegramClient(
         SESSION_NAME,
         API_ID,
@@ -170,7 +171,8 @@ async def main():
         connection=ConnectionTcpObfuscated,
         request_retries=10,
         connection_retries=10,
-        timeout=60
+        timeout=300,
+        flood_sleep_threshold=120
     )
 
     await client.start(phone=PHONE)
@@ -220,12 +222,14 @@ async def main():
                     pbar.update(delta)
                     last_bytes = current
 
-            max_retries = 5
+            # More retries for large files that are prone to network drops
+            max_retries = 8 if file_size > 50 * 1024 * 1024 else 5
             uploaded_ok = False
 
             for attempt in range(1, max_retries + 1):
                 try:
                     if not client.is_connected():
+                        print(f"[*] Reconnecting to Telegram...")
                         await client.connect()
 
                     await client.send_file(
@@ -258,12 +262,19 @@ async def main():
                     last_bytes = 0
                 except (ConnectionError, errors.RPCError, asyncio.TimeoutError, OSError) as e:
                     pbar.close()
+                    # Exponential backoff: 5s, 10s, 20s, 30s, 45s...
+                    backoff = min(5 * (2 ** (attempt - 1)), 60)
                     print(f"\n[!] Network drop on attempt {attempt}/{max_retries}: {e}")
                     if attempt < max_retries:
-                        await asyncio.sleep(3 * attempt)
+                        print(f"[*] Waiting {backoff}s before retry...")
+                        await asyncio.sleep(backoff)
                         try:
-                            if not client.is_connected():
-                                await client.connect()
+                            # Full disconnect-reconnect cycle for clean state
+                            await client.disconnect()
+                        except Exception:
+                            pass
+                        try:
+                            await client.connect()
                         except Exception:
                             pass
                         pbar = tqdm(
