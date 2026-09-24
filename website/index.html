@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mobata — High-Performance Automated Media Uploader for Telegram</title>
-  <meta name="description" content="Upload thousands of photos and multi-gigabyte 4K videos to private Telegram channels autonomously." />
+  <meta name="description" content="Upload thousands of photos and multi-gigabyte 4K videos to private Telegram channels autonomously with native C-accelerated MTProto engine." />
   <link rel="icon" type="image/png" href="assets/logo-dark.png" />
   
   <!-- Fonts -->
@@ -14,29 +14,82 @@
   
   <style>
     /* ==========================================================================
-       Mobata — Full-Width Apple Product(RED) & Obsidian Studio Edition
+       Mobata — Liquid Glass & Bloody Crimson Design System
        ========================================================================== */
     :root {
-      --bg-black: #000000;
-      --bg-canvas: #06070a;
-      --bg-card: rgba(255, 255, 255, 0.035);
-      --bg-card-hover: rgba(255, 255, 255, 0.065);
-      --border-subtle: rgba(255, 255, 255, 0.09);
-      --border-focus: rgba(255, 59, 48, 0.45);
+      --bg-black: #030102;
+      --bg-canvas: #060204;
+      --bg-obsidian: #090306;
+      
+      /* Liquid Glass Surface Tokens */
+      --glass-bg: rgba(25, 4, 8, 0.45);
+      --glass-card: rgba(35, 6, 12, 0.4);
+      --glass-card-hover: rgba(55, 10, 18, 0.55);
+      --glass-border: rgba(255, 35, 60, 0.16);
+      --glass-border-focus: rgba(255, 30, 50, 0.55);
+      --glass-specular: rgba(255, 255, 255, 0.08);
 
-      /* Apple Product(RED) Accents */
-      --red-primary: #ff3b30;
-      --red-hover: #e0241b;
-      --red-bright: #ff453a;
-      --red-crimson: #ff2d55;
-      --red-glow: rgba(255, 59, 48, 0.28);
+      /* Bloody Red Palette */
+      --blood-red: #e50914;
+      --blood-bright: #ff1a2d;
+      --blood-neon: #ff334b;
+      --blood-deep: #8b0000;
+      --blood-dark: #4a0004;
+      --blood-glow: rgba(229, 9, 20, 0.35);
+      --blood-glow-strong: rgba(255, 26, 45, 0.6);
 
       --text-main: #ffffff;
-      --text-muted: #a1a1a6;
-      --text-dim: #6e6e73;
+      --text-muted: #c4b5b8;
+      --text-dim: #7f6e72;
 
       --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", sans-serif;
       --font-doto: "Doto", sans-serif;
+
+      /* Transitions.dev Tokens */
+      --tabs-dur: 250ms;
+      --tabs-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --tabs-text-muted: rgba(210, 195, 200, 0.75);
+      --tabs-text-active: #ffffff;
+      --tabs-bar-bg: rgba(20, 4, 8, 0.7);
+      --tabs-pill-bg: linear-gradient(135deg, rgba(229, 9, 20, 0.85), rgba(139, 0, 0, 0.95));
+
+      --shimmer-dur: 2500ms;
+      --shimmer-base: #ff4d5d;
+      --shimmer-highlight: #ffffff;
+      --shimmer-band: 350%;
+      --shimmer-ease: linear;
+
+      --tt-in-dur: 150ms;
+      --tt-out-dur: 50ms;
+      --tt-scale: 0.98;
+      --tt-delay: 80ms;
+      --tt-in-ease: ease-out;
+      --tt-out-ease: ease-out;
+      --tt-move-dur: 160ms;
+      --tt-move-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --tt-bg: #1c0307;
+      --tt-fg: #fde8ea;
+
+      --tilt-perspective: 1000px;
+      --tilt-return: 1000ms;
+      --tilt-return-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --tilt-follow: 400ms;
+      --tilt-follow-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --tilt-glare-opacity: 0.38;
+      --tilt-glare-fade: 300ms;
+      --tilt-glare-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+      --morph-open-dur: 350ms;
+      --morph-close-dur: 250ms;
+      --morph-ease: cubic-bezier(0.34, 1.25, 0.64, 1);
+      --morph-close-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --morph-r-closed: 48px;
+      --morph-r-open: 20px;
+      --morph-fade-dur: 200ms;
+      --morph-slide: 30px;
+      --morph-rotate: 45deg;
+      --morph-scale: 0.97;
+      --morph-blur: 2px;
     }
 
     * {
@@ -59,6 +112,7 @@
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
       width: 100%;
+      position: relative;
     }
 
     .font-doto {
@@ -67,7 +121,7 @@
       font-variation-settings: "ROND" 0;
     }
 
-    /* Full-Width Wide Container */
+    /* Full-Width Canvas & Container */
     .container {
       width: 100%;
       max-width: 1420px;
@@ -77,13 +131,24 @@
       z-index: 2;
     }
 
-    /* Ambient Red Atmospheric Lighting */
+    /* Interactive Particle Scattering Canvas */
+    #particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Ambient Bloody Atmospheric Lighting */
     .ambient-glow {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 1000px;
+      height: 1200px;
       overflow: hidden;
       pointer-events: none;
       z-index: 0;
@@ -91,36 +156,41 @@
     .glow-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(160px);
+      filter: blur(140px);
     }
     .orb-1 {
-      top: -140px;
-      left: 25%;
-      width: 650px;
-      height: 650px;
-      background: radial-gradient(circle, rgba(255, 59, 48, 0.22), transparent 70%);
+      top: -120px;
+      left: 20%;
+      width: 750px;
+      height: 750px;
+      background: radial-gradient(circle, rgba(229, 9, 20, 0.28), rgba(139, 0, 0, 0.12) 60%, transparent 80%);
     }
     .orb-2 {
-      top: 280px;
-      right: 15%;
-      width: 550px;
-      height: 550px;
-      background: radial-gradient(circle, rgba(255, 45, 85, 0.16), transparent 70%);
+      top: 340px;
+      right: 10%;
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(255, 26, 45, 0.18), rgba(74, 0, 4, 0.08) 60%, transparent 80%);
     }
 
-    /* Global Nav (Full Width 44px) */
-    .global-nav {
-      height: 44px;
-      background-color: var(--bg-black);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    /* ==========================================================================
+       Unified Apple Liquid-Glass Navigation Bar (Single, Sleek, No Duplicates)
+       ========================================================================== */
+    .unified-nav {
+      height: 56px;
+      background: rgba(8, 2, 4, 0.72);
+      backdrop-filter: blur(28px) saturate(190%);
+      -webkit-backdrop-filter: blur(28px) saturate(190%);
+      border-bottom: 1px solid var(--glass-border);
       position: sticky;
       top: 0;
       z-index: 1000;
       display: flex;
       align-items: center;
       width: 100%;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 -1px 0 0 rgba(255, 26, 45, 0.1);
     }
-    .nav-container {
+    .nav-inner {
       width: 100%;
       max-width: 1420px;
       margin: 0 auto;
@@ -129,163 +199,169 @@
       justify-content: space-between;
       align-items: center;
     }
-    .nav-brand {
+    .nav-left {
       display: flex;
       align-items: center;
+      gap: 14px;
     }
-    .nav-brand img {
-      height: 24px;
+    .nav-logo-link {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+    .nav-logo-link:hover {
+      opacity: 0.85;
+    }
+    .nav-logo-img {
+      height: 28px;
       width: auto;
       display: block;
     }
+    .nav-badge-ver {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--blood-bright);
+      background: rgba(229, 9, 20, 0.14);
+      border: 1px solid rgba(255, 26, 45, 0.35);
+      padding: 3px 9px;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--blood-bright);
+      box-shadow: 0 0 8px var(--blood-neon);
+      animation: pulse-glow 2s infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
     .nav-menu {
       display: flex;
+      align-items: center;
       gap: 32px;
     }
     .nav-menu a {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 13px;
-      letter-spacing: -0.12px;
+      font-size: 13.5px;
+      font-weight: 500;
+      letter-spacing: -0.15px;
       transition: color 0.15s ease;
     }
     .nav-menu a:hover {
-      color: var(--red-bright);
-    }
-    .nav-github-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 12px;
-      padding: 5px 14px;
-      border-radius: 9999px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.2s ease;
-    }
-    .nav-github-pill:hover {
-      color: #ffffff;
-      background: rgba(255, 59, 48, 0.15);
-      border-color: var(--red-primary);
+      color: var(--blood-bright);
     }
 
-    /* Sub-Nav (Full Width 52px) */
-    .sub-nav {
-      height: 52px;
-      background: rgba(6, 7, 10, 0.82);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border-subtle);
-      position: sticky;
-      top: 44px;
-      z-index: 990;
+    .nav-actions {
       display: flex;
       align-items: center;
-      width: 100%;
+      gap: 16px;
     }
-    .sub-nav-content {
-      width: 100%;
-      max-width: 1420px;
-      margin: 0 auto;
-      padding: 0 40px;
-      display: flex;
-      justify-content: space-between;
+    .nav-btn-outline {
+      display: inline-flex;
       align-items: center;
-    }
-    .sub-nav-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .sub-brand-logo {
-      height: 30px;
-      width: auto;
-    }
-    .doto-ver {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--red-bright);
-      background: rgba(255, 59, 48, 0.12);
-      border: 1px solid rgba(255, 59, 48, 0.3);
-      padding: 2px 8px;
-      border-radius: 6px;
-    }
-    .sub-nav-right {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-    .sub-nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 14px;
-      transition: color 0.15s ease;
-    }
-    .sub-nav-link:hover {
-      color: var(--red-bright);
-    }
-    .apple-pill-btn {
-      background-color: var(--red-primary);
+      gap: 7px;
       color: #ffffff;
       text-decoration: none;
-      font-size: 13.5px;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 15px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      transition: all 0.2s ease;
+    }
+    .nav-btn-outline:hover {
+      background: rgba(229, 9, 20, 0.18);
+      border-color: var(--blood-bright);
+      box-shadow: 0 0 14px rgba(229, 9, 20, 0.3);
+    }
+    .nav-btn-primary {
+      background: linear-gradient(135deg, var(--blood-bright), var(--blood-red));
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13px;
       font-weight: 600;
       padding: 7px 18px;
       border-radius: 9999px;
-      transition: all 0.15s ease;
+      box-shadow: 0 0 16px rgba(229, 9, 20, 0.35);
+      transition: all 0.2s ease;
     }
-    .apple-pill-btn:hover {
-      background-color: var(--red-hover);
-      box-shadow: 0 0 16px var(--red-glow);
+    .nav-btn-primary:hover {
+      box-shadow: 0 0 24px var(--blood-glow-strong);
+      transform: translateY(-1px);
     }
 
-    /* Hero Section (Wide Screen Full Expansion) */
+    /* ==========================================================================
+       Liquid Glass Card & Surfaces
+       ========================================================================== */
+    .liquid-glass {
+      background: var(--glass-card);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      box-shadow: 
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 0 24px 0 rgba(229, 9, 20, 0.08),
+        0 20px 50px rgba(0, 0, 0, 0.65);
+      border-radius: 20px;
+    }
+
+    /* ==========================================================================
+       Hero Section
+       ========================================================================== */
     .hero {
-      padding: 90px 0 70px;
+      padding: 96px 0 76px;
       text-align: center;
       width: 100%;
+      position: relative;
+      z-index: 2;
     }
-    .doto-pill {
+    .hero-badge-wrap {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       font-size: 12.5px;
       font-weight: 700;
       letter-spacing: 1px;
-      color: var(--red-bright);
-      background: rgba(255, 59, 48, 0.1);
-      border: 1px solid rgba(255, 59, 48, 0.35);
-      padding: 7px 22px;
+      background: rgba(229, 9, 20, 0.12);
+      border: 1px solid rgba(255, 26, 45, 0.4);
+      padding: 8px 24px;
       border-radius: 9999px;
-      margin-bottom: 26px;
-    }
-    .dot-light {
-      width: 8px;
-      height: 8px;
-      background-color: var(--red-primary);
-      border-radius: 50%;
-      box-shadow: 0 0 12px var(--red-primary);
+      box-shadow: 0 0 20px rgba(229, 9, 20, 0.2);
     }
     .hero-h1 {
-      font-size: 64px;
+      font-size: 68px;
       font-weight: 800;
-      line-height: 1.06;
-      letter-spacing: -0.035em;
-      margin-bottom: 22px;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin-bottom: 24px;
     }
-    .grad-txt {
-      background: linear-gradient(135deg, #ffffff 40%, var(--red-bright) 75%, var(--red-crimson) 100%);
+    .grad-txt-blood {
+      background: linear-gradient(135deg, #ffffff 30%, #ff4d5d 70%, #e50914 95%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     .hero-p {
-      font-size: 22px;
+      font-size: 21px;
       color: var(--text-muted);
-      max-width: 840px;
-      margin: 0 auto 40px;
-      line-height: 1.45;
+      max-width: 860px;
+      margin: 0 auto 44px;
+      line-height: 1.5;
     }
     .hero-actions {
       display: flex;
@@ -293,67 +369,76 @@
       gap: 18px;
       margin-bottom: 64px;
     }
-    .btn-main {
-      background-color: var(--red-primary);
+    .btn-main-blood {
+      background: linear-gradient(135deg, #ff1a2d 0%, #b30006 100%);
       color: #ffffff;
-      font-size: 17px;
+      font-size: 16.5px;
       font-weight: 600;
-      padding: 13px 30px;
+      padding: 14px 34px;
       border-radius: 9999px;
       text-decoration: none;
-      transition: all 0.2s ease;
+      box-shadow: 0 0 26px var(--blood-glow-strong), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+      transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
       display: inline-flex;
       align-items: center;
+      gap: 8px;
     }
-    .btn-main:hover {
-      background-color: var(--red-hover);
-      box-shadow: 0 0 30px var(--red-glow);
-      transform: translateY(-1px);
+    .btn-main-blood:hover {
+      box-shadow: 0 0 40px rgba(255, 26, 45, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
     }
-    .btn-main:active {
-      transform: scale(0.96);
+    .btn-main-blood:active {
+      transform: scale(0.97);
     }
-    .btn-ghost {
-      background: rgba(255, 255, 255, 0.08);
+    .btn-ghost-blood {
+      background: rgba(255, 255, 255, 0.04);
       color: #ffffff;
-      border: 1px solid var(--border-subtle);
-      font-size: 17px;
+      border: 1px solid var(--glass-border);
+      font-size: 16.5px;
       font-weight: 500;
-      padding: 13px 30px;
+      padding: 14px 32px;
       border-radius: 9999px;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      backdrop-filter: blur(14px);
       transition: all 0.2s ease;
     }
-    .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.3);
-      transform: translateY(-1px);
+    .btn-ghost-blood:hover {
+      background: rgba(229, 9, 20, 0.15);
+      border-color: var(--blood-bright);
+      box-shadow: 0 0 20px rgba(229, 9, 20, 0.25);
+      transform: translateY(-2px);
     }
 
-    /* Terminal Stage (Wide Expand) */
+    /* ==========================================================================
+       Terminal Showcase
+       ========================================================================== */
     .terminal-stage {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
     }
     .terminal-frame {
-      background: #08090e;
+      background: rgba(10, 2, 5, 0.85);
       border-radius: 20px;
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--glass-border);
       overflow: hidden;
       text-align: left;
-      box-shadow: rgba(0, 0, 0, 0.75) 0 30px 80px, rgba(255, 59, 48, 0.12) 0 0 50px;
+      box-shadow: 
+        0 30px 80px rgba(0, 0, 0, 0.8), 
+        0 0 50px rgba(229, 9, 20, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(30px);
     }
     .term-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 22px;
-      background: #101118;
-      border-bottom: 1px solid var(--border-subtle);
+      padding: 15px 24px;
+      background: rgba(20, 4, 8, 0.9);
+      border-bottom: 1px solid var(--glass-border);
     }
     .term-dots {
       display: flex;
@@ -364,40 +449,40 @@
       height: 11px;
       border-radius: 50%;
     }
-    .t-red { background: #ff5f56; }
-    .t-yellow { background: #ffbd2e; }
-    .t-green { background: #27c93f; }
+    .t-red { background: #ff453a; box-shadow: 0 0 6px #ff453a; }
+    .t-yellow { background: #ff9f0a; }
+    .t-green { background: #32d74b; }
     .term-meta {
       font-size: 12px;
       color: var(--text-dim);
       letter-spacing: 0.5px;
     }
     .term-status {
-      font-size: 10.5px;
-      color: var(--red-bright);
-      background: rgba(255, 59, 48, 0.15);
-      border: 1px solid rgba(255, 59, 48, 0.3);
-      padding: 3px 9px;
-      border-radius: 4px;
+      font-size: 11px;
+      color: var(--blood-bright);
+      background: rgba(229, 9, 20, 0.15);
+      border: 1px solid rgba(255, 26, 45, 0.35);
+      padding: 3px 10px;
+      border-radius: 6px;
       letter-spacing: 1px;
-      font-weight: 700;
+      font-weight: 800;
     }
     .term-content {
-      padding: 24px 28px;
+      padding: 26px 30px;
       font-size: 14.5px;
       line-height: 1.85;
-      color: #e5e7eb;
+      color: #fce7e9;
     }
     .term-row { margin-bottom: 5px; }
-    .t-cyan { color: var(--red-bright); font-weight: 700; }
+    .t-blood { color: var(--blood-bright); font-weight: 700; }
     .t-dim { color: var(--text-dim); }
     .t-hr {
       height: 1px;
       background: rgba(255, 255, 255, 0.08);
-      margin: 12px 0;
+      margin: 14px 0;
     }
     .t-cursor {
-      color: var(--red-bright);
+      color: var(--blood-bright);
       animation: blink 0.8s infinite;
     }
     @keyframes blink {
@@ -405,181 +490,265 @@
       51%, 100% { opacity: 0; }
     }
 
-    /* Sections (Full Width Canvas) */
+    /* ==========================================================================
+       Sections
+       ========================================================================== */
     .section {
-      padding: 100px 0;
+      padding: 104px 0;
       position: relative;
       width: 100%;
+      z-index: 2;
     }
     .section-dark {
-      background: #050609;
-      border-top: 1px solid var(--border-subtle);
-      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(5, 1, 3, 0.6);
+      border-top: 1px solid rgba(255, 26, 45, 0.08);
+      border-bottom: 1px solid rgba(255, 26, 45, 0.08);
     }
     .sec-head {
       text-align: center;
-      max-width: 800px;
-      margin: 0 auto 60px;
+      max-width: 820px;
+      margin: 0 auto 64px;
     }
     .sec-tag {
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 1.5px;
-      color: var(--red-bright);
+      color: var(--blood-bright);
       margin-bottom: 12px;
     }
     .sec-title {
       font-size: 44px;
       font-weight: 800;
       letter-spacing: -0.025em;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
     .sec-desc {
       font-size: 19px;
       color: var(--text-muted);
     }
 
-    /* Metrics Grid (Expanded 1400px width) */
+    /* ==========================================================================
+       Transitions.dev: Card Hover Tilt & Glare
+       ========================================================================== */
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 28px;
     }
-    .metric-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
+    .t-tilt {
+      touch-action: none;
+    }
+    .t-tilt-card {
+      position: relative;
       border-radius: 20px;
-      padding: 44px 32px;
+      overflow: hidden;
+      transform:
+        perspective(var(--tilt-perspective))
+        rotateX(var(--tilt-rx, 0deg))
+        rotateY(var(--tilt-ry, 0deg));
+      transform-style: preserve-3d;
+      transition: transform var(--tilt-return) var(--tilt-return-ease), border-color 0.25s ease;
+      will-change: transform;
+      background: var(--glass-card);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      padding: 44px 34px;
       text-align: center;
-      transition: all 0.25s ease;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
     }
-    .metric-card:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--border-focus);
-      transform: translateY(-3px);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    .t-tilt-card.is-tilting {
+      transition: transform var(--tilt-follow) var(--tilt-follow-ease);
     }
+    .t-tilt.is-hover .t-tilt-card {
+      border-color: var(--blood-bright);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(229, 9, 20, 0.25);
+    }
+    .t-tilt-glare {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      mix-blend-mode: screen;
+      background:
+        radial-gradient(circle 120px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+          rgba(255, 100, 120, 0.45), rgba(229, 9, 20, 0.1) 52%, rgba(229, 9, 20, 0) 84%),
+        radial-gradient(circle 240px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+          rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.03) 58%, rgba(255, 255, 255, 0) 78%);
+      transition: opacity var(--tilt-glare-fade) var(--tilt-glare-ease);
+    }
+    .t-tilt.is-hover .t-tilt-glare {
+      opacity: var(--tilt-glare-opacity);
+    }
+
     .metric-num {
-      font-size: 60px;
+      font-size: 64px;
       font-weight: 800;
       color: #ffffff;
       line-height: 1;
       margin-bottom: 12px;
+      letter-spacing: -0.03em;
     }
     .metric-lbl {
       font-size: 18px;
-      font-weight: 600;
-      color: var(--red-bright);
-      margin-bottom: 10px;
+      font-weight: 700;
+      color: var(--blood-bright);
+      margin-bottom: 12px;
     }
     .metric-p {
       font-size: 15px;
       color: var(--text-muted);
-      line-height: 1.55;
+      line-height: 1.6;
     }
 
-    /* Features Grid (Expanded 1400px width) */
+    @media (prefers-reduced-motion: reduce) {
+      .t-tilt-card { transform: none !important; transition: none !important; }
+    }
+
+    /* ==========================================================================
+       Features Grid
+       ========================================================================== */
     .features-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 28px;
     }
     .feat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
+      background: var(--glass-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
       border-radius: 20px;
-      padding: 34px 28px;
+      padding: 36px 30px;
       transition: all 0.25s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
     .feat-card:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--border-focus);
-      transform: translateY(-3px);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+      background: var(--glass-card-hover);
+      border-color: var(--blood-bright);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(229, 9, 20, 0.2);
     }
     .feat-tag {
       font-size: 11.5px;
       font-weight: 800;
-      color: var(--red-bright);
-      letter-spacing: 1px;
+      color: var(--blood-bright);
+      letter-spacing: 1.5px;
       margin-bottom: 16px;
     }
     .feat-title {
-      font-size: 20px;
+      font-size: 21px;
       font-weight: 700;
       letter-spacing: -0.3px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .feat-p {
       font-size: 15px;
       color: var(--text-muted);
-      line-height: 1.55;
+      line-height: 1.6;
     }
 
-    /* Comparison Table (Full Width) */
+    /* ==========================================================================
+       Comparison Table
+       ========================================================================== */
     .table-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
+      background: var(--glass-card);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
       border-radius: 20px;
       overflow: hidden;
       width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
     }
     .comp-table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 16px;
+      font-size: 15.5px;
     }
     .comp-table th {
-      padding: 20px 26px;
-      background: rgba(255, 255, 255, 0.035);
+      padding: 22px 28px;
+      background: rgba(25, 4, 8, 0.6);
       color: #ffffff;
       font-weight: 700;
-      border-bottom: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--glass-border);
     }
     .comp-table td {
-      padding: 20px 26px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 20px 28px;
+      border-bottom: 1px solid rgba(255, 26, 45, 0.08);
       color: var(--text-muted);
     }
     .col-hi {
-      background: rgba(255, 59, 48, 0.08);
-      color: var(--red-bright) !important;
+      background: rgba(229, 9, 20, 0.1);
+      color: var(--blood-bright) !important;
       font-weight: 700;
     }
 
-    /* Setup Tabs (Wide) */
-    .tab-bar {
+    /* ==========================================================================
+       Transitions.dev: Sliding Tabs (Deployment Matrix)
+       ========================================================================== */
+    .tabs-wrapper {
       display: flex;
       justify-content: center;
-      gap: 12px;
       margin-bottom: 40px;
-      flex-wrap: wrap;
     }
-    .tab-btn {
-      background: var(--bg-card);
-      color: var(--text-muted);
-      border: 1px solid var(--border-subtle);
+    .t-tabs {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px;
+      border-radius: 48px;
+      background: var(--tabs-bar-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .t-tab {
+      position: relative;
+      appearance: none;
+      border: 0;
+      background: transparent;
+      height: 38px;
+      padding: 6px 20px;
+      color: var(--tabs-text-muted);
+      cursor: pointer;
+      border-radius: 48px;
       font-size: 14.5px;
       font-weight: 600;
-      padding: 12px 24px;
-      border-radius: 9999px;
-      cursor: pointer;
-      transition: all 0.15s ease;
+      z-index: 1;
+      transition: color var(--tabs-dur) var(--tabs-ease);
+      white-space: nowrap;
     }
-    .tab-btn:hover {
-      background: var(--bg-card-hover);
-      color: #ffffff;
+    .t-tab:not([aria-selected="true"]):hover,
+    .t-tab[aria-selected="true"] {
+      color: var(--tabs-text-active);
     }
-    .tab-btn.active {
-      background: rgba(255, 59, 48, 0.18);
-      border-color: var(--red-primary);
-      color: #ffffff;
+    .t-tabs-pill {
+      position: absolute;
+      top: 5px;
+      left: 0;
+      height: 38px;
+      width: 0;
+      background: var(--tabs-pill-bg);
+      border-radius: 48px;
+      transform: translateX(0);
+      transition:
+        transform var(--tabs-dur) var(--tabs-ease),
+        width     var(--tabs-dur) var(--tabs-ease);
+      will-change: transform, width;
+      z-index: 0;
+      pointer-events: none;
+      box-shadow: 0 0 20px rgba(229, 9, 20, 0.45);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .t-tabs-pill, .t-tab { transition: none !important; }
     }
 
     .pane-box {
       width: 100%;
-      max-width: 980px;
+      max-width: 1000px;
       margin: 0 auto;
     }
     .pane {
@@ -587,21 +756,30 @@
     }
     .pane.active {
       display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .step-card {
       display: flex;
       gap: 22px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
+      background: var(--glass-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
       border-radius: 20px;
-      padding: 26px;
-      margin-bottom: 18px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
     .step-badge {
-      width: 36px;
-      height: 36px;
-      background: rgba(255, 59, 48, 0.15);
-      color: var(--red-bright);
+      width: 38px;
+      height: 38px;
+      background: rgba(229, 9, 20, 0.16);
+      color: var(--blood-bright);
+      border: 1px solid rgba(255, 26, 45, 0.35);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -614,18 +792,19 @@
       flex-grow: 1;
     }
     .step-main h4 {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 700;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .step-main p {
-      font-size: 14.5px;
+      font-size: 15px;
       color: var(--text-muted);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
+      line-height: 1.55;
     }
     .code-box {
-      background: #090a10;
-      border: 1px solid var(--border-subtle);
+      background: rgba(10, 2, 4, 0.9);
+      border: 1px solid var(--glass-border);
       border-radius: 12px;
       padding: 16px 20px;
       font-family: var(--font-doto);
@@ -637,9 +816,9 @@
       line-height: 1.6;
     }
     .copy-pill {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       color: #ffffff;
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--glass-border);
       border-radius: 6px;
       font-size: 12.5px;
       padding: 5px 12px;
@@ -647,24 +826,229 @@
       transition: all 0.2s ease;
     }
     .copy-pill:hover {
-      background: var(--red-primary);
-      border-color: var(--red-primary);
+      background: var(--blood-bright);
+      border-color: var(--blood-bright);
+      box-shadow: 0 0 12px rgba(229, 9, 20, 0.4);
     }
 
-    /* FAQ (Expanded) */
+    /* ==========================================================================
+       Transitions.dev: Shimmer Text
+       ========================================================================== */
+    .t-shimmer {
+      position: relative;
+      display: inline-block;
+      color: var(--shimmer-base);
+    }
+    .t-shimmer::before {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        transparent 35%,
+        var(--shimmer-highlight) 50%,
+        transparent 65%,
+        transparent 100%
+      );
+      background-size: var(--shimmer-band) 100%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      animation: t-shimmer var(--shimmer-dur) var(--shimmer-ease) infinite;
+    }
+    @keyframes t-shimmer {
+      0%   { background-position: 100% 0; }
+      100% { background-position: 0% 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .t-shimmer::before { animation: none !important; }
+    }
+
+    /* ==========================================================================
+       Transitions.dev: Tooltip Open/Close
+       ========================================================================== */
+    .t-tt-group {
+      position: relative;
+      display: inline-flex;
+    }
+    .t-tt {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 0;
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 0;
+      overflow: hidden;
+      translate: var(--tt-x, 0px) 0;
+      scale: var(--tt-scale);
+      transform-origin: 50% 100%;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: var(--tt-bg);
+      color: var(--tt-fg);
+      border: 1px solid var(--glass-border);
+      white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 16px rgba(229, 9, 20, 0.25);
+      opacity: 0;
+      pointer-events: none;
+      font-size: 12.5px;
+      font-weight: 500;
+      z-index: 1000;
+      transition:
+        opacity   var(--tt-out-dur) var(--tt-out-ease),
+        scale     var(--tt-out-dur) var(--tt-out-ease),
+        translate var(--tt-move-dur) var(--tt-move-ease),
+        width     var(--tt-move-dur) var(--tt-move-ease);
+    }
+    .t-tt[data-show="true"] {
+      opacity: 1;
+      scale: 1;
+      transition:
+        opacity   var(--tt-in-dur) var(--tt-in-ease) var(--tt-delay),
+        scale     var(--tt-in-dur) var(--tt-in-ease) var(--tt-delay),
+        translate var(--tt-move-dur) var(--tt-move-ease),
+        width     var(--tt-move-dur) var(--tt-move-ease);
+    }
+    .t-tt-text { white-space: nowrap; }
+    @media (prefers-reduced-motion: reduce) {
+      .t-tt { transition: none !important; }
+    }
+
+    /* ==========================================================================
+       Transitions.dev: Plus to Menu Morph (Floating Quick Action)
+       ========================================================================== */
+    .morph-fixed-wrap {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      z-index: 999;
+    }
+    .t-morph {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--morph-r-closed);
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--blood-bright), #8b0000);
+      border: 1px solid rgba(255, 100, 120, 0.4);
+      box-shadow: 0 8px 30px rgba(229, 9, 20, 0.45);
+      transition:
+        width var(--morph-close-dur) var(--morph-close-ease),
+        height var(--morph-close-dur) var(--morph-close-ease),
+        border-radius var(--morph-close-dur) var(--morph-close-ease);
+    }
+    .t-morph[data-open="true"] {
+      width: 220px;
+      height: 200px;
+      border-radius: var(--morph-r-open);
+      background: rgba(25, 4, 8, 0.92);
+      backdrop-filter: blur(28px);
+      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(229, 9, 20, 0.3);
+      transition:
+        width var(--morph-open-dur) var(--morph-ease),
+        height var(--morph-open-dur) var(--morph-ease),
+        border-radius var(--morph-open-dur) var(--morph-ease);
+    }
+    .t-morph-plus {
+      position: absolute;
+      inset: auto 0 0 auto;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      color: #ffffff;
+      cursor: pointer;
+      z-index: 2;
+      transition:
+        opacity var(--morph-fade-dur) var(--morph-close-ease),
+        transform var(--morph-open-dur) var(--morph-close-ease),
+        filter var(--morph-fade-dur) var(--morph-close-ease);
+    }
+    .t-morph-plus svg {
+      transition: transform var(--morph-open-dur) var(--morph-close-ease);
+    }
+    .t-morph[data-open="true"] .t-morph-plus {
+      opacity: 0.85;
+      transform: none;
+      filter: none;
+      top: 10px;
+      right: 10px;
+      bottom: auto;
+      width: 28px;
+      height: 28px;
+    }
+    .t-morph[data-open="true"] .t-morph-plus svg {
+      transform: scale(var(--morph-scale)) rotate(var(--morph-rotate));
+    }
+    .t-morph-menu {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      padding: 16px;
+      transform: translateX(var(--morph-slide)) scale(var(--morph-scale));
+      filter: blur(var(--morph-blur));
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition:
+        opacity var(--morph-fade-dur) var(--morph-close-ease),
+        transform var(--morph-open-dur) var(--morph-close-ease),
+        filter var(--morph-fade-dur) var(--morph-close-ease);
+    }
+    .t-morph[data-open="true"] .t-morph-menu {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      filter: blur(0);
+      pointer-events: auto;
+    }
+    .morph-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background 0.15s ease;
+    }
+    .morph-item:hover {
+      background: rgba(229, 9, 20, 0.25);
+      color: var(--blood-bright);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .t-morph, .t-morph-plus, .t-morph-menu { transition: none !important; }
+    }
+
+    /* ==========================================================================
+       FAQ Section
+       ========================================================================== */
     .faq-wrap {
       width: 100%;
-      max-width: 980px;
+      max-width: 1000px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
     .faq-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
+      background: var(--glass-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
       border-radius: 16px;
       overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
     .faq-q {
       width: 100%;
@@ -672,8 +1056,8 @@
       background: none;
       border: none;
       color: #ffffff;
-      padding: 22px 26px;
-      font-size: 17px;
+      padding: 22px 28px;
+      font-size: 17.5px;
       font-weight: 600;
       display: flex;
       justify-content: space-between;
@@ -681,16 +1065,16 @@
       cursor: pointer;
     }
     .faq-sym {
-      font-size: 18px;
-      color: var(--red-bright);
-      transition: transform 0.2s ease;
+      font-size: 20px;
+      color: var(--blood-bright);
+      transition: transform 0.25s ease;
     }
     .faq-a {
       display: none;
-      padding: 0 26px 22px;
+      padding: 0 28px 24px;
       color: var(--text-muted);
-      font-size: 15px;
-      line-height: 1.6;
+      font-size: 15.5px;
+      line-height: 1.65;
     }
     .faq-card.open .faq-a {
       display: block;
@@ -699,35 +1083,39 @@
       transform: rotate(45deg);
     }
 
-    /* Global Footer (Full Width) */
+    /* ==========================================================================
+       Footer
+       ========================================================================== */
     .apple-footer {
-      background: #030406;
-      padding: 70px 0 35px;
-      border-top: 1px solid var(--border-subtle);
+      background: rgba(4, 1, 2, 0.9);
+      padding: 80px 0 40px;
+      border-top: 1px solid var(--glass-border);
       width: 100%;
+      position: relative;
+      z-index: 2;
     }
     .footer-row {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 36px;
-      margin-bottom: 50px;
+      gap: 40px;
+      margin-bottom: 54px;
     }
     .footer-logo {
       height: 32px;
       width: auto;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
     .footer-tag {
       color: var(--text-dim);
-      font-size: 14px;
-      max-width: 300px;
-      line-height: 1.5;
+      font-size: 14.5px;
+      max-width: 320px;
+      line-height: 1.55;
     }
     .footer-col h5 {
-      font-size: 14px;
+      font-size: 14.5px;
       font-weight: 700;
       color: #ffffff;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
     .footer-col ul {
       list-style: none;
@@ -740,13 +1128,13 @@
       transition: color 0.15s ease;
     }
     .footer-col ul li a:hover {
-      color: var(--red-bright);
+      color: var(--blood-bright);
     }
     .footer-bottom {
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding-top: 26px;
+      border-top: 1px solid rgba(255, 26, 45, 0.1);
+      padding-top: 28px;
       color: var(--text-dim);
-      font-size: 13px;
+      font-size: 13.5px;
       text-align: center;
     }
 
@@ -764,20 +1152,28 @@
 </head>
 <body>
 
-  <!-- Red Ambient Glow -->
+  <!-- Particle Scattering Canvas Background -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Bloody Red Atmospheric Lighting -->
   <div class="ambient-glow">
     <div class="glow-orb orb-1"></div>
     <div class="glow-orb orb-2"></div>
   </div>
 
-  <!-- Global Nav -->
-  <nav class="global-nav">
-    <div class="nav-container">
-      <div class="nav-brand">
-        <a href="#">
-          <img src="assets/logo-dark.png" alt="Mobata Logo" width="80" height="auto" />
+  <!-- Unified Apple Liquid-Glass Navigation Bar -->
+  <nav class="unified-nav">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a href="#" class="nav-logo-link">
+          <img src="assets/logo-dark.png" alt="Mobata Logo" class="nav-logo-img" width="84" height="28" />
         </a>
+        <div class="nav-badge-ver font-doto">
+          <span class="pulse-dot"></span>
+          <span>v1.0.0</span>
+        </div>
       </div>
+
       <div class="nav-menu">
         <a href="#overview">Overview</a>
         <a href="#features">Features</a>
@@ -785,43 +1181,42 @@
         <a href="#setup">Setup Guide</a>
         <a href="#faq">FAQ</a>
       </div>
-      <div>
-        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="nav-github-pill">
-          <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-          </svg>
-          <span>Star on GitHub</span>
-        </a>
+
+      <div class="nav-actions">
+        <!-- Transitions.dev Tooltip Group -->
+        <span class="t-tt-group">
+          <a href="https://github.com/shikshiten/Mobata" target="_blank" class="nav-btn-outline t-tt-trigger" data-tooltip="Star shikshiten/Mobata" aria-describedby="tt-nav">
+            <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            <span>GitHub</span>
+          </a>
+          <span class="t-tt" id="tt-nav" role="tooltip" aria-hidden="true" data-show="false">
+            <span class="t-tt-text"></span>
+          </span>
+        </span>
+
+        <a href="#setup" class="nav-btn-primary">Get Started</a>
       </div>
     </div>
   </nav>
 
-  <!-- Sub-Nav -->
-  <header class="sub-nav">
-    <div class="sub-nav-content">
-      <div class="sub-nav-left">
-        <img src="assets/logo-dark.png" alt="Mobata Logo" class="sub-brand-logo" width="70" height="auto" />
-        <span class="doto-ver font-doto">v1.0.0</span>
-      </div>
-      <div class="sub-nav-right">
-        <a href="#setup" class="sub-nav-link">Local Setup</a>
-        <a href="#setup" class="sub-nav-link">Docker</a>
-        <a href="#setup" class="sub-nav-link">Cloud & VPS</a>
-        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="apple-pill-btn">Clone Repo</a>
-      </div>
-    </div>
-  </header>
-
   <!-- Hero Section -->
   <main class="hero" id="overview">
     <div class="container">
-      <div class="doto-pill font-doto">
-        <span class="dot-light"></span> MTPROTO ENGINE • 4GB UNLOCKED • ZERO DUPLICATES
+      <div class="hero-badge-wrap">
+        <div class="hero-badge font-doto">
+          <span class="pulse-dot"></span>
+          <!-- Transitions.dev Shimmer Text -->
+          <span class="t-shimmer" data-text="MTPROTO ENGINE • 4GB UNLOCKED • ZERO DUPLICATES">
+            MTPROTO ENGINE • 4GB UNLOCKED • ZERO DUPLICATES
+          </span>
+        </div>
       </div>
       
       <h1 class="hero-h1">
         Upload 5,000+ Media Files.<br>
-        <span class="grad-txt">Without Limits.</span>
+        <span class="grad-txt-blood">Without Limits.</span>
       </h1>
       
       <p class="hero-p">
@@ -829,14 +1224,17 @@
       </p>
 
       <div class="hero-actions">
-        <a href="#setup" class="btn-main">Start Local Upload</a>
-        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="btn-ghost">
+        <a href="#setup" class="btn-main-blood">
+          <span>Start Local Upload</span>
+          <span>→</span>
+        </a>
+        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="btn-ghost-blood">
           <span>View Source Code</span>
           <span>›</span>
         </a>
       </div>
 
-      <!-- Terminal Stage (Expanded Width) -->
+      <!-- Terminal Stage (Expanded Liquid Glass) -->
       <div class="terminal-stage">
         <div class="terminal-frame">
           <div class="term-top">
@@ -849,14 +1247,14 @@
             <div class="term-status font-doto">ONLINE</div>
           </div>
           <div class="term-content">
-            <div class="term-row"><span class="t-cyan font-doto">[SYS]</span> Initializing Telethon MTProto Client... <span class="t-dim">Hardware AES-NI verified</span></div>
-            <div class="term-row"><span class="t-cyan font-doto">[DIR]</span> Media Scan: C:\Photos\Master (5,242 items indexed)</div>
-            <div class="term-row"><span class="t-cyan font-doto">[CHN]</span> Connected to channel: "Private Archive" (-1003099948239)</div>
+            <div class="term-row"><span class="t-blood font-doto">[SYS]</span> Initializing Telethon MTProto Client... <span class="t-dim">Hardware AES-NI verified</span></div>
+            <div class="term-row"><span class="t-blood font-doto">[DIR]</span> Media Scan: C:\Photos\Master (5,242 items indexed)</div>
+            <div class="term-row"><span class="t-blood font-doto">[CHN]</span> Connected to channel: "Private Archive" (-1003099948239)</div>
             <div class="t-hr"></div>
-            <div class="term-row font-doto t-dim">[3481/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - Done!</div>
-            <div class="term-row font-doto t-dim">[3482/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - Done!</div>
+            <div class="term-row font-doto t-dim">[4568/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - Done!</div>
+            <div class="term-row font-doto t-dim">[4569/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - Done!</div>
             <div class="term-row font-doto">
-              <span class="t-cyan font-doto" id="t-count">[3483/5242]</span>
+              <span class="t-blood font-doto" id="t-count">[4570/5242]</span>
               <span id="t-file" class="font-doto">IMG_0812.jpg:</span>
               <span id="t-meter" class="font-doto">94%|█████████ | 2.9M/3.1M [00:01, 3.2MB/s]</span>
               <span class="t-cursor font-doto">_</span>
@@ -867,7 +1265,7 @@
     </div>
   </main>
 
-  <!-- Metrics Section -->
+  <!-- Metrics Section (Transitions.dev Card Tilt & Glare) -->
   <section class="section section-dark">
     <div class="container">
       <div class="sec-head">
@@ -877,22 +1275,34 @@
       </div>
 
       <div class="metrics-grid">
-        <div class="metric-card">
-          <div class="metric-num font-doto">4 GB</div>
-          <div class="metric-lbl">Max File Size</div>
-          <p class="metric-p">Full-length 4K footage and multi-gigabyte videos uploaded without compression or quality loss.</p>
+        <!-- Tilt Card 1 -->
+        <div class="t-tilt">
+          <div class="t-tilt-card">
+            <div class="metric-num font-doto">4 GB</div>
+            <div class="metric-lbl">Max File Size</div>
+            <p class="metric-p">Full-length 4K footage and multi-gigabyte videos uploaded without compression or quality loss.</p>
+            <div class="t-tilt-glare"></div>
+          </div>
         </div>
 
-        <div class="metric-card">
-          <div class="metric-num font-doto">80×</div>
-          <div class="metric-lbl">C-Accelerated Speed</div>
-          <p class="metric-p">Native compiled <code>cryptg</code> AES-NI hardware encryption eliminates software CPU bottlenecks.</p>
+        <!-- Tilt Card 2 -->
+        <div class="t-tilt">
+          <div class="t-tilt-card">
+            <div class="metric-num font-doto">80×</div>
+            <div class="metric-lbl">C-Accelerated Speed</div>
+            <p class="metric-p">Native compiled <code>cryptg</code> AES-NI hardware encryption eliminates software CPU bottlenecks.</p>
+            <div class="t-tilt-glare"></div>
+          </div>
         </div>
 
-        <div class="metric-card">
-          <div class="metric-num font-doto">0</div>
-          <div class="metric-lbl">Duplicate Uploads</div>
-          <p class="metric-p">Persistent state tracking flushes every file instantly. Restarts pick up at the exact next item.</p>
+        <!-- Tilt Card 3 -->
+        <div class="t-tilt">
+          <div class="t-tilt-card">
+            <div class="metric-num font-doto">0</div>
+            <div class="metric-lbl">Duplicate Uploads</div>
+            <p class="metric-p">Persistent state tracking flushes every file instantly. Restarts pick up at the exact next item.</p>
+            <div class="t-tilt-glare"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -1008,23 +1418,28 @@
     </div>
   </section>
 
-  <!-- Setup Section -->
+  <!-- Setup Section (Transitions.dev Sliding Tabs) -->
   <section class="section" id="setup">
     <div class="container">
       <div class="sec-head">
         <div class="sec-tag font-doto">DEPLOYMENT MATRIX</div>
         <h2 class="sec-title">Get Started in 3 Minutes.</h2>
-        <p class="sec-desc">Choose your preferred operating environment.</p>
+        <p class="sec-desc">Choose your preferred operating environment with animated tabs.</p>
       </div>
 
-      <div class="tab-bar">
-        <button class="tab-btn active" data-tab="tab-local">💻 Local Machine</button>
-        <button class="tab-btn" data-tab="tab-docker">🐳 Docker & NAS</button>
-        <button class="tab-btn" data-tab="tab-cloud">☁️ Koyeb / Heroku / VPS</button>
-        <button class="tab-btn" data-tab="tab-n8n">⚙️ n8n Automation</button>
+      <!-- Transitions.dev Tabs Sliding Component -->
+      <div class="tabs-wrapper">
+        <div class="t-tabs" role="tablist">
+          <span class="t-tabs-pill" aria-hidden="true"></span>
+          <button class="t-tab" role="tab" aria-selected="true" data-tab="tab-local">💻 Local Machine</button>
+          <button class="t-tab" role="tab" aria-selected="false" data-tab="tab-docker">🐳 Docker & NAS</button>
+          <button class="t-tab" role="tab" aria-selected="false" data-tab="tab-cloud">☁️ Koyeb / Heroku / VPS</button>
+          <button class="t-tab" role="tab" aria-selected="false" data-tab="tab-n8n">⚙️ n8n Automation</button>
+        </div>
       </div>
 
       <div class="pane-box">
+        <!-- Local Tab -->
         <div class="pane active" id="tab-local">
           <div class="step-card">
             <div class="step-badge font-doto">01</div>
@@ -1042,7 +1457,7 @@
             <div class="step-badge font-doto">02</div>
             <div class="step-main">
               <h4>Obtain Free Telegram API Credentials</h4>
-              <p>Visit <a href="https://my.telegram.org" target="_blank" style="color:var(--red-bright)">my.telegram.org</a>, log in with your Telegram number, click <strong>API Development Tools</strong>, and copy your <code>API ID</code> and <code>API HASH</code>.</p>
+              <p>Visit <a href="https://my.telegram.org" target="_blank" style="color:var(--blood-bright)">my.telegram.org</a>, log in with your Telegram number, click <strong>API Development Tools</strong>, and copy your <code>API ID</code> and <code>API HASH</code>.</p>
             </div>
           </div>
 
@@ -1071,6 +1486,7 @@
           </div>
         </div>
 
+        <!-- Docker Tab -->
         <div class="pane" id="tab-docker">
           <div class="step-card">
             <div class="step-badge font-doto">01</div>
@@ -1085,6 +1501,7 @@
           </div>
         </div>
 
+        <!-- Cloud Tab -->
         <div class="pane" id="tab-cloud">
           <div class="step-card">
             <div class="step-badge font-doto">01</div>
@@ -1099,6 +1516,7 @@
           </div>
         </div>
 
+        <!-- n8n Tab -->
         <div class="pane" id="tab-n8n">
           <div class="step-card">
             <div class="step-badge font-doto">01</div>
@@ -1157,12 +1575,39 @@
     </div>
   </section>
 
+  <!-- Transitions.dev: Floating Plus to Menu Morph -->
+  <div class="morph-fixed-wrap">
+    <div class="t-morph" id="quick-morph" data-open="false">
+      <div class="t-morph-menu">
+        <div style="font-size: 11px; font-weight: 800; color: var(--blood-bright); letter-spacing: 1px; margin-bottom: 2px;">MOBATA QUICK MENU</div>
+        <a href="#setup" class="morph-item" onclick="toggleMorph(false)">
+          <span>⚡ Local Setup</span>
+        </a>
+        <a href="#comparison" class="morph-item" onclick="toggleMorph(false)">
+          <span>📊 Comparison</span>
+        </a>
+        <a href="https://github.com/shikshiten/Mobata" target="_blank" class="morph-item">
+          <span>⭐ Star on GitHub</span>
+        </a>
+        <a href="https://github.com/shikshiten/Mobata/blob/main/README.md" target="_blank" class="morph-item">
+          <span>📖 Full Docs</span>
+        </a>
+      </div>
+      <button class="t-morph-plus" id="morph-btn" aria-expanded="false" onclick="toggleMorph()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="apple-footer">
     <div class="container footer-row">
       <div>
         <img src="assets/logo-dark.png" alt="Mobata Logo" class="footer-logo" width="80" height="auto" />
-        <p class="footer-tag">High-performance automated media uploader for Telegram.</p>
+        <p class="footer-tag">High-performance automated media uploader for Telegram with native C-accelerated MTProto engine.</p>
       </div>
       <div class="footer-col">
         <h5>Documentation</h5>
@@ -1196,32 +1641,273 @@
     </div>
   </footer>
 
+  <!-- ==========================================================================
+       Interactive Scripts & Transitions.dev Implementations
+       ========================================================================== -->
   <script>
-    // Tab switching
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    // ---------------------------------------------------------
+    // 1. Particle Scattering Motion Background Canvas
+    // ---------------------------------------------------------
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 140 };
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mouseout', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.baseX = this.x;
+        this.baseY = this.y;
+        this.size = Math.random() * 2.2 + 0.6;
+        this.vx = (Math.random() - 0.5) * 0.6;
+        this.vy = -(Math.random() * 0.7 + 0.2); // Gentle upward float
+        this.density = Math.random() * 25 + 5;
+        this.alpha = Math.random() * 0.6 + 0.2;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Wrap boundaries
+        if (this.y < 0) {
+          this.y = canvas.height;
+          this.x = Math.random() * canvas.width;
+        }
+        if (this.x < 0) this.x = canvas.width;
+        if (this.x > canvas.width) this.x = 0;
+
+        // Mouse scattering physics
+        if (mouse.x !== null && mouse.y !== null) {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < mouse.radius) {
+            let forceDirectionX = dx / distance;
+            let forceDirectionY = dy / distance;
+            let force = (mouse.radius - distance) / mouse.radius;
+            let directionX = forceDirectionX * force * this.density * 0.6;
+            let directionY = forceDirectionY * force * this.density * 0.6;
+            this.x -= directionX;
+            this.y -= directionY;
+          }
+        }
+      }
+      draw() {
+        ctx.fillStyle = `rgba(255, 35, 60, ${this.alpha})`;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#e50914';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    const particleCount = Math.min(Math.floor(window.innerWidth / 15), 110);
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+
+        // Subtle connecting constellation lines between close particles
+        for (let j = i + 1; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 90) {
+            ctx.strokeStyle = `rgba(229, 9, 20, ${0.15 * (1 - dist / 90)})`;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // ---------------------------------------------------------
+    // 2. Transitions.dev: Tabs Sliding Implementation
+    // ---------------------------------------------------------
+    const tabsContainer = document.querySelector('.t-tabs');
+    const tabsPill = document.querySelector('.t-tabs-pill');
+    const tabs = document.querySelectorAll('.t-tab');
+
+    function snapTabsPill(activeTab, animate = true) {
+      if (!tabsPill || !activeTab) return;
+      if (!animate) {
+        tabsPill.style.transition = 'none';
+      }
+      tabsPill.style.transform = `translateX(${activeTab.offsetLeft}px)`;
+      tabsPill.style.width = `${activeTab.offsetWidth}px`;
+      if (!animate) {
+        // Force reflow
+        void tabsPill.offsetHeight;
+        tabsPill.style.transition = '';
+      }
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+        tab.setAttribute('aria-selected', 'true');
+        snapTabsPill(tab, true);
+
+        // Switch panels
+        const targetId = tab.dataset.tab;
         document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
-        btn.classList.add('active');
-        const target = document.getElementById(btn.dataset.tab);
-        if (target) target.classList.add('active');
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) targetPane.classList.add('active');
       });
     });
 
-    // FAQ Accordion
+    // Snap on load & resize without animation
+    window.addEventListener('load', () => {
+      const activeTab = document.querySelector('.t-tab[aria-selected="true"]');
+      snapTabsPill(activeTab, false);
+    });
+    window.addEventListener('resize', () => {
+      const activeTab = document.querySelector('.t-tab[aria-selected="true"]');
+      snapTabsPill(activeTab, false);
+    });
+
+    // ---------------------------------------------------------
+    // 3. Transitions.dev: Card Hover Tilt & Glare Implementation
+    // ---------------------------------------------------------
+    document.querySelectorAll('.t-tilt').forEach(wrapper => {
+      const card = wrapper.querySelector('.t-tilt-card');
+      if (!card) return;
+
+      wrapper.addEventListener('pointerenter', () => {
+        wrapper.classList.add('is-hover');
+        card.classList.add('is-tilting');
+      });
+
+      wrapper.addEventListener('pointermove', (e) => {
+        const rect = wrapper.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const px = (x / rect.width) * 2 - 1;   // -1 to 1
+        const py = (y / rect.height) * 2 - 1;  // -1 to 1
+
+        const rx = -py * 12; // tilt degrees
+        const ry = px * 12;
+
+        const gx = (x / rect.width) * 100;
+        const gy = (y / rect.height) * 100;
+
+        wrapper.style.setProperty('--tilt-rx', `${rx.toFixed(2)}deg`);
+        wrapper.style.setProperty('--tilt-ry', `${ry.toFixed(2)}deg`);
+        wrapper.style.setProperty('--tilt-gx', `${gx.toFixed(1)}%`);
+        wrapper.style.setProperty('--tilt-gy', `${gy.toFixed(1)}%`);
+      });
+
+      wrapper.addEventListener('pointerleave', () => {
+        wrapper.classList.remove('is-hover');
+        card.classList.remove('is-tilting');
+        wrapper.style.setProperty('--tilt-rx', '0deg');
+        wrapper.style.setProperty('--tilt-ry', '0deg');
+      });
+    });
+
+    // ---------------------------------------------------------
+    // 4. Transitions.dev: Tooltip Open/Close Implementation
+    // ---------------------------------------------------------
+    document.querySelectorAll('.t-tt-group').forEach(group => {
+      const tooltip = group.querySelector('.t-tt');
+      const textElem = tooltip ? tooltip.querySelector('.t-tt-text') : null;
+      if (!tooltip || !textElem) return;
+
+      const triggers = group.querySelectorAll('.t-tt-trigger');
+      triggers.forEach(trigger => {
+        trigger.addEventListener('mouseenter', () => {
+          const text = trigger.getAttribute('data-tooltip') || '';
+          textElem.textContent = text;
+          tooltip.dataset.show = 'true';
+          tooltip.setAttribute('aria-hidden', 'false');
+
+          const trigRect = trigger.getBoundingClientRect();
+          const grpRect = group.getBoundingClientRect();
+          const x = trigRect.left - grpRect.left;
+          tooltip.style.setProperty('--tt-x', `${x}px`);
+          tooltip.style.width = `${trigRect.width}px`;
+        });
+
+        trigger.addEventListener('mouseleave', () => {
+          tooltip.dataset.show = 'false';
+          tooltip.setAttribute('aria-hidden', 'true');
+        });
+      });
+    });
+
+    // ---------------------------------------------------------
+    // 5. Transitions.dev: Plus to Menu Morph
+    // ---------------------------------------------------------
+    function toggleMorph(force) {
+      const morph = document.getElementById('quick-morph');
+      const btn = document.getElementById('morph-btn');
+      if (!morph || !btn) return;
+      const isOpen = force !== undefined ? force : morph.getAttribute('data-open') === 'true';
+      const next = !isOpen;
+      morph.setAttribute('data-open', next ? 'true' : 'false');
+      btn.setAttribute('aria-expanded', next ? 'true' : 'false');
+    }
+
+    // Close morph menu on click outside
+    document.addEventListener('click', (e) => {
+      const morph = document.getElementById('quick-morph');
+      if (morph && !morph.contains(e.target) && morph.getAttribute('data-open') === 'true') {
+        toggleMorph(false);
+      }
+    });
+
+    // ---------------------------------------------------------
+    // 6. FAQ Accordion
+    // ---------------------------------------------------------
     document.querySelectorAll('.faq-q').forEach(btn => {
       btn.addEventListener('click', () => {
         btn.closest('.faq-card').classList.toggle('open');
       });
     });
 
-    // Copy Code Snippet
+    // ---------------------------------------------------------
+    // 7. Copy Code Snippet
+    // ---------------------------------------------------------
     function copySnippet(btn) {
       const code = btn.closest('.code-box').querySelector('code').innerText;
       navigator.clipboard.writeText(code).then(() => {
         const orig = btn.innerText;
         btn.innerText = 'Copied';
-        btn.style.backgroundColor = '#ff3b30';
+        btn.style.backgroundColor = '#ff1a2d';
         setTimeout(() => {
           btn.innerText = orig;
           btn.style.backgroundColor = '';
@@ -1229,14 +1915,16 @@
       });
     }
 
-    // Live terminal animation
+    // ---------------------------------------------------------
+    // 8. Live Terminal Telemetry Animation
+    // ---------------------------------------------------------
     const queue = [
       { name: 'IMG_2026_0918.jpg', size: '3.4M', speed: '3.2MB/s' },
       { name: 'PXL_VACATION_4K.mp4', size: '142M', speed: '7.8MB/s' },
       { name: 'DSC_NIGHT_RAW.jpg', size: '4.1M', speed: '3.1MB/s' },
       { name: 'TRIP_DOCUMENTARY.mkv', size: '1.2G', speed: '8.4MB/s' }
     ];
-    let qI = 0, qP = 30, qCnt = 3483;
+    let qI = 0, qP = 30, qCnt = 4570;
     setInterval(() => {
       const f = document.getElementById('t-file'), m = document.getElementById('t-meter'), c = document.getElementById('t-count');
       if (!f || !m) return;
