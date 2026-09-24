@@ -47,6 +47,7 @@ Unlike standard Telegram bots that are artificially throttled and strictly cappe
 * ✦ **Hardware Accelerated (`cryptg`)**: Uses compiled C AES-NI hardware encryption, delivering 20x to 80x faster uploads than standard pure-Python libraries.
 * ✦ **Anti-Throttling Protocol**: Employs `ConnectionTcpObfuscated` to bypass restrictive Wi-Fi networks, firewalls, and ISP deep-packet inspection (DPI).
 * ✦ **Streamable Video Formatting**: Automatically flags uploaded videos with `supports_streaming=True` so they play instantly inside Telegram.
+* ✦ **Content-Aware Media Detection**: Reads magic bytes to accurately detect Motion Photos and MP4 videos even if saved with a `.jpg` extension, auto-routing files > 10 MB as uncompressed documents to seamlessly bypass Telegram's 10 MB photo cap.
 * ✦ **Smart Priority Queue**: Automatically prioritizes smaller photos first to ensure rapid progress, followed by large videos.
 * ✦ **Atomic Instance Protection**: Includes built-in process locking (`uploader.lock`) to prevent concurrent session conflicts.
 
