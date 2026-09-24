@@ -9,10 +9,10 @@
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
   <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png" />
   
-  <!-- Doto Font Everywhere -->
+  <!-- Inter (Modern, crisp, Apple/Vercel standard) + JetBrains Mono (Terminal/Code) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
     /* ==========================================================================
@@ -82,8 +82,13 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Doto', sans-serif !important;
-      font-variation-settings: "ROND" 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .term-content, .term-row, .t-think, .term-meta, .t-matrix, code, pre, .mono-code {
+      font-family: 'JetBrains Mono', 'SF Mono', Consolas, Menlo, monospace !important;
     }
 
     html {
