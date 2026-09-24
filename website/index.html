@@ -289,22 +289,7 @@
       transition: transform var(--tilt-follow) var(--tilt-follow-ease);
     }
     .t-tilt-glare {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0;
-      mix-blend-mode: screen;
-      background:
-        radial-gradient(circle 95px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
-          rgba(255,255,255,0.48), rgba(255,255,255,0.06) 52%, rgba(255,255,255,0) 84%),
-        radial-gradient(circle 200px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
-          rgba(255,255,255,0.22), rgba(255,255,255,0.04) 58%, rgba(255,255,255,0) 78%),
-        radial-gradient(circle 360px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
-          rgba(255,255,255,0.10), rgba(255,255,255,0) 88%);
-      transition: opacity var(--tilt-glare-fade) var(--tilt-glare-ease);
-    }
-    .t-tilt.is-hover .t-tilt-glare {
-      opacity: var(--tilt-glare-opacity);
+      display: none !important;
     }
     @media (prefers-reduced-motion: reduce) {
       .t-tilt-card { transform: none !important; transition: none !important; }
@@ -1160,7 +1145,6 @@
                 <span class="t-cursor">_</span>
               </div>
             </div>
-            <div class="t-tilt-glare"></div>
           </div>
         </div>
 
@@ -1198,7 +1182,6 @@
                 <span class="sc-dot"></span>
               </div>
             </div>
-            <div class="t-tilt-glare"></div>
           </div>
 
           <!-- Card 2 -->
@@ -1219,7 +1202,6 @@
                 <span class="sc-dot"></span>
               </div>
             </div>
-            <div class="t-tilt-glare"></div>
           </div>
 
           <!-- Card 3 -->
@@ -1240,7 +1222,6 @@
                 <span class="sc-dot"></span>
               </div>
             </div>
-            <div class="t-tilt-glare"></div>
           </div>
 
           <!-- Card 4 -->
@@ -1261,7 +1242,6 @@
                 <span class="sc-dot"></span>
               </div>
             </div>
-            <div class="t-tilt-glare"></div>
           </div>
 
           <!-- Card 5 -->
@@ -1282,7 +1262,6 @@
                 <span class="sc-dot"></span>
               </div>
             </div>
-            <div class="t-tilt-glare"></div>
           </div>
 
           <!-- Card 6 -->
@@ -1303,7 +1282,6 @@
                 <span class="sc-dot active"></span>
               </div>
             </div>
-            <div class="t-tilt-glare"></div>
           </div>
 
         </div>
@@ -1329,7 +1307,6 @@
             <div class="metric-num">4 GB</div>
             <div class="metric-lbl">Max File Size</div>
             <p class="metric-p">Full-length 4K footage and multi-gigabyte videos uploaded without compression or quality loss.</p>
-            <div class="t-tilt-glare"></div>
           </div>
         </div>
 
@@ -1339,7 +1316,6 @@
             <div class="metric-num">80×</div>
             <div class="metric-lbl">C-Accelerated Speed</div>
             <p class="metric-p">Native compiled <code>cryptg</code> AES-NI hardware encryption eliminates software CPU bottlenecks.</p>
-            <div class="t-tilt-glare"></div>
           </div>
         </div>
 
@@ -1349,7 +1325,6 @@
             <div class="metric-num">0</div>
             <div class="metric-lbl">Duplicate Uploads</div>
             <p class="metric-p">Persistent state tracking flushes every file instantly. Restarts pick up at the exact next item.</p>
-            <div class="t-tilt-glare"></div>
           </div>
         </div>
       </div>
@@ -1414,7 +1389,6 @@
               </tr>
             </tbody>
           </table>
-          <div class="t-tilt-glare"></div>
         </div>
       </div>
     </div>
@@ -1442,7 +1416,6 @@
               <span>Read Local Setup Guide</span>
               <span>→</span>
             </div>
-            <div class="t-tilt-glare"></div>
           </a>
         </div>
 
@@ -1458,7 +1431,6 @@
               <span>Read Docker Guide</span>
               <span>→</span>
             </div>
-            <div class="t-tilt-glare"></div>
           </a>
         </div>
 
@@ -1474,7 +1446,6 @@
               <span>Read Cloud & n8n Guide</span>
               <span>→</span>
             </div>
-            <div class="t-tilt-glare"></div>
           </a>
         </div>
       </div>
