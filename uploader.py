@@ -2,6 +2,13 @@ import os
 import sys
 import time
 import asyncio
+
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 from pathlib import Path
 from dotenv import load_dotenv
 from telethon import TelegramClient, errors, types, functions, utils, helpers
@@ -99,7 +106,7 @@ async def resolve_channel(client: TelegramClient):
         try:
             channel_int = int(CHANNEL_ID)
             target_entity = await client.get_entity(channel_int)
-            print(f"[✓] Connected to channel: {getattr(target_entity, 'title', channel_int)}")
+            print(f"[OK] Connected to channel: {getattr(target_entity, 'title', channel_int)}")
             return target_entity
         except Exception as e:
             print(f"[!] Could not resolve channel by ID ({e}). Trying invite link...")
@@ -110,11 +117,11 @@ async def resolve_channel(client: TelegramClient):
             try:
                 updates = await client(ImportChatInviteRequest(invite_hash))
                 target_entity = updates.chats[0]
-                print(f"[✓] Joined channel via invite link: {getattr(target_entity, 'title', 'Channel')}")
+                print(f"[OK] Joined channel via invite link: {getattr(target_entity, 'title', 'Channel')}")
                 return target_entity
             except errors.UserAlreadyParticipantError:
                 target_entity = await client.get_entity(INVITE_LINK)
-                print(f"[✓] Channel found via invite link: {getattr(target_entity, 'title', 'Channel')}")
+                print(f"[OK] Channel found via invite link: {getattr(target_entity, 'title', 'Channel')}")
                 return target_entity
         except Exception as e:
             print(f"[ERROR] Could not resolve channel via invite link: {e}")
@@ -151,7 +158,7 @@ async def main():
     print(f"[*] Remaining files to upload: {len(pending_files)}")
 
     if not pending_files:
-        print("[✓] All files have already been uploaded!")
+        print("[OK] All files have already been uploaded!")
         release_lock()
         return
 
@@ -167,7 +174,7 @@ async def main():
     )
 
     await client.start(phone=PHONE)
-    print("[✓] Authenticated with Telegram session!")
+    print("[OK] Authenticated with Telegram session!")
 
     channel = await resolve_channel(client)
     if not channel:
