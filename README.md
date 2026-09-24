@@ -1,6 +1,10 @@
 <div align="center">
 
-  <img src="assets/logo.svg" alt="Mobata Logo" width="140" height="140" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="assets/logo.png">
+    <img alt="Mobata Logo" src="assets/logo.png" width="220" />
+  </picture>
 
   # Mobata
   ### High-Performance Automated Media Uploader for Telegram
@@ -27,7 +31,7 @@
 * 🔄 **Zero-Loss Auto Resume**: Tracks uploaded files in `uploaded_history.txt`. If your PC restarts or internet disconnects, it resumes exactly where it stopped without duplicating files.
 * 🛡️ **Self-Healing Rate Limits**: Automatically catches Telegram `FloodWaitError`, sleeps for the requested duration, and resumes without crashing.
 * ⚡ **Hardware Accelerated (`cryptg`)**: Uses compiled C AES-NI hardware encryption, delivering 20x to 80x faster uploads than standard pure-Python libraries.
-* 🌐 **Anti-Throttling Protocol**: Employs `ConnectionTcpObfuscated` to bypass restrictive campus Wi-Fi, hostel firewalls, and ISP deep-packet inspection (DPI).
+* 🌐 **Anti-Throttling Protocol**: Employs `ConnectionTcpObfuscated` to bypass restrictive Wi-Fi networks, firewalls, and ISP deep-packet inspection (DPI).
 * 🎥 **Streamable Video Formatting**: Automatically flags uploaded videos with `supports_streaming=True` so they play instantly inside Telegram.
 * 📊 **Smart Priority Queue**: Automatically prioritizes smaller photos first to ensure rapid progress, followed by large videos.
 * 🔒 **Instance Protection**: Includes built-in process locking (`uploader.lock`) to prevent concurrent session conflicts.
@@ -212,8 +216,8 @@ This happens if you run two instances of the script at the same time using the s
 </details>
 
 <details>
-<summary><b>Q: My campus / hostel Wi-Fi drops the connection (WinError 64)?</b></summary>
-Mobata defaults to <code>ConnectionTcpObfuscated</code> and auto-reconnects on network drops. However, if your network severely caps speeds, connecting via a <b>mobile hotspot (5G/4G)</b> can boost speeds from 30 kB/s up to 5–10 MB/s.
+<summary><b>Q: My Wi-Fi or ISP network drops the connection (WinError 64)?</b></summary>
+Mobata defaults to <code>ConnectionTcpObfuscated</code> and auto-reconnects on network drops. If your current Wi-Fi network or ISP throttles upload bandwidth, connecting to an alternate network or <b>mobile hotspot (5G/4G)</b> can significantly increase speeds.
 </details>
 
 <details>

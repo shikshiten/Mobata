@@ -15,7 +15,7 @@ Here is why **Mobata** was engineered and how it solves every single one of thos
 * **Mobata's Solution**: Mobata is built on top of Telegram's **MTProto protocol (Telethon User API)**. This unlocks the full **2 GB per file** limit (and up to **4 GB** for Telegram Premium accounts), allowing full-length 4K movies and large video clips to upload effortlessly.
 
 ### 2. ISP Throttling & Deep Packet Inspection (DPI)
-* **The Problem**: On many college campus Wi-Fi networks (like Cyberoam/Fortinet), mobile hotspots, and certain regional ISPs, raw MTProto traffic is actively inspected and throttled to as low as **6–20 kB/s**, frequently dropping TCP sockets (`[WinError 64] The specified network name is no longer available`).
+* **The Problem**: On many restricted Wi-Fi networks, corporate/public firewalls, and certain regional ISPs, raw MTProto traffic is actively inspected and throttled to as low as **6–20 kB/s**, frequently dropping TCP sockets (`[WinError 64] The specified network name is no longer available`).
 * **Mobata's Solution**: 
   - Uses **`ConnectionTcpObfuscated`** to encapsulate and encrypt MTProto framing. Firewalls and ISPs cannot inspect or throttle the payload.
   - Uses native **`cryptg` (C-extension AES-NI)** for hardware-accelerated encryption instead of slow Python bytecode (`pyaes`), resulting in **20x to 80x faster throughput**.
@@ -46,5 +46,5 @@ Here is why **Mobata** was engineered and how it solves every single one of thos
 
 ## 💡 Who Is Mobata For?
 1. **Photographers & Content Creators**: Archive thousands of RAW photos and 4K footage directly to cloud storage without paid monthly subscriptions.
-2. **Students & Developers**: Automated backups on restricted campus or hostel Wi-Fi networks without getting throttled.
+2. **Everyday Users & Power Users**: Automated backups even on throttled, restricted, or unstable Wi-Fi networks without connection drops.
 3. **Homelab & NAS Enthusiasts**: Run Mobata inside a Docker container on your TrueNAS, Unraid, or Raspberry Pi to automatically sync camera dumps to your private channel.
