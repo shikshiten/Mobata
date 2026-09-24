@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14151f"/>
+      <stop offset="50%" stop-color="#0b0c13"/>
+      <stop offset="100%" stop-color="#050508"/>
+    </linearGradient>
+
+    <!-- Glowing Brand Gradient (Apple Cyan to Electric Violet) -->
+    <linearGradient id="neonM" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE"/>
+      <stop offset="45%" stop-color="#4FACFE"/>
+      <stop offset="100%" stop-color="#8E2DE2"/>
+    </linearGradient>
+
+    <!-- Subtle Inner Border Gradient -->
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="40%" stop-color="#4FACFE" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.05"/>
+    </linearGradient>
+
+    <!-- Deep Ambient Glow Filter -->
+    <filter id="ambientGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="28" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Tight Neon Core Glow -->
+    <filter id="coreGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="tightBlur"/>
+      <feMerge>
+        <feMergeNode in="tightBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Glass Specular Highlight -->
+    <linearGradient id="glassSheen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0.0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Apple Squircle Card -->
+  <rect x="24" y="24" width="464" height="464" rx="112" ry="112" fill="url(#bgGrad)"/>
+  
+  <!-- Subtle Glass Sheen Top Half -->
+  <rect x="24" y="24" width="464" height="232" rx="112" ry="112" fill="url(#glassSheen)"/>
+  
+  <!-- Outer Glow Aura Behind 'M' -->
+  <circle cx="256" cy="256" r="140" fill="#4FACFE" opacity="0.18" filter="url(#ambientGlow)"/>
+  <circle cx="256" cy="256" r="90" fill="#8E2DE2" opacity="0.22" filter="url(#ambientGlow)"/>
+
+  <!-- Border Outline -->
+  <rect x="24" y="24" width="464" height="464" rx="112" ry="112" fill="none" stroke="url(#borderGrad)" stroke-width="2.5"/>
+
+  <!-- Apple Curved 'M' Monogram with Smooth Continuous Bezier Curves -->
+  <g filter="url(#ambientGlow)" opacity="0.6">
+    <path d="M 148 356 
+             V 194 
+             C 148 166, 172 150, 196 168 
+             L 256 222 
+             L 316 168 
+             C 340 150, 364 166, 364 194 
+             V 356" 
+          fill="none" 
+          stroke="url(#neonM)" 
+          stroke-width="42" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+  </g>
+
+  <!-- Crisp Core 'M' Path -->
+  <g filter="url(#coreGlow)">
+    <path d="M 148 356 
+             V 194 
+             C 148 166, 172 150, 196 168 
+             L 256 222 
+             L 316 168 
+             C 340 150, 364 166, 364 194 
+             V 356" 
+          fill="none" 
+          stroke="url(#neonM)" 
+          stroke-width="36" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+  </g>
+
+  <!-- Subtle Inner Light Arc Highlight -->
+  <path d="M 152 320 V 196 C 152 178, 168 166, 184 176 L 256 236" 
+        fill="none" 
+        stroke="#ffffff" 
+        stroke-width="6" 
+        stroke-linecap="round" 
+        opacity="0.45"/>
+</svg>

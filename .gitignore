@@ -1,0 +1,32 @@
+# Secrets and Environment Variables
+.env
+*.env
+!.env.example
+
+# Telegram Telethon Session Files (Contains login tokens!)
+*.session
+*.session-journal
+telethon_upload_session.session
+telethon_upload_session.session-journal
+
+# Upload History & Local State
+uploaded_history.txt
+uploader.lock
+*.log
+
+# Python cache & build
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+build/
+dist/
+
+# OS Specific
+.DS_Store
+Thumbs.db
+desktop.ini

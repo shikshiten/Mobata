@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  mobata:
+    build: .
+    container_name: mobata-uploader
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      # Mount your local media folder into the container
+      - ./media_uploads:/app/media_uploads
+      # Persist upload history so it never re-uploads files
+      - ./uploaded_history.txt:/app/uploaded_history.txt
+      # Persist session so you only login once
+      - ./telethon_upload_session.session:/app/telethon_upload_session.session
