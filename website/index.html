@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mobata — High-Performance Automated Media Uploader for Telegram</title>
+  <title>Mobata</title>
   <meta name="description" content="Upload unlimited photos and multi-gigabyte 4K videos to private Telegram channels autonomously with native C-accelerated MTProto engine." />
-  <link rel="icon" type="image/png" href="assets/logo-dark.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png" />
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png" />
   
   <!-- Doto Font Everywhere -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -190,7 +192,8 @@
     }
     .nav-logo-img {
       height: 24px;
-      width: auto;
+      width: 24px;
+      object-fit: contain;
       display: block;
     }
     .nav-brand-name {
@@ -1079,7 +1082,7 @@
     <nav class="capsule-navbar">
       <!-- Logo + Mobata Brand Text -->
       <a href="index.html" class="nav-brand-link">
-        <img src="assets/logo-dark.png" alt="Mobata Logo" class="nav-logo-img" />
+        <img src="assets/mobata-icon.png" alt="Mobata Logo" class="nav-logo-img" />
         <span class="nav-brand-name">Mobata</span>
       </a>
 
@@ -1523,7 +1526,10 @@
   <footer class="apple-footer">
     <div class="container footer-row">
       <div>
-        <img src="assets/logo-dark.png" alt="Mobata Logo" class="footer-logo" />
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+          <img src="assets/mobata-icon.png" alt="Mobata Logo" style="height:26px; width:26px; object-fit:contain;" />
+          <span style="font-size:20px; font-weight:900; color:#fff;">Mobata</span>
+        </div>
         <p class="footer-tag">High-performance automated media uploader for Telegram with native C-accelerated MTProto engine.</p>
       </div>
       <div class="footer-col">

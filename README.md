@@ -9,55 +9,56 @@
   # Mobata
   ### High-Performance Automated Media Uploader for Telegram
   
-  [![Website](https://img.shields.io/badge/Website-mobata.unaux.com-18181b?style=for-the-badge&logo=google-chrome&logoColor=white)](http://mobata.unaux.com)
-  [![Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.14-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-  [![Telegram MTProto](https://img.shields.io/badge/Telegram-MTProto%20Telethon-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://core.telegram.org/api)
-  [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+  [![Website](https://img.shields.io/badge/Website-mobata.unaux.com-000000?style=for-the-badge&logo=googlechrome&logoColor=white)](http://mobata.unaux.com)
+  [![Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.14-000000?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+  [![Telegram MTProto](https://img.shields.io/badge/Telegram-MTProto%20Telethon-000000?style=for-the-badge&logo=telegram&logoColor=white)](https://core.telegram.org/api)
+  [![Docker](https://img.shields.io/badge/Docker-Ready-000000?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-000000?style=for-the-badge)](LICENSE)
 
   <p align="center">
     <b>Upload thousands of photos and multi-gigabyte 4K videos to private Telegram channels autonomously.</b><br>
     Zero duplicates • Auto-resume • FloodWait handling • ISP anti-throttling
   </p>
 
-  [🌐 Live Website](http://mobata.unaux.com) • [📖 Read the Story: Why Mobata?](WHY_MOBATA.md) • [🚀 Quick Start](#-quick-start-local) • [🐳 Docker](#-docker-deployment) • [☁️ Cloud & Koyeb](#-cloud-deployment-koyeb--heroku--vps) • [⚙️ n8n Automation](#-automation--webhooks-n8n)
+  [◈ Live Website](http://mobata.unaux.com) • [⬡ Why Mobata?](WHY_MOBATA.md) • [▸ Quick Start](#-quick-start-local-setup) • [◼ Docker](#-docker-deployment) • [✦ Cloud & Koyeb](#-cloud-deployment-koyeb--heroku--vps) • [● n8n Automation](#-automation--webhooks-n8n--zapier)
 
 </div>
 
 ---
 
-## ℹ️ About Mobata
+## ◈ About Mobata
 
 **Mobata** is an autonomous, high-throughput media backup system engineered to archive thousands of high-resolution photos and multi-gigabyte 4K videos directly into private Telegram channels with zero manual drag-and-drop effort.
 
 Unlike standard Telegram bots that are artificially throttled and strictly capped at 50 MB, Mobata establishes direct client connections via Telegram's MTProto protocol using native C hardware acceleration (`cryptg`). It features intelligent self-healing FloodWait recovery, connection obfuscation to bypass restrictive ISP deep-packet inspection, in-app video streaming flags, and persistent atomic state tracking ensuring zero duplicate uploads across machine restarts.
 
-* 🌐 **Interactive Showcase & Documentation**: [http://mobata.unaux.com](http://mobata.unaux.com) *(Mirror: [http://7cee79.ezyro.com](http://7cee79.ezyro.com))*
-* 💻 **Local Setup Guide**: [mobata.unaux.com/setup.html](http://mobata.unaux.com/setup.html)
-* 🐳 **Docker & NAS Sync Guide**: [mobata.unaux.com/docker.html](http://mobata.unaux.com/docker.html)
-* ☁️ **Cloud VPS & n8n Guide**: [mobata.unaux.com/cloud.html](http://mobata.unaux.com/cloud.html)
+* ◈ **Interactive Showcase & Documentation**: [http://mobata.unaux.com](http://mobata.unaux.com) *(Mirror: [http://7cee79.ezyro.com](http://7cee79.ezyro.com))*
+* ◈ **Local Setup Guide**: [mobata.unaux.com/setup.html](http://mobata.unaux.com/setup.html)
+* ◈ **Docker & NAS Sync Guide**: [mobata.unaux.com/docker.html](http://mobata.unaux.com/docker.html)
+* ◈ **Cloud VPS & n8n Guide**: [mobata.unaux.com/cloud.html](http://mobata.unaux.com/cloud.html)
 
 ---
 
-## ✨ Features at a Glance
+## ✦ Features at a Glance
 
-* 🚀 **No 50 MB Bot Limit**: Powered by MTProto (Telethon), uploading files up to **2 GB** (or **4 GB** with Telegram Premium).
-* 🔄 **Zero-Loss Auto Resume**: Tracks uploaded files in `uploaded_history.txt`. If your PC restarts or internet disconnects, it resumes exactly where it stopped without duplicating files.
-* 🛡️ **Self-Healing Rate Limits**: Automatically catches Telegram `FloodWaitError`, sleeps for the requested duration, and resumes without crashing.
-* ⚡ **Hardware Accelerated (`cryptg`)**: Uses compiled C AES-NI hardware encryption, delivering 20x to 80x faster uploads than standard pure-Python libraries.
-* 🌐 **Anti-Throttling Protocol**: Employs `ConnectionTcpObfuscated` to bypass restrictive Wi-Fi networks, firewalls, and ISP deep-packet inspection (DPI).
-* 🎥 **Streamable Video Formatting**: Automatically flags uploaded videos with `supports_streaming=True` so they play instantly inside Telegram.
-* 📊 **Smart Priority Queue**: Automatically prioritizes smaller photos first to ensure rapid progress, followed by large videos.
-* 🔒 **Instance Protection**: Includes built-in process locking (`uploader.lock`) to prevent concurrent session conflicts.
+* ✦ **No 50 MB Bot Limit**: Powered by MTProto (Telethon), uploading files up to **2 GB** (or **4 GB** with Telegram Premium).
+* ✦ **Zero-Loss Auto Resume**: Tracks uploaded files in `uploaded_history.txt`. If your PC restarts or internet disconnects, it resumes exactly where it stopped without duplicating files.
+* ✦ **Self-Healing Rate Limits**: Automatically catches Telegram `FloodWaitError`, sleeps for the requested duration, and resumes without crashing.
+* ✦ **Hardware Accelerated (`cryptg`)**: Uses compiled C AES-NI hardware encryption, delivering 20x to 80x faster uploads than standard pure-Python libraries.
+* ✦ **Anti-Throttling Protocol**: Employs `ConnectionTcpObfuscated` to bypass restrictive Wi-Fi networks, firewalls, and ISP deep-packet inspection (DPI).
+* ✦ **Streamable Video Formatting**: Automatically flags uploaded videos with `supports_streaming=True` so they play instantly inside Telegram.
+* ✦ **Smart Priority Queue**: Automatically prioritizes smaller photos first to ensure rapid progress, followed by large videos.
+* ✦ **Atomic Instance Protection**: Includes built-in process locking (`uploader.lock`) to prevent concurrent session conflicts.
 
 ---
 
-## 📁 Repository Structure
+## ⬡ Repository Structure
 
 ```text
 Mobata/
 ├── assets/
-│   └── logo.svg                 # Apple-styled neon curved logo
+│   ├── logo-dark.png            # Dark monochrome brand mark
+│   └── logo.png                 # Monogram mark
 ├── .env.example                 # Configuration template (fill with your keys)
 ├── .gitignore                   # Keeps your credentials and session 100% private
 ├── Dockerfile                   # Cloud & container setup
@@ -72,7 +73,7 @@ Mobata/
 
 ---
 
-## 🚀 Quick Start (Local Setup)
+## ▸ Quick Start (Local Setup)
 
 ### Step 1: Clone the Repository
 ```bash
@@ -119,7 +120,7 @@ UPLOAD_FOLDER=C:\Users\YourName\Pictures\Upload
 UPLOAD_DELAY=0.5
 ```
 
-> ⚠️ **Security Tip**: Never commit your `.env` or `.session` file to GitHub! They are already protected in `.gitignore`.
+> **[SECURITY TIP]**: Never commit your `.env` or `.session` file to GitHub! They are already protected in `.gitignore`.
 
 ### Step 5: Run the Uploader
 
@@ -132,11 +133,11 @@ UPLOAD_DELAY=0.5
   python3 uploader.py
   ```
 
-> 🔑 **First Run Note**: Telegram will send a one-time 5-digit login code to your Telegram app. Enter it once into the terminal. Telethon will generate a `.session` file locally and you will never be asked again!
+> **[INITIAL AUTHENTICATION]**: Telegram will send a one-time 5-digit login code to your Telegram app. Enter it once into the terminal. Telethon will generate a `.session` file locally and you will never be asked again!
 
 ---
 
-## 🐳 Docker Deployment
+## ◼ Docker Deployment
 
 If you want to run Mobata headless on a NAS (TrueNAS, Unraid, Synology) or a local Linux server:
 
@@ -153,7 +154,7 @@ If you want to run Mobata headless on a NAS (TrueNAS, Unraid, Synology) or a loc
 
 ---
 
-## ☁️ Cloud Deployment (Koyeb / Heroku / VPS)
+## ✦ Cloud Deployment (Koyeb / Heroku / VPS)
 
 You can run Mobata as a background worker on free or low-cost cloud platforms.
 
@@ -197,7 +198,7 @@ sudo systemctl start mobata
 
 ---
 
-## ⚙️ Automation & Webhooks (n8n / Zapier)
+## ● Automation & Webhooks (n8n / Zapier)
 
 Want to trigger Mobata whenever new photos arrive from Google Drive, Nextcloud, or Dropbox?
 
@@ -222,7 +223,7 @@ Want to trigger Mobata whenever new photos arrive from Google Drive, Nextcloud, 
 
 ---
 
-## ❓ Troubleshooting & FAQ
+## ◈ Troubleshooting & FAQ
 
 <details>
 <summary><b>Q: Telegram says "Server replied with a wrong session ID"?</b></summary>
@@ -241,11 +242,11 @@ Yes! Press <code>Ctrl + C</code> at any time. Mobata immediately flushes progres
 
 ---
 
-## 📄 License
+## ⬡ License
 This project is open-source under the [MIT License](LICENSE).
 
 ---
 
 <div align="center">
-  <sub>Built with ❤️ for seamless, unlimited media backups. Star ⭐ the repository if you found it useful!</sub>
+  <sub>Engineered for autonomous, unlimited media archival. Star the repository if you found it useful!</sub>
 </div>
