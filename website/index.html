@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,16 +17,17 @@
        Mobata — Liquid Glass & Bloody Crimson Design System
        ========================================================================== */
     :root {
+      /* Dark Theme (Default) */
       --bg-black: #030102;
-      --bg-canvas: #060204;
-      --bg-obsidian: #090306;
+      --bg-canvas: #070204;
+      --bg-obsidian: #0c0307;
       
-      /* Liquid Glass Surface Tokens */
-      --glass-bg: rgba(25, 4, 8, 0.45);
-      --glass-card: rgba(35, 6, 12, 0.4);
-      --glass-card-hover: rgba(55, 10, 18, 0.55);
-      --glass-border: rgba(255, 35, 60, 0.16);
-      --glass-border-focus: rgba(255, 30, 50, 0.55);
+      /* Liquid Glass Tokens */
+      --glass-bg: rgba(25, 4, 8, 0.55);
+      --glass-card: rgba(36, 6, 12, 0.45);
+      --glass-card-hover: rgba(60, 10, 20, 0.65);
+      --glass-border: rgba(255, 35, 60, 0.18);
+      --glass-border-focus: rgba(255, 30, 50, 0.6);
       --glass-specular: rgba(255, 255, 255, 0.08);
 
       /* Bloody Red Palette */
@@ -36,29 +37,31 @@
       --blood-deep: #8b0000;
       --blood-dark: #4a0004;
       --blood-glow: rgba(229, 9, 20, 0.35);
-      --blood-glow-strong: rgba(255, 26, 45, 0.6);
+      --blood-glow-strong: rgba(255, 26, 45, 0.65);
 
       --text-main: #ffffff;
-      --text-muted: #c4b5b8;
+      --text-muted: #c9b9bd;
       --text-dim: #7f6e72;
 
       --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", sans-serif;
       --font-doto: "Doto", sans-serif;
 
-      /* Transitions.dev Tokens */
+      /* Transitions.dev — Tabs sliding */
       --tabs-dur: 250ms;
       --tabs-ease: cubic-bezier(0.22, 1, 0.36, 1);
       --tabs-text-muted: rgba(210, 195, 200, 0.75);
       --tabs-text-active: #ffffff;
-      --tabs-bar-bg: rgba(20, 4, 8, 0.7);
-      --tabs-pill-bg: linear-gradient(135deg, rgba(229, 9, 20, 0.85), rgba(139, 0, 0, 0.95));
+      --tabs-bar-bg: rgba(20, 4, 8, 0.75);
+      --tabs-pill-bg: linear-gradient(135deg, rgba(229, 9, 20, 0.9), rgba(139, 0, 0, 0.95));
 
+      /* Transitions.dev — Shimmer text */
       --shimmer-dur: 2500ms;
       --shimmer-base: #ff4d5d;
       --shimmer-highlight: #ffffff;
       --shimmer-band: 350%;
       --shimmer-ease: linear;
 
+      /* Transitions.dev — Tooltip */
       --tt-in-dur: 150ms;
       --tt-out-dur: 50ms;
       --tt-scale: 0.98;
@@ -70,6 +73,7 @@
       --tt-bg: #1c0307;
       --tt-fg: #fde8ea;
 
+      /* Transitions.dev — Card hover tilt */
       --tilt-perspective: 1000px;
       --tilt-return: 1000ms;
       --tilt-return-ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -79,6 +83,7 @@
       --tilt-glare-fade: 300ms;
       --tilt-glare-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
+      /* Transitions.dev — Plus to menu morph */
       --morph-open-dur: 350ms;
       --morph-close-dur: 250ms;
       --morph-ease: cubic-bezier(0.34, 1.25, 0.64, 1);
@@ -90,6 +95,81 @@
       --morph-rotate: 45deg;
       --morph-scale: 0.97;
       --morph-blur: 2px;
+
+      /* Transitions.dev — Toggle */
+      --toggle-dur: 350ms;
+      --toggle-travel: 16px;
+      --toggle-ov1: 1px;
+      --toggle-ov2: 0px;
+      --toggle-track: 200ms;
+      --toggle-ease: cubic-bezier(0.34, 1.35, 0.64, 1);
+
+      /* Transitions.dev — Thinking states */
+      --think-hold: 2400ms;
+      --think-swap: 180ms;
+      --think-gap: 50ms;
+      --think-distance: 8px;
+      --think-blur: 2px;
+      --think-shimmer: 2200ms;
+      --think-base: #ff5e6e;
+      --think-highlight: #ffffff;
+      --think-ease: ease-in-out;
+
+      /* Transitions.dev — Reasoning stream */
+      --reason-hold: 1200ms;
+      --reason-step: 500ms;
+      --reason-lines: 1;
+      --reason-fade: 24px;
+      --reason-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+      /* Transitions.dev — Streaming text */
+      --stream-gap: 40ms;
+      --stream-fade: 350ms;
+      --stream-blur: 1px;
+      --stream-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+      /* Transitions.dev — Matrix dot loader */
+      --matrix-cycle: 1200ms;
+      --matrix-base: #3a1118;
+      --matrix-active: #ff1a2d;
+      --matrix-ease: ease-in-out;
+    }
+
+    /* Light Theme (Apple Product(RED) Studio White) */
+    [data-theme="light"] {
+      --bg-black: #fbfbfd;
+      --bg-canvas: #f2f2f7;
+      --bg-obsidian: #e5e5ea;
+
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-card: rgba(255, 255, 255, 0.78);
+      --glass-card-hover: rgba(255, 255, 255, 0.95);
+      --glass-border: rgba(229, 9, 20, 0.22);
+      --glass-border-focus: rgba(229, 9, 20, 0.65);
+      --glass-specular: rgba(255, 255, 255, 0.6);
+
+      --blood-red: #d70015;
+      --blood-bright: #e50914;
+      --blood-neon: #ff1a2d;
+      --blood-deep: #b30006;
+      --blood-dark: #6e0004;
+      --blood-glow: rgba(229, 9, 20, 0.22);
+      --blood-glow-strong: rgba(229, 9, 20, 0.45);
+
+      --text-main: #1d1d1f;
+      --text-muted: #515154;
+      --text-dim: #86868b;
+
+      --tabs-bar-bg: rgba(240, 240, 245, 0.9);
+      --tabs-text-muted: #6e6e73;
+      --tabs-text-active: #ffffff;
+      --tabs-pill-bg: linear-gradient(135deg, #e50914, #b30006);
+
+      --tt-bg: #2c0408;
+      --tt-fg: #ffffff;
+
+      --matrix-base: #e5c0c4;
+      --matrix-active: #e50914;
     }
 
     * {
@@ -113,6 +193,7 @@
       overflow-x: hidden;
       width: 100%;
       position: relative;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .font-doto {
@@ -121,7 +202,7 @@
       font-variation-settings: "ROND" 0;
     }
 
-    /* Full-Width Canvas & Container */
+    /* Container */
     .container {
       width: 100%;
       max-width: 1420px;
@@ -131,7 +212,7 @@
       z-index: 2;
     }
 
-    /* Interactive Particle Scattering Canvas */
+    /* Particle Canvas Background */
     #particle-canvas {
       position: fixed;
       top: 0;
@@ -142,7 +223,7 @@
       z-index: 1;
     }
 
-    /* Ambient Bloody Atmospheric Lighting */
+    /* Ambient Lighting */
     .ambient-glow {
       position: absolute;
       top: 0;
@@ -174,11 +255,11 @@
     }
 
     /* ==========================================================================
-       Unified Apple Liquid-Glass Navigation Bar (Single, Sleek, No Duplicates)
+       Unified Apple Liquid-Glass Navigation Bar
        ========================================================================== */
     .unified-nav {
       height: 56px;
-      background: rgba(8, 2, 4, 0.72);
+      background: var(--glass-bg);
       backdrop-filter: blur(28px) saturate(190%);
       -webkit-backdrop-filter: blur(28px) saturate(190%);
       border-bottom: 1px solid var(--glass-border);
@@ -188,7 +269,8 @@
       display: flex;
       align-items: center;
       width: 100%;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 -1px 0 0 rgba(255, 26, 45, 0.1);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
     .nav-inner {
       width: 100%;
@@ -210,9 +292,7 @@
       text-decoration: none;
       transition: opacity 0.2s ease;
     }
-    .nav-logo-link:hover {
-      opacity: 0.85;
-    }
+    .nav-logo-link:hover { opacity: 0.85; }
     .nav-logo-img {
       height: 28px;
       width: auto;
@@ -221,7 +301,7 @@
     .nav-badge-ver {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-size: 11px;
       font-weight: 800;
       color: var(--blood-bright);
@@ -264,20 +344,92 @@
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
     }
+
+    /* ==========================================================================
+       Transitions.dev: Light / Dark Mode Toggle
+       ========================================================================== */
+    .theme-toggle-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      padding: 3px 6px;
+      border-radius: 9999px;
+    }
+    .theme-icon {
+      font-size: 12px;
+      opacity: 0.75;
+      user-select: none;
+    }
+    .t-toggle {
+      appearance: none;
+      border: 0;
+      outline: none;
+      position: relative;
+      width: 34px;
+      height: 20px;
+      border-radius: 9999px;
+      background: #2a0b10;
+      border: 1px solid rgba(255, 50, 70, 0.3);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 2px;
+      transition: background var(--toggle-track) var(--toggle-ease), border-color 0.2s ease;
+    }
+    .t-toggle[data-on="true"] {
+      background: var(--blood-bright);
+      border-color: var(--blood-bright);
+    }
+    .t-toggle-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ffffff;
+      translate: 0 0;
+      will-change: translate;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+    .t-toggle[data-on="true"] .t-toggle-thumb {
+      translate: var(--toggle-travel) 0;
+    }
+    .t-toggle.is-init[data-on="true"] .t-toggle-thumb {
+      animation: t-toggle-on var(--toggle-dur) var(--toggle-ease) both;
+    }
+    .t-toggle.is-init[data-on="false"] .t-toggle-thumb {
+      animation: t-toggle-off var(--toggle-dur) var(--toggle-ease) both;
+    }
+    @keyframes t-toggle-on {
+      0% { translate: 0 0; }
+      55% { translate: calc(var(--toggle-travel) + var(--toggle-ov1)) 0; }
+      80% { translate: calc(var(--toggle-travel) - var(--toggle-ov2)) 0; }
+      100% { translate: var(--toggle-travel) 0; }
+    }
+    @keyframes t-toggle-off {
+      0% { translate: var(--toggle-travel) 0; }
+      55% { translate: calc(0px - var(--toggle-ov1)) 0; }
+      80% { translate: var(--toggle-ov2) 0; }
+      100% { translate: 0 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .t-toggle-thumb { animation: none !important; }
+    }
+
     .nav-btn-outline {
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      color: #ffffff;
+      color: var(--text-main);
       text-decoration: none;
       font-size: 13px;
       font-weight: 500;
-      padding: 6px 15px;
+      padding: 6px 14px;
       border-radius: 9999px;
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      border: 1px solid var(--glass-border);
       transition: all 0.2s ease;
     }
     .nav-btn-outline:hover {
@@ -302,21 +454,6 @@
     }
 
     /* ==========================================================================
-       Liquid Glass Card & Surfaces
-       ========================================================================== */
-    .liquid-glass {
-      background: var(--glass-card);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border: 1px solid var(--glass-border);
-      box-shadow: 
-        inset 0 1px 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 0 24px 0 rgba(229, 9, 20, 0.08),
-        0 20px 50px rgba(0, 0, 0, 0.65);
-      border-radius: 20px;
-    }
-
-    /* ==========================================================================
        Hero Section
        ========================================================================== */
     .hero {
@@ -334,7 +471,7 @@
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       font-size: 12.5px;
       font-weight: 700;
       letter-spacing: 1px;
@@ -352,7 +489,7 @@
       margin-bottom: 24px;
     }
     .grad-txt-blood {
-      background: linear-gradient(135deg, #ffffff 30%, #ff4d5d 70%, #e50914 95%);
+      background: linear-gradient(135deg, var(--text-main) 30%, #ff4d5d 70%, #e50914 95%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -363,6 +500,26 @@
       margin: 0 auto 44px;
       line-height: 1.5;
     }
+
+    /* ==========================================================================
+       Transitions.dev: Streaming Text
+       ========================================================================== */
+    .t-stream-w {
+      display: inline-block;
+      opacity: 0;
+      filter: blur(var(--stream-blur));
+      transition:
+        opacity var(--stream-fade) var(--stream-ease),
+        filter var(--stream-fade) var(--stream-ease);
+    }
+    .t-stream-w.is-in {
+      opacity: 1;
+      filter: blur(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .t-stream-w { transition: none !important; filter: none !important; opacity: 1 !important; }
+    }
+
     .hero-actions {
       display: flex;
       justify-content: center;
@@ -387,12 +544,11 @@
       box-shadow: 0 0 40px rgba(255, 26, 45, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.4);
       transform: translateY(-2px);
     }
-    .btn-main-blood:active {
-      transform: scale(0.97);
-    }
+    .btn-main-blood:active { transform: scale(0.97); }
+    
     .btn-ghost-blood {
-      background: rgba(255, 255, 255, 0.04);
-      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
       border: 1px solid var(--glass-border);
       font-size: 16.5px;
       font-weight: 500;
@@ -413,21 +569,115 @@
     }
 
     /* ==========================================================================
-       Terminal Showcase
+       Transitions.dev: Thinking States
        ========================================================================== */
+    .t-think {
+      position: relative;
+      display: inline-block;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .t-think-sizer {
+      display: block;
+      visibility: hidden;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+    .t-think-text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: block;
+      color: var(--think-base);
+      white-space: nowrap;
+      transform: translateY(0);
+      filter: blur(0);
+      opacity: 1;
+      font-weight: 700;
+      transition:
+        transform var(--think-swap) var(--think-ease),
+        filter var(--think-swap) var(--think-ease),
+        opacity var(--think-swap) var(--think-ease);
+      will-change: transform, filter, opacity;
+    }
+    .t-think-text::before {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: linear-gradient(90deg,
+        transparent 0%, transparent 40%,
+        var(--think-highlight) 50%,
+        transparent 60%, transparent 100%);
+      background-size: 400% 100%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      animation: t-think-shimmer var(--think-shimmer) linear infinite;
+    }
+    @keyframes t-think-shimmer {
+      0%   { background-position: 100% 0; }
+      100% { background-position: 0% 0; }
+    }
+    .t-think-text.is-exit {
+      transform: translateY(calc(var(--think-distance) * -1));
+      filter: blur(var(--think-blur));
+      opacity: 0;
+    }
+    .t-think-text.is-enter-start {
+      transition: none;
+      transform: translateY(var(--think-distance));
+      filter: blur(var(--think-blur));
+      opacity: 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .t-think-text { transition: none !important; transform: none !important; filter: none !important; }
+      .t-think-text::before { display: none !important; }
+    }
+
+    /* ==========================================================================
+       Transitions.dev: Matrix Dot Loader
+       ========================================================================== */
+    .t-matrix {
+      display: inline-grid;
+      grid-template-columns: repeat(4, 3px);
+      grid-auto-rows: 3px;
+      gap: 2.5px;
+      vertical-align: middle;
+    }
+    .t-matrix i {
+      display: block;
+      background: var(--matrix-base);
+      border-radius: 1px;
+      animation: t-matrix-pulse var(--matrix-cycle) var(--matrix-ease) infinite;
+      animation-delay: calc(var(--d, 0) * 1ms);
+    }
+    .t-matrix i.is-gap { visibility: hidden; animation: none; }
+    @keyframes t-matrix-pulse {
+      0%, 45%, 100% { background-color: var(--matrix-base); }
+      15%           { background-color: var(--matrix-active); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .t-matrix i { animation: none !important; }
+    }
+
+    /* Terminal Stage */
     .terminal-stage {
       width: 100%;
       max-width: 1120px;
       margin: 0 auto;
     }
     .terminal-frame {
-      background: rgba(10, 2, 5, 0.85);
+      background: var(--glass-card);
       border-radius: 20px;
       border: 1px solid var(--glass-border);
       overflow: hidden;
       text-align: left;
       box-shadow: 
-        0 30px 80px rgba(0, 0, 0, 0.8), 
+        0 30px 80px rgba(0, 0, 0, 0.7), 
         0 0 50px rgba(229, 9, 20, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(30px);
@@ -437,7 +687,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 15px 24px;
-      background: rgba(20, 4, 8, 0.9);
+      background: rgba(18, 3, 6, 0.85);
       border-bottom: 1px solid var(--glass-border);
     }
     .term-dots {
@@ -452,10 +702,18 @@
     .t-red { background: #ff453a; box-shadow: 0 0 6px #ff453a; }
     .t-yellow { background: #ff9f0a; }
     .t-green { background: #32d74b; }
+    
     .term-meta {
-      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12.5px;
       color: var(--text-dim);
-      letter-spacing: 0.5px;
+    }
+    .term-status-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .term-status {
       font-size: 11px;
@@ -472,6 +730,7 @@
       font-size: 14.5px;
       line-height: 1.85;
       color: #fce7e9;
+      background: rgba(6, 1, 3, 0.88);
     }
     .term-row { margin-bottom: 5px; }
     .t-blood { color: var(--blood-bright); font-weight: 700; }
@@ -491,6 +750,71 @@
     }
 
     /* ==========================================================================
+       Transitions.dev: Reasoning Stream
+       ========================================================================== */
+    .reason-box-wrap {
+      margin-top: 24px;
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      background: rgba(14, 2, 6, 0.8);
+      padding: 14px 18px;
+    }
+    .reason-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--blood-bright);
+      letter-spacing: 1px;
+    }
+    .t-reason {
+      position: relative;
+      overflow: hidden;
+      height: 68px; /* Two lines view */
+    }
+    .t-reason-viewport {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(
+        transparent 0,
+        black var(--reason-fade),
+        black calc(100% - var(--reason-fade)),
+        transparent 100%);
+      mask-image: linear-gradient(
+        transparent 0,
+        black var(--reason-fade),
+        black calc(100% - var(--reason-fade)),
+        transparent 100%);
+    }
+    .t-reason-scroll {
+      position: absolute;
+      left: 0;
+      right: 0;
+      transform: translateY(0);
+      will-change: transform;
+    }
+    .t-reason-text p {
+      font-family: var(--font-doto);
+      font-size: 13px;
+      line-height: 24px;
+      color: #f7aab1;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .t-reason-text p span {
+      color: var(--blood-bright);
+      font-weight: 700;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .t-reason-scroll { transition: none !important; transform: none !important; }
+    }
+
+    /* ==========================================================================
        Sections
        ========================================================================== */
     .section {
@@ -500,7 +824,7 @@
       z-index: 2;
     }
     .section-dark {
-      background: rgba(5, 1, 3, 0.6);
+      background: rgba(5, 1, 3, 0.4);
       border-top: 1px solid rgba(255, 26, 45, 0.08);
       border-bottom: 1px solid rgba(255, 26, 45, 0.08);
     }
@@ -555,14 +879,14 @@
       border: 1px solid var(--glass-border);
       padding: 44px 34px;
       text-align: center;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
     }
     .t-tilt-card.is-tilting {
       transition: transform var(--tilt-follow) var(--tilt-follow-ease);
     }
     .t-tilt.is-hover .t-tilt-card {
       border-color: var(--blood-bright);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(229, 9, 20, 0.25);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(229, 9, 20, 0.25);
     }
     .t-tilt-glare {
       position: absolute;
@@ -580,11 +904,10 @@
     .t-tilt.is-hover .t-tilt-glare {
       opacity: var(--tilt-glare-opacity);
     }
-
     .metric-num {
       font-size: 64px;
       font-weight: 800;
-      color: #ffffff;
+      color: var(--text-main);
       line-height: 1;
       margin-bottom: 12px;
       letter-spacing: -0.03em;
@@ -600,7 +923,6 @@
       color: var(--text-muted);
       line-height: 1.6;
     }
-
     @media (prefers-reduced-motion: reduce) {
       .t-tilt-card { transform: none !important; transition: none !important; }
     }
@@ -621,13 +943,13 @@
       border-radius: 20px;
       padding: 36px 30px;
       transition: all 0.25s ease;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
     .feat-card:hover {
       background: var(--glass-card-hover);
       border-color: var(--blood-bright);
       transform: translateY(-4px);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(229, 9, 20, 0.2);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(229, 9, 20, 0.2);
     }
     .feat-tag {
       font-size: 11.5px;
@@ -659,7 +981,7 @@
       border-radius: 20px;
       overflow: hidden;
       width: 100%;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     }
     .comp-table {
       width: 100%;
@@ -669,8 +991,8 @@
     }
     .comp-table th {
       padding: 22px 28px;
-      background: rgba(25, 4, 8, 0.6);
-      color: #ffffff;
+      background: rgba(25, 4, 8, 0.4);
+      color: var(--text-main);
       font-weight: 700;
       border-bottom: 1px solid var(--glass-border);
     }
@@ -703,7 +1025,7 @@
       background: var(--tabs-bar-bg);
       border: 1px solid var(--glass-border);
       backdrop-filter: blur(20px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
     .t-tab {
       position: relative;
@@ -772,7 +1094,7 @@
       border-radius: 20px;
       padding: 28px;
       margin-bottom: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
     .step-badge {
       width: 38px;
@@ -788,9 +1110,7 @@
       font-weight: 800;
       flex-shrink: 0;
     }
-    .step-main {
-      flex-grow: 1;
-    }
+    .step-main { flex-grow: 1; }
     .step-main h4 {
       font-size: 18px;
       font-weight: 700;
@@ -803,7 +1123,7 @@
       line-height: 1.55;
     }
     .code-box {
-      background: rgba(10, 2, 4, 0.9);
+      background: rgba(10, 2, 4, 0.88);
       border: 1px solid var(--glass-border);
       border-radius: 12px;
       padding: 16px 20px;
@@ -921,7 +1241,7 @@
     }
 
     /* ==========================================================================
-       Transitions.dev: Plus to Menu Morph (Floating Quick Action)
+       Transitions.dev: Plus to Menu Morph
        ========================================================================== */
     .morph-fixed-wrap {
       position: fixed;
@@ -947,7 +1267,7 @@
       width: 220px;
       height: 200px;
       border-radius: var(--morph-r-open);
-      background: rgba(25, 4, 8, 0.92);
+      background: rgba(25, 4, 8, 0.94);
       backdrop-filter: blur(28px);
       box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(229, 9, 20, 0.3);
       transition:
@@ -1048,14 +1368,14 @@
       border: 1px solid var(--glass-border);
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
     .faq-q {
       width: 100%;
       text-align: left;
       background: none;
       border: none;
-      color: #ffffff;
+      color: var(--text-main);
       padding: 22px 28px;
       font-size: 17.5px;
       font-weight: 600;
@@ -1076,18 +1396,14 @@
       font-size: 15.5px;
       line-height: 1.65;
     }
-    .faq-card.open .faq-a {
-      display: block;
-    }
-    .faq-card.open .faq-sym {
-      transform: rotate(45deg);
-    }
+    .faq-card.open .faq-a { display: block; }
+    .faq-card.open .faq-sym { transform: rotate(45deg); }
 
     /* ==========================================================================
        Footer
        ========================================================================== */
     .apple-footer {
-      background: rgba(4, 1, 2, 0.9);
+      background: rgba(4, 1, 2, 0.95);
       padding: 80px 0 40px;
       border-top: 1px solid var(--glass-border);
       width: 100%;
@@ -1114,12 +1430,10 @@
     .footer-col h5 {
       font-size: 14.5px;
       font-weight: 700;
-      color: #ffffff;
+      color: var(--text-main);
       margin-bottom: 16px;
     }
-    .footer-col ul {
-      list-style: none;
-    }
+    .footer-col ul { list-style: none; }
     .footer-col ul li a {
       color: var(--text-dim);
       text-decoration: none;
@@ -1127,9 +1441,7 @@
       line-height: 2.3;
       transition: color 0.15s ease;
     }
-    .footer-col ul li a:hover {
-      color: var(--blood-bright);
-    }
+    .footer-col ul li a:hover { color: var(--blood-bright); }
     .footer-bottom {
       border-top: 1px solid rgba(255, 26, 45, 0.1);
       padding-top: 28px;
@@ -1169,7 +1481,7 @@
           <img src="assets/logo-dark.png" alt="Mobata Logo" class="nav-logo-img" width="84" height="28" />
         </a>
         <div class="nav-badge-ver font-doto">
-          <span class="pulse-dot"></span>
+          <div class="t-matrix" data-variant="pulse"></div>
           <span>v1.0.0</span>
         </div>
       </div>
@@ -1183,6 +1495,15 @@
       </div>
 
       <div class="nav-actions">
+        <!-- Transitions.dev: Light / Dark Mode Toggle -->
+        <div class="theme-toggle-wrap">
+          <span class="theme-icon">🌙</span>
+          <button class="t-toggle" id="theme-toggle" role="switch" aria-label="Toggle theme" data-on="false">
+            <span class="t-toggle-thumb"></span>
+          </button>
+          <span class="theme-icon">☀️</span>
+        </div>
+
         <!-- Transitions.dev Tooltip Group -->
         <span class="t-tt-group">
           <a href="https://github.com/shikshiten/Mobata" target="_blank" class="nav-btn-outline t-tt-trigger" data-tooltip="Star shikshiten/Mobata" aria-describedby="tt-nav">
@@ -1219,7 +1540,8 @@
         <span class="grad-txt-blood">Without Limits.</span>
       </h1>
       
-      <p class="hero-p">
+      <!-- Transitions.dev Streaming Text -->
+      <p class="hero-p t-stream" id="hero-stream">
         The automated Telegram batch uploader. Bypasses the 50 MB bot ceiling, handles multi-gigabyte 4K video, self-heals on rate limits, and resumes with zero duplicates.
       </p>
 
@@ -1243,22 +1565,61 @@
               <span class="t-dot t-yellow"></span>
               <span class="t-dot t-green"></span>
             </div>
-            <div class="term-meta font-doto">mobata // live-telemetry</div>
-            <div class="term-status font-doto">ONLINE</div>
+            
+            <!-- Transitions.dev Thinking States in Terminal Meta -->
+            <div class="term-meta font-doto">
+              <span>mobata //</span>
+              <span class="t-think" id="engine-think" role="status">
+                <span class="t-think-sizer" aria-hidden="true">Streaming 4K video block 18/64…</span>
+                <span class="t-think-text" data-text="Analyzing media folder…">Analyzing media folder…</span>
+              </span>
+            </div>
+
+            <div class="term-status-wrap">
+              <!-- Transitions.dev Matrix Dot Loader -->
+              <div class="t-matrix" data-variant="scan"></div>
+              <div class="term-status font-doto">ONLINE</div>
+            </div>
           </div>
+
           <div class="term-content">
             <div class="term-row"><span class="t-blood font-doto">[SYS]</span> Initializing Telethon MTProto Client... <span class="t-dim">Hardware AES-NI verified</span></div>
             <div class="term-row"><span class="t-blood font-doto">[DIR]</span> Media Scan: C:\Photos\Master (5,242 items indexed)</div>
             <div class="term-row"><span class="t-blood font-doto">[CHN]</span> Connected to channel: "Private Archive" (-1003099948239)</div>
             <div class="t-hr"></div>
-            <div class="term-row font-doto t-dim">[4568/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - Done!</div>
-            <div class="term-row font-doto t-dim">[4569/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - Done!</div>
+            <div class="term-row font-doto t-dim">[4598/5242] DSC_4910.jpg:  100%|██████████| 3.2M/3.2M [00:01, 2.8MB/s] - Done!</div>
+            <div class="term-row font-doto t-dim">[4599/5242] VID_4K_2026.mp4: 100%|██████████| 185M/185M [00:24, 7.7MB/s] - Done!</div>
             <div class="term-row font-doto">
-              <span class="t-blood font-doto" id="t-count">[4570/5242]</span>
+              <span class="t-blood font-doto" id="t-count">[4600/5242]</span>
               <span id="t-file" class="font-doto">IMG_0812.jpg:</span>
               <span id="t-meter" class="font-doto">94%|█████████ | 2.9M/3.1M [00:01, 3.2MB/s]</span>
               <span class="t-cursor font-doto">_</span>
             </div>
+
+            <!-- Transitions.dev: Reasoning Stream -->
+            <div class="reason-box-wrap">
+              <div class="reason-header font-doto">
+                <span>⚡ MTPROTO REASONING STREAM</span>
+                <span style="color:var(--text-dim)">AUTO-SCROLLING TELEMETRY</span>
+              </div>
+              <div class="t-reason" id="pipeline-reason">
+                <div class="t-reason-viewport">
+                  <div class="t-reason-scroll">
+                    <div class="t-reason-text">
+                      <p><span>[00:01.042]</span> Scanning folder: 5,242 items verified. 0-byte corrupt items purged.</p>
+                      <p><span>[00:01.120]</span> AES-NI Acceleration: Native cryptg 0.6.0 linked (80× throughput).</p>
+                      <p><span>[00:01.215]</span> MTProto Handshake: Connected to DC 4 with zero dropped packets.</p>
+                      <p><span>[00:01.380]</span> Obfuscation: ConnectionTcpObfuscated shielding traffic from ISP DPI.</p>
+                      <p><span>[00:01.490]</span> FloodWait: Intelligent backoff listener registered for server challenges.</p>
+                      <p><span>[00:01.710]</span> Video Stream: supports_streaming=True set for immediate channel playback.</p>
+                      <p><span>[00:01.890]</span> Process Lock: uploader.lock acquired on PID 9068 (concurrency protected).</p>
+                      <p><span>[00:02.050]</span> Persistence: Atomic flush to uploaded_history.txt after each file.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -1714,8 +2075,11 @@
         }
       }
       draw() {
-        ctx.fillStyle = `rgba(255, 35, 60, ${this.alpha})`;
-        ctx.shadowBlur = 8;
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        ctx.fillStyle = isLight 
+          ? `rgba(229, 9, 20, ${this.alpha * 0.75})` 
+          : `rgba(255, 35, 60, ${this.alpha})`;
+        ctx.shadowBlur = isLight ? 4 : 8;
         ctx.shadowColor = '#e50914';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -1731,6 +2095,7 @@
 
     function animateParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
       for (let i = 0; i < particles.length; i++) {
         particles[i].update();
         particles[i].draw();
@@ -1741,7 +2106,9 @@
           let dy = particles[i].y - particles[j].y;
           let dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 90) {
-            ctx.strokeStyle = `rgba(229, 9, 20, ${0.15 * (1 - dist / 90)})`;
+            ctx.strokeStyle = isLight
+              ? `rgba(229, 9, 20, ${0.1 * (1 - dist / 90)})`
+              : `rgba(229, 9, 20, ${0.15 * (1 - dist / 90)})`;
             ctx.lineWidth = 0.6;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -1755,7 +2122,136 @@
     animateParticles();
 
     // ---------------------------------------------------------
-    // 2. Transitions.dev: Tabs Sliding Implementation
+    // 2. Transitions.dev: Light / Dark Mode Toggle Implementation
+    // ---------------------------------------------------------
+    const toggleBtn = document.getElementById('theme-toggle');
+    const savedTheme = localStorage.getItem('mobata_theme') || 'dark';
+    
+    function applyTheme(theme, animate = false) {
+      if (animate) toggleBtn.classList.add('is-init');
+      if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        toggleBtn.setAttribute('data-on', 'true');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        toggleBtn.setAttribute('data-on', 'false');
+      }
+      localStorage.setItem('mobata_theme', theme);
+    }
+
+    // Initialize without animation
+    applyTheme(savedTheme, false);
+
+    toggleBtn.addEventListener('click', () => {
+      const isCurrentlyLight = toggleBtn.getAttribute('data-on') === 'true';
+      const nextTheme = isCurrentlyLight ? 'dark' : 'light';
+      applyTheme(nextTheme, true);
+    });
+
+    // ---------------------------------------------------------
+    // 3. Transitions.dev: Thinking States Implementation
+    // ---------------------------------------------------------
+    const thinkingStates = [
+      "Analyzing media folder…",
+      "Hashing duplicate signatures…",
+      "Establishing obfuscated MTProto…",
+      "Streaming 4K video blocks…",
+      "Flushing uploaded_history.txt…",
+      "Bypassing ISP rate limits…"
+    ];
+    let thinkIdx = 0;
+    const thinkElem = document.getElementById('engine-think');
+    if (thinkElem) {
+      const textSpan = thinkElem.querySelector('.t-think-text');
+      setInterval(() => {
+        if (!textSpan) return;
+        textSpan.classList.add('is-exit');
+        setTimeout(() => {
+          thinkIdx = (thinkIdx + 1) % thinkingStates.length;
+          const nextText = thinkingStates[thinkIdx];
+          textSpan.classList.remove('is-exit');
+          textSpan.classList.add('is-enter-start');
+          textSpan.textContent = nextText;
+          textSpan.setAttribute('data-text', nextText);
+          void textSpan.offsetHeight; // force reflow
+          textSpan.classList.remove('is-enter-start');
+        }, 180);
+      }, 2600);
+    }
+
+    // ---------------------------------------------------------
+    // 4. Transitions.dev: Reasoning Stream Implementation
+    // ---------------------------------------------------------
+    const reasonScroll = document.querySelector('.t-reason-scroll');
+    const reasonText = document.querySelector('.t-reason-text');
+    if (reasonScroll && reasonText) {
+      // Clone text block once for seamless infinite wrapping
+      const clone = reasonText.cloneNode(true);
+      reasonScroll.appendChild(clone);
+
+      let offset = 0;
+      const lineHeight = 24;
+      const singleBlockHeight = reasonText.offsetHeight;
+
+      setInterval(() => {
+        offset += lineHeight;
+        reasonScroll.style.transition = 'transform 500ms cubic-bezier(0.22, 1, 0.36, 1)';
+        reasonScroll.style.transform = `translateY(-${offset}px)`;
+
+        // Seamless wrap when reaching half height
+        if (offset >= singleBlockHeight) {
+          setTimeout(() => {
+            reasonScroll.style.transition = 'none';
+            offset = 0;
+            reasonScroll.style.transform = 'translateY(0)';
+          }, 520);
+        }
+      }, 1200);
+    }
+
+    // ---------------------------------------------------------
+    // 5. Transitions.dev: Streaming Text Implementation
+    // ---------------------------------------------------------
+    const streamContainer = document.getElementById('hero-stream');
+    if (streamContainer) {
+      const originalText = streamContainer.innerText.trim();
+      const words = originalText.split(/\s+/);
+      streamContainer.innerHTML = words.map(w => `<span class="t-stream-w">${w}</span> `).join('');
+      
+      const wordSpans = streamContainer.querySelectorAll('.t-stream-w');
+      wordSpans.forEach((span, index) => {
+        setTimeout(() => {
+          span.classList.add('is-in');
+        }, index * 40 + 100);
+      });
+    }
+
+    // ---------------------------------------------------------
+    // 6. Transitions.dev: Matrix Dot Loader Builder
+    // ---------------------------------------------------------
+    const matrixDelayTables = {
+      scan: (col, row) => col * 120,
+      twinkle: (col, row, i) => [7,2,11,5,14,9,0,12,3,15,6,10,13,1,8,4][i] * (1200 / 16),
+      pulse: (col, row, i) => [5,6,9,10].includes(i) ? 0 : 200,
+      orbit: (col, row, i) => [1,2,7,11,14,13,8,4].indexOf(i) !== -1 ? [1,2,7,11,14,13,8,4].indexOf(i) * 150 : 0
+    };
+
+    document.querySelectorAll('.t-matrix').forEach(matrix => {
+      const variant = matrix.dataset.variant || 'scan';
+      const delayFn = matrixDelayTables[variant] || matrixDelayTables.scan;
+      matrix.innerHTML = '';
+      for (let i = 0; i < 16; i++) {
+        const dot = document.createElement('i');
+        const col = i % 4;
+        const row = Math.floor(i / 4);
+        const delay = delayFn(col, row, i);
+        dot.style.setProperty('--d', Math.round(delay));
+        matrix.appendChild(dot);
+      }
+    });
+
+    // ---------------------------------------------------------
+    // 7. Transitions.dev: Tabs Sliding Implementation
     // ---------------------------------------------------------
     const tabsContainer = document.querySelector('.t-tabs');
     const tabsPill = document.querySelector('.t-tabs-pill');
@@ -1769,8 +2265,7 @@
       tabsPill.style.transform = `translateX(${activeTab.offsetLeft}px)`;
       tabsPill.style.width = `${activeTab.offsetWidth}px`;
       if (!animate) {
-        // Force reflow
-        void tabsPill.offsetHeight;
+        void tabsPill.offsetHeight; // Force reflow
         tabsPill.style.transition = '';
       }
     }
@@ -1789,7 +2284,6 @@
       });
     });
 
-    // Snap on load & resize without animation
     window.addEventListener('load', () => {
       const activeTab = document.querySelector('.t-tab[aria-selected="true"]');
       snapTabsPill(activeTab, false);
@@ -1800,7 +2294,7 @@
     });
 
     // ---------------------------------------------------------
-    // 3. Transitions.dev: Card Hover Tilt & Glare Implementation
+    // 8. Transitions.dev: Card Hover Tilt & Glare Implementation
     // ---------------------------------------------------------
     document.querySelectorAll('.t-tilt').forEach(wrapper => {
       const card = wrapper.querySelector('.t-tilt-card');
@@ -1819,7 +2313,7 @@
         const px = (x / rect.width) * 2 - 1;   // -1 to 1
         const py = (y / rect.height) * 2 - 1;  // -1 to 1
 
-        const rx = -py * 12; // tilt degrees
+        const rx = -py * 12;
         const ry = px * 12;
 
         const gx = (x / rect.width) * 100;
@@ -1840,7 +2334,7 @@
     });
 
     // ---------------------------------------------------------
-    // 4. Transitions.dev: Tooltip Open/Close Implementation
+    // 9. Transitions.dev: Tooltip Open/Close Implementation
     // ---------------------------------------------------------
     document.querySelectorAll('.t-tt-group').forEach(group => {
       const tooltip = group.querySelector('.t-tt');
@@ -1870,7 +2364,7 @@
     });
 
     // ---------------------------------------------------------
-    // 5. Transitions.dev: Plus to Menu Morph
+    // 10. Transitions.dev: Plus to Menu Morph
     // ---------------------------------------------------------
     function toggleMorph(force) {
       const morph = document.getElementById('quick-morph');
@@ -1882,7 +2376,6 @@
       btn.setAttribute('aria-expanded', next ? 'true' : 'false');
     }
 
-    // Close morph menu on click outside
     document.addEventListener('click', (e) => {
       const morph = document.getElementById('quick-morph');
       if (morph && !morph.contains(e.target) && morph.getAttribute('data-open') === 'true') {
@@ -1891,7 +2384,7 @@
     });
 
     // ---------------------------------------------------------
-    // 6. FAQ Accordion
+    // 11. FAQ Accordion
     // ---------------------------------------------------------
     document.querySelectorAll('.faq-q').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1900,7 +2393,7 @@
     });
 
     // ---------------------------------------------------------
-    // 7. Copy Code Snippet
+    // 12. Copy Code Snippet
     // ---------------------------------------------------------
     function copySnippet(btn) {
       const code = btn.closest('.code-box').querySelector('code').innerText;
@@ -1916,7 +2409,7 @@
     }
 
     // ---------------------------------------------------------
-    // 8. Live Terminal Telemetry Animation
+    // 13. Live Terminal Telemetry Animation
     // ---------------------------------------------------------
     const queue = [
       { name: 'IMG_2026_0918.jpg', size: '3.4M', speed: '3.2MB/s' },
@@ -1924,7 +2417,7 @@
       { name: 'DSC_NIGHT_RAW.jpg', size: '4.1M', speed: '3.1MB/s' },
       { name: 'TRIP_DOCUMENTARY.mkv', size: '1.2G', speed: '8.4MB/s' }
     ];
-    let qI = 0, qP = 30, qCnt = 4570;
+    let qI = 0, qP = 30, qCnt = 4600;
     setInterval(() => {
       const f = document.getElementById('t-file'), m = document.getElementById('t-meter'), c = document.getElementById('t-count');
       if (!f || !m) return;
