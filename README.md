@@ -32,7 +32,7 @@
 
 Unlike standard Telegram bots that are artificially throttled and strictly capped at 50 MB, Mobata establishes direct client connections via Telegram's MTProto protocol using native C hardware acceleration (`cryptg`). It features intelligent self-healing FloodWait recovery, connection obfuscation to bypass restrictive ISP deep-packet inspection, in-app video streaming flags, and persistent atomic state tracking ensuring zero duplicate uploads across machine restarts.
 
-* ◈ **Interactive Showcase & Documentation**: [http://mobata.unaux.com](http://mobata.unaux.com) *(Mirror: [http://7cee79.ezyro.com](http://7cee79.ezyro.com))*
+* ◈ **Interactive Showcase & Documentation**: [http://mobata.unaux.com](http://mobata.unaux.com)
 * ◈ **Local Setup Guide**: [mobata.unaux.com/setup.html](http://mobata.unaux.com/setup.html)
 * ◈ **Docker & NAS Sync Guide**: [mobata.unaux.com/docker.html](http://mobata.unaux.com/docker.html)
 * ◈ **Cloud VPS & n8n Guide**: [mobata.unaux.com/cloud.html](http://mobata.unaux.com/cloud.html)
@@ -54,22 +54,30 @@ Unlike standard Telegram bots that are artificially throttled and strictly cappe
 
 ## ⬡ Repository Structure
 
-```text
-Mobata/
-├── assets/
-│   ├── logo-dark.png            # Dark monochrome brand mark
-│   └── logo.png                 # Monogram mark
-├── .env.example                 # Configuration template (fill with your keys)
-├── .gitignore                   # Keeps your credentials and session 100% private
-├── Dockerfile                   # Cloud & container setup
-├── docker-compose.yml           # One-command Docker orchestration
-├── Procfile                     # For Heroku / Koyeb deployment
-├── requirements.txt             # Python dependencies
-├── run_uploader.bat             # 1-Click launcher for Windows
-├── uploader.py                  # Core uploader engine
-├── WHY_MOBATA.md                # In-depth architectural & problem-solving guide
-└── README.md                    # Documentation
+<div align="center">
+  <img src="assets/project-structure.svg" alt="Mobata VS Code Project Structure" width="100%" />
+</div>
+
+<details open>
+<summary><b>📂 VS Code Explorer File Tree</b></summary>
+
+```yaml
+📂 Mobata/
+├── 📁 assets/
+│   ├── 🖼️ logo-dark.png         # Dark monochrome brand mark
+│   └── 🖼️ logo.png              # Monogram mark
+├── 🔒 .env.example              # Configuration template (fill with your keys)
+├── 🛡️ .gitignore                # Keeps your credentials and session 100% private
+├── 🐳 Dockerfile                # Cloud & container setup
+├── 🐙 docker-compose.yml        # One-command Docker orchestration
+├── 🚀 Procfile                  # For Heroku / Koyeb deployment
+├── 📦 requirements.txt          # Python dependencies
+├── ⚡ run_uploader.bat          # 1-Click launcher for Windows
+├── 🐍 uploader.py               # Core uploader engine
+├── 📖 WHY_MOBATA.md             # In-depth architectural & problem-solving guide
+└── 📝 README.md                 # Documentation
 ```
+</details>
 
 ---
 
