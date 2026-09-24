@@ -52,31 +52,6 @@ Unlike standard Telegram bots that are artificially throttled and strictly cappe
 
 ---
 
-## ⬡ Repository Structure
-
-<div align="center">
-  <img src="assets/project-structure.svg" alt="Mobata Project Structure" width="100%" />
-</div>
-
-```yaml
-📂 Mobata/
-├── 📁 assets/
-│   ├── 🖼️ logo-dark.png         # Dark monochrome brand mark
-│   └── 🖼️ logo.png              # Monogram mark
-├── 🔒 .env.example              # Configuration template (fill with your keys)
-├── 🛡️ .gitignore                # Keeps your credentials and session 100% private
-├── 🐳 Dockerfile                # Cloud & container setup
-├── 🐙 docker-compose.yml        # One-command Docker orchestration
-├── 🚀 Procfile                  # For Heroku / Koyeb deployment
-├── 📦 requirements.txt          # Python dependencies
-├── ⚡ run_uploader.bat          # 1-Click launcher for Windows
-├── 🐍 uploader.py               # Core uploader engine
-├── 📖 WHY_MOBATA.md             # In-depth architectural & problem-solving guide
-└── 📝 README.md                 # Documentation
-```
-
----
-
 ## ▸ Quick Start (Local Setup)
 
 ### Step 1: Clone the Repository
