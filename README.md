@@ -9,11 +9,11 @@
   # Mobata
   ### High-Performance Automated Media Uploader for Telegram
   
-  [![Website](https://img.shields.io/badge/Website-mobata.unaux.com-000000?style=for-the-badge&logo=googlechrome&logoColor=white)](http://mobata.unaux.com)
-  [![Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.14-000000?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-  [![Telegram MTProto](https://img.shields.io/badge/Telegram-MTProto%20Telethon-000000?style=for-the-badge&logo=telegram&logoColor=white)](https://core.telegram.org/api)
-  [![Docker](https://img.shields.io/badge/Docker-Ready-000000?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
-  [![License: MIT](https://img.shields.io/badge/License-MIT-000000?style=for-the-badge)](LICENSE)
+  [![Website](https://img.shields.io/badge/Website-mobata.unaux.com-4F46E5?style=for-the-badge&logo=google-chrome&logoColor=white)](http://mobata.unaux.com)
+  [![Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.14-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+  [![Telegram MTProto](https://img.shields.io/badge/Telegram-MTProto%20Telethon-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://core.telegram.org/api)
+  [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
   <p align="center">
     <b>Upload thousands of photos and multi-gigabyte 4K videos to private Telegram channels autonomously.</b><br>
