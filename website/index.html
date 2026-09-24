@@ -332,7 +332,7 @@
        Transitions.dev: Card Hover Tilt & Glare (Universal)
        ========================================================================== */
     .t-tilt {
-      touch-action: none;
+      touch-action: pan-y;
       position: relative;
     }
     .t-tilt-card {
@@ -355,6 +355,25 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .t-tilt-card { transform: none !important; transition: none !important; }
+    }
+    /* Completely Disable 3D Tilt on Mobile / Touch screens */
+    @media (max-width: 768px), (hover: none), (pointer: coarse) {
+      .t-tilt {
+        touch-action: pan-y !important;
+        transform: none !important;
+        perspective: none !important;
+      }
+      .t-tilt-card {
+        transform: none !important;
+        transform-style: flat !important;
+        transition: none !important;
+        will-change: auto !important;
+      }
+      .t-tilt.is-hover .t-tilt-card,
+      .t-tilt:hover .t-tilt-card,
+      .t-tilt-card.is-tilting {
+        transform: none !important;
+      }
     }
 
     /* ==========================================================================
@@ -550,6 +569,7 @@
       perspective: 1200px;
       overflow: visible;
       contain: layout size;
+      touch-action: pan-y;
     }
     .stack-card {
       position: absolute;
@@ -564,6 +584,7 @@
       border-radius: 20px;
       padding: 30px 26px;
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      touch-action: pan-y;
       cursor: pointer;
       user-select: none;
       transition:
@@ -860,6 +881,13 @@
       opacity: 1;
       transform: translateY(0);
     }
+    @media (max-width: 768px) {
+      .scroll-fade {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
 
     /* Sections */
     .section {
@@ -934,35 +962,41 @@
     .table-box {
       background: var(--bg-card);
       backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-subtle);
       border-radius: 20px;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+      overflow: hidden;
       width: 100%;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      position: relative;
     }
     .comp-table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 15.5px;
+      font-size: 15px;
+      table-layout: fixed;
     }
     .comp-table th {
-      padding: 22px 28px;
+      padding: 20px 24px;
       background: rgba(255, 255, 255, 0.04);
       color: #ffffff;
       font-weight: 800;
       border-bottom: 1px solid var(--border-subtle);
     }
     .comp-table td {
-      padding: 20px 28px;
+      padding: 18px 24px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       color: var(--text-muted);
+      line-height: 1.5;
     }
     .col-hi {
       background: rgba(255, 255, 255, 0.06);
       color: #ffffff !important;
       font-weight: 800;
+    }
+    .mobile-table-hint {
+      display: none;
     }
 
     /* Dedicated Documentation Cards */
@@ -1406,20 +1440,47 @@
         font-size: 38px;
       }
 
-      /* Comparison Table: Smooth Touch Scroll */
+      /* Comparison Table on Mobile */
+      .mobile-table-hint {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--text-muted);
+      }
+      .mobile-table-hint span {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--border-subtle);
+        padding: 5px 14px;
+        border-radius: 9999px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
       .table-box {
         width: 100%;
         max-width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
         border-radius: 14px;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        touch-action: pan-x pan-y !important;
       }
       .comp-table {
-        min-width: 540px;
-        font-size: 11.5px;
+        width: 100%;
+        min-width: 600px;
+        table-layout: auto !important;
+        font-size: 12px;
+        display: table !important;
+        visibility: visible !important;
       }
       .comp-table th, .comp-table td {
-        padding: 12px 12px;
+        padding: 12px 14px;
+        white-space: normal;
       }
 
       /* Footer */
@@ -1782,57 +1843,58 @@
         <h2 class="sec-title">Why Traditional Methods Fail.</h2>
       </div>
 
-      <div class="table-box t-tilt">
-        <div class="t-tilt-card">
-          <table class="comp-table">
-            <thead>
-              <tr>
-                <th>Feature</th>
-                <th>Telegram Desktop App</th>
-                <th>Standard Bot API</th>
-                <th class="col-hi">Mobata (MTProto)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Max File Size</strong></td>
-                <td>2 GB (Manual Drag-and-Drop)</td>
-                <td>50 MB Strictly</td>
-                <td class="col-hi">2 GB – 4 GB</td>
-              </tr>
-              <tr>
-                <td><strong>Unlimited Batch Queue</strong></td>
-                <td>UI Freezes / Crashes</td>
-                <td>Fails on large videos</td>
-                <td class="col-hi">Autonomous Queue</td>
-              </tr>
-              <tr>
-                <td><strong>Auto-Resume on Disconnect</strong></td>
-                <td>❌ No</td>
-                <td>❌ No</td>
-                <td class="col-hi">Zero Duplicates</td>
-              </tr>
-              <tr>
-                <td><strong>FloodWait Auto Recovery</strong></td>
-                <td>❌ Manual retry</td>
-                <td>❌ Crashes Script</td>
-                <td class="col-hi">Self-Healing</td>
-              </tr>
-              <tr>
-                <td><strong>ISP DPI / Throttling Bypass</strong></td>
-                <td>❌ No</td>
-                <td>❌ No</td>
-                <td class="col-hi">Obfuscated TCP</td>
-              </tr>
-              <tr>
-                <td><strong>Headless Server Support</strong></td>
-                <td>❌ Requires GUI</td>
-                <td>✅ Yes</td>
-                <td class="col-hi">CLI / Docker / VPS</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="mobile-table-hint">
+        <span>⇄ Swipe to compare features</span>
+      </div>
+      <div class="table-box">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th style="width: 27%;">Feature</th>
+              <th style="width: 24%;">Telegram Desktop App</th>
+              <th style="width: 22%;">Standard Bot API</th>
+              <th style="width: 27%;" class="col-hi">Mobata (MTProto)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Max File Size</strong></td>
+              <td>2 GB (Manual Drag-and-Drop)</td>
+              <td>50 MB Strictly</td>
+              <td class="col-hi">2 GB – 4 GB</td>
+            </tr>
+            <tr>
+              <td><strong>Unlimited Batch Queue</strong></td>
+              <td>UI Freezes / Crashes</td>
+              <td>Fails on large videos</td>
+              <td class="col-hi">Autonomous Queue</td>
+            </tr>
+            <tr>
+              <td><strong>Auto-Resume on Disconnect</strong></td>
+              <td>❌ No</td>
+              <td>❌ No</td>
+              <td class="col-hi">Zero Duplicates</td>
+            </tr>
+            <tr>
+              <td><strong>FloodWait Auto Recovery</strong></td>
+              <td>❌ Manual retry</td>
+              <td>❌ Crashes Script</td>
+              <td class="col-hi">Self-Healing</td>
+            </tr>
+            <tr>
+              <td><strong>ISP DPI / Throttling Bypass</strong></td>
+              <td>❌ No</td>
+              <td>❌ No</td>
+              <td class="col-hi">Obfuscated TCP</td>
+            </tr>
+            <tr>
+              <td><strong>Headless Server Support</strong></td>
+              <td>❌ Requires GUI</td>
+              <td>✅ Yes</td>
+              <td class="col-hi">CLI / Docker / VPS</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -2202,57 +2264,67 @@
     });
 
     // ---------------------------------------------------------
-    // 3. Transitions.dev: Card Hover Tilt & Glare (Universal Wireup)
+    // 3. Transitions.dev: Card Hover Tilt (Desktop Fine Pointer Only)
     // ---------------------------------------------------------
-    document.querySelectorAll('.t-tilt').forEach(wrapper => {
-      const card = wrapper.querySelector('.t-tilt-card');
-      if (!card) return;
+    const isDesktopPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches && window.innerWidth > 768;
+    if (isDesktopPointer) {
+      document.querySelectorAll('.t-tilt').forEach(wrapper => {
+        const card = wrapper.querySelector('.t-tilt-card');
+        if (!card) return;
 
-      wrapper.addEventListener('pointerenter', () => {
-        wrapper.classList.add('is-hover');
-        card.classList.add('is-tilting');
+        wrapper.addEventListener('pointerenter', (e) => {
+          if (e.pointerType === 'touch') return;
+          wrapper.classList.add('is-hover');
+          card.classList.add('is-tilting');
+        });
+
+        wrapper.addEventListener('pointermove', (e) => {
+          if (e.pointerType === 'touch') return;
+          const rect = wrapper.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          const px = (x / rect.width) * 2 - 1;   // -1 to 1
+          const py = (y / rect.height) * 2 - 1;  // -1 to 1
+
+          const rx = -py * 8;
+          const ry = px * 8;
+
+          const gx = (x / rect.width) * 100;
+          const gy = (y / rect.height) * 100;
+
+          wrapper.style.setProperty('--tilt-rx', `${rx.toFixed(2)}deg`);
+          wrapper.style.setProperty('--tilt-ry', `${ry.toFixed(2)}deg`);
+          wrapper.style.setProperty('--tilt-gx', `${gx.toFixed(1)}%`);
+          wrapper.style.setProperty('--tilt-gy', `${gy.toFixed(1)}%`);
+        });
+
+        wrapper.addEventListener('pointerleave', (e) => {
+          if (e.pointerType === 'touch') return;
+          wrapper.classList.remove('is-hover');
+          card.classList.remove('is-tilting');
+          wrapper.style.setProperty('--tilt-rx', '0deg');
+          wrapper.style.setProperty('--tilt-ry', '0deg');
+        });
       });
-
-      wrapper.addEventListener('pointermove', (e) => {
-        const rect = wrapper.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        const px = (x / rect.width) * 2 - 1;   // -1 to 1
-        const py = (y / rect.height) * 2 - 1;  // -1 to 1
-
-        const rx = -py * 10;
-        const ry = px * 10;
-
-        const gx = (x / rect.width) * 100;
-        const gy = (y / rect.height) * 100;
-
-        wrapper.style.setProperty('--tilt-rx', `${rx.toFixed(2)}deg`);
-        wrapper.style.setProperty('--tilt-ry', `${ry.toFixed(2)}deg`);
-        wrapper.style.setProperty('--tilt-gx', `${gx.toFixed(1)}%`);
-        wrapper.style.setProperty('--tilt-gy', `${gy.toFixed(1)}%`);
-      });
-
-      wrapper.addEventListener('pointerleave', () => {
-        wrapper.classList.remove('is-hover');
-        card.classList.remove('is-tilting');
-        wrapper.style.setProperty('--tilt-rx', '0deg');
-        wrapper.style.setProperty('--tilt-ry', '0deg');
-      });
-    });
+    }
 
     // ---------------------------------------------------------
     // 4. Scroll-Driven Fade Animation (High Visibility)
     // ---------------------------------------------------------
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-        }
-      });
-    }, { threshold: 0.1 });
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, { threshold: 0.05, rootMargin: '50px 0px 50px 0px' });
 
-    document.querySelectorAll('.scroll-fade').forEach(el => observer.observe(el));
+      document.querySelectorAll('.scroll-fade').forEach(el => observer.observe(el));
+    } else {
+      document.querySelectorAll('.scroll-fade').forEach(el => el.classList.add('is-visible'));
+    }
 
     // ---------------------------------------------------------
     // 5. Transitions.dev: Streaming Text
