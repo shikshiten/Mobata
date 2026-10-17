@@ -141,6 +141,73 @@ def detect_media_type(file_path: Path):
     return "document"
 
 
+def extract_video_info_and_thumb(file_path: Path):
+    """
+    Extract video width, height, duration and a preview thumbnail image.
+    Generates a crisp thumbnail from 1.5s into the video (avoiding black intro frames).
+    Returns (width, height, duration, thumb_path).
+    """
+    width = 0
+    height = 0
+    duration = 0
+    thumb_path = None
+
+    try:
+        import cv2
+        cap = cv2.VideoCapture(str(file_path))
+        if cap.isOpened():
+            fps = cap.get(cv2.CAP_PROP_FPS) or 25
+            frame_count = cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0
+            width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            if fps > 0 and frame_count > 0:
+                duration = int(frame_count / fps)
+
+            # Seek past intro black frames (target 1.5s or 10% of total video)
+            target_frame = min(int(fps * 1.5), int(frame_count * 0.1)) if frame_count > 15 else 0
+            cap.set(cv2.CAP_PROP_POS_FRAMES, target_frame)
+            ret, frame = cap.read()
+            if not ret and frame_count > 0:
+                cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+                ret, frame = cap.read()
+
+            if ret and frame is not None:
+                # Resize thumbnail to max 320x320 for Telegram guidelines
+                h, w = frame.shape[:2]
+                scale = min(320 / max(w, 1), 320 / max(h, 1), 1.0)
+                thumb_w, thumb_h = max(int(w * scale), 1), max(int(h * scale), 1)
+                resized = cv2.resize(frame, (thumb_w, thumb_h), interpolation=cv2.INTER_AREA)
+
+                temp_thumb = file_path.parent / f"_thumb_{file_path.stem}.jpg"
+                cv2.imwrite(str(temp_thumb), resized, [int(cv2.IMWRITE_JPEG_QUALITY), 85])
+                thumb_path = str(temp_thumb)
+
+            cap.release()
+    except Exception:
+        pass
+
+    # Fallback to hachoir if cv2 couldn't get duration or dimensions
+    if duration == 0 or width == 0:
+        try:
+            from hachoir.metadata import extractMetadata
+            from hachoir.parser import createParser
+            parser = createParser(str(file_path))
+            if parser:
+                with parser:
+                    meta = extractMetadata(parser)
+                    if meta:
+                        if duration == 0 and meta.has("duration"):
+                            duration = int(meta.get("duration").total_seconds())
+                        if width == 0 and meta.has("width"):
+                            width = int(meta.get("width"))
+                        if height == 0 and meta.has("height"):
+                            height = int(meta.get("height"))
+        except Exception:
+            pass
+
+    return width, height, duration, thumb_path
+
+
 def get_files_to_upload(folder_path: str):
     """Scan folder recursively and return sorted list of supported media files."""
     path = Path(folder_path)
@@ -270,6 +337,21 @@ async def main():
             elif is_video and ext in IMAGE_EXTENSIONS:
                 force_doc = True
 
+            # Extract video metadata and generate preview thumbnail to fix black box & 00:00 duration
+            thumb_path = None
+            attributes = []
+            if is_video:
+                vid_w, vid_h, vid_dur, thumb_path = extract_video_info_and_thumb(file_path)
+                if vid_dur > 0 or vid_w > 0:
+                    attributes.append(
+                        types.DocumentAttributeVideo(
+                            duration=int(vid_dur),
+                            w=int(vid_w or 1280),
+                            h=int(vid_h or 720),
+                            supports_streaming=True
+                        )
+                    )
+
             curr_total_idx = already_done + idx
             progress_prefix = f"[{curr_total_idx}/{total_found}]"
 
@@ -307,6 +389,8 @@ async def main():
                     await client.send_file(
                         entity=channel,
                         file=str(file_path.resolve()),
+                        thumb=thumb_path if (thumb_path and os.path.exists(thumb_path)) else None,
+                        attributes=attributes if attributes else None,
                         supports_streaming=is_video,
                         force_document=force_doc,
                         progress_callback=upload_progress
@@ -396,6 +480,13 @@ async def main():
                     print(f"\n[ERROR] Unexpected error uploading {file_name}: {e}")
                     write_log(f"ERROR: {file_name}: {e}")
                     break
+
+            # Clean up temporary thumbnail file if generated
+            if thumb_path and os.path.exists(thumb_path):
+                try:
+                    os.remove(thumb_path)
+                except Exception:
+                    pass
 
             if uploaded_ok:
                 append_history(str(file_path.resolve()))
