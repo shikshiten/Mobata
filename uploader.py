@@ -16,6 +16,12 @@ from telethon.network.connection.tcpobfuscated import ConnectionTcpObfuscated
 from telethon.tl.functions.messages import ImportChatInviteRequest
 from tqdm import tqdm
 
+try:
+    from FastTelethonhelper import upload_file as fast_upload_file
+    HAS_FAST_UPLOAD = True
+except Exception:
+    HAS_FAST_UPLOAD = False
+
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(dotenv_path=BASE_DIR / ".env")
 
@@ -283,7 +289,8 @@ async def main():
 
     print(f"[*] Already uploaded previously: {already_done}")
     print(f"[*] Remaining files to upload: {len(pending_files)}")
-    write_log(f"Started upload session. Media Folder: {UPLOAD_FOLDER} | Total: {total_found} | Already Done: {already_done} | Pending: {len(pending_files)}")
+    print(f"[*] Max Speed Turbo Engine: {'ACTIVE (Multi-Connection Parallel MTProto)' if HAS_FAST_UPLOAD else 'DISABLED'}")
+    write_log(f"Started upload session. Media Folder: {UPLOAD_FOLDER} | Total: {total_found} | Already Done: {already_done} | Pending: {len(pending_files)} | Turbo: {HAS_FAST_UPLOAD}")
 
     if not pending_files:
         print("[OK] All files have already been uploaded!")
@@ -386,15 +393,47 @@ async def main():
                         print(f"[*] Reconnecting to Telegram...")
                         await client.connect()
 
-                    await client.send_file(
-                        entity=channel,
-                        file=str(file_path.resolve()),
-                        thumb=thumb_path if (thumb_path and os.path.exists(thumb_path)) else None,
-                        attributes=attributes if attributes else None,
-                        supports_streaming=is_video,
-                        force_document=force_doc,
-                        progress_callback=upload_progress
-                    )
+                    if HAS_FAST_UPLOAD and file_size > 10 * 1024 * 1024:
+                        # Parallel multi-connection streaming: divides file into 512KB chunks
+                        # across multiple concurrent MTProto connections to max out internet bandwidth
+                        try:
+                            with open(file_path, "rb") as fp:
+                                input_file = await fast_upload_file(
+                                    client=client,
+                                    file=fp,
+                                    name=file_name,
+                                    progress_callback=upload_progress
+                                )
+                            await client.send_file(
+                                entity=channel,
+                                file=input_file,
+                                thumb=thumb_path if (thumb_path and os.path.exists(thumb_path)) else None,
+                                attributes=attributes if attributes else None,
+                                supports_streaming=is_video,
+                                force_document=force_doc
+                            )
+                        except Exception as fast_err:
+                            # Fallback cleanly to standard stream if parallel connection has any hiccup
+                            print(f"\n[!] Fast stream retry ({fast_err}). Using standard stream...")
+                            await client.send_file(
+                                entity=channel,
+                                file=str(file_path.resolve()),
+                                thumb=thumb_path if (thumb_path and os.path.exists(thumb_path)) else None,
+                                attributes=attributes if attributes else None,
+                                supports_streaming=is_video,
+                                force_document=force_doc,
+                                progress_callback=upload_progress
+                            )
+                    else:
+                        await client.send_file(
+                            entity=channel,
+                            file=str(file_path.resolve()),
+                            thumb=thumb_path if (thumb_path and os.path.exists(thumb_path)) else None,
+                            attributes=attributes if attributes else None,
+                            supports_streaming=is_video,
+                            force_document=force_doc,
+                            progress_callback=upload_progress
+                        )
                     # Complete progress bar to 100%
                     pbar.total = pbar.n if pbar.n > 0 else file_size
                     pbar.n = pbar.total
