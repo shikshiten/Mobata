@@ -16,23 +16,48 @@ from telethon.network.connection.tcpobfuscated import ConnectionTcpObfuscated
 from telethon.tl.functions.messages import ImportChatInviteRequest
 from tqdm import tqdm
 
-load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(dotenv_path=BASE_DIR / ".env")
 
 API_ID = int(os.getenv("TELEGRAM_API_ID", "0"))
 API_HASH = os.getenv("TELEGRAM_API_HASH", "").strip()
 PHONE = os.getenv("TELEGRAM_PHONE", "").strip()
 CHANNEL_ID = os.getenv("TELEGRAM_CHANNEL_ID", "").strip()
 INVITE_LINK = os.getenv("TELEGRAM_INVITE_LINK", "").strip()
-UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "./media_uploads").strip()
+
+raw_upload_folder = os.getenv("UPLOAD_FOLDER", "./Upload").strip()
+upload_path = Path(raw_upload_folder)
+if not upload_path.is_absolute():
+    upload_path = (BASE_DIR / upload_path).resolve()
+
+if not upload_path.exists():
+    fallback_path = BASE_DIR / "Upload"
+    if fallback_path.exists():
+        upload_path = fallback_path
+
+UPLOAD_FOLDER = str(upload_path)
 UPLOAD_DELAY = float(os.getenv("UPLOAD_DELAY", "0.5"))
 
-SESSION_NAME = "telethon_upload_session"
-HISTORY_FILE = "uploaded_history.txt"
-LOCK_FILE = "uploader.lock"
+SESSION_NAME = str(BASE_DIR / "telethon_upload_session")
+HISTORY_FILE = str(BASE_DIR / "uploaded_history.txt")
+LOCK_FILE = str(BASE_DIR / "uploader.lock")
+LOG_FILE = str(BASE_DIR / "uploader.log")
 
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".bmp", ".heic"}
 VIDEO_EXTENSIONS = {".mp4", ".mkv", ".mov", ".avi", ".flv", ".wmv", ".webm", ".3gp", ".m4v"}
 SUPPORTED_EXTENSIONS = IMAGE_EXTENSIONS | VIDEO_EXTENSIONS
+
+
+def write_log(message: str):
+    """Write timestamped entry to uploader.log."""
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    try:
+        with open(LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(f"[{timestamp}] {message}\n")
+            f.flush()
+    except Exception:
+        pass
+
 
 
 def acquire_lock():
@@ -41,15 +66,24 @@ def acquire_lock():
         try:
             with open(LOCK_FILE, "r") as f:
                 old_pid = int(f.read().strip())
-            # Check if old process is still alive on Windows
-            import ctypes
-            kernel32 = ctypes.windll.kernel32
-            PROCESS_QUERY_INFORMATION = 0x0400
-            handle = kernel32.OpenProcess(PROCESS_QUERY_INFORMATION, False, old_pid)
-            if handle:
-                kernel32.CloseHandle(handle)
+            if sys.platform == "win32":
+                import ctypes
+                kernel32 = ctypes.windll.kernel32
+                PROCESS_QUERY_INFORMATION = 0x0400
+                handle = kernel32.OpenProcess(PROCESS_QUERY_INFORMATION, False, old_pid)
+                if handle:
+                    exit_code = ctypes.c_ulong()
+                    still_running = False
+                    if kernel32.GetExitCodeProcess(handle, ctypes.byref(exit_code)):
+                        still_running = (exit_code.value == 259)
+                    kernel32.CloseHandle(handle)
+                    if still_running:
+                        print(f"[ERROR] Another uploader process (PID {old_pid}) is already running!")
+                        print("[*] Please close the other terminal window or kill existing python processes before starting.")
+                        sys.exit(1)
+            else:
+                os.kill(old_pid, 0)
                 print(f"[ERROR] Another uploader process (PID {old_pid}) is already running!")
-                print("[*] Please close the other terminal window or kill existing python processes before starting.")
                 sys.exit(1)
         except Exception:
             pass
@@ -172,6 +206,7 @@ async def main():
 
     if total_found == 0:
         print("[!] No supported media files found in the folder.")
+        write_log(f"No supported media files found in {UPLOAD_FOLDER}")
         release_lock()
         return
 
@@ -181,9 +216,11 @@ async def main():
 
     print(f"[*] Already uploaded previously: {already_done}")
     print(f"[*] Remaining files to upload: {len(pending_files)}")
+    write_log(f"Started upload session. Media Folder: {UPLOAD_FOLDER} | Total: {total_found} | Already Done: {already_done} | Pending: {len(pending_files)}")
 
     if not pending_files:
         print("[OK] All files have already been uploaded!")
+        write_log("All files already uploaded. Exiting.")
         release_lock()
         return
 
@@ -351,16 +388,20 @@ async def main():
                         )
                         last_bytes = 0
                     else:
-                        print(f"[ERROR] Skipped {file_name} after {max_retries} connection attempts.")
+                        err_str = f"Skipped {file_name} after {max_retries} connection attempts."
+                        print(f"[ERROR] {err_str}")
+                        write_log(f"FAILED: {err_str}")
                 except Exception as e:
                     pbar.close()
                     print(f"\n[ERROR] Unexpected error uploading {file_name}: {e}")
+                    write_log(f"ERROR: {file_name}: {e}")
                     break
 
             if uploaded_ok:
                 append_history(str(file_path.resolve()))
                 append_history(file_name)
                 success_count += 1
+                write_log(f"SUCCESS: [{curr_total_idx}/{total_found}] {file_name} ({file_size} bytes)")
             else:
                 fail_count += 1
 
@@ -370,12 +411,15 @@ async def main():
     except KeyboardInterrupt:
         print("\n\n[!] Upload paused by user (Ctrl+C).")
         print("[*] All completed files are saved. Run again anytime to resume.")
+        write_log("Upload paused by user (Ctrl+C).")
     finally:
         try:
             await client.disconnect()
         except Exception:
             pass
         release_lock()
+        summary_msg = f"Session Finished. Uploaded: {success_count} | Failed: {fail_count} | Total Done: {already_done + success_count}/{total_found}"
+        write_log(summary_msg)
         print("\n" + "=" * 65)
         print(f"[*] Session Finished.")
         print(f"[*] Uploaded in this run : {success_count}")

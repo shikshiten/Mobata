@@ -53,6 +53,18 @@ Unlike standard Telegram bots that are artificially throttled and strictly cappe
 
 ---
 
+## ▸ Prerequisites & Downloads
+
+Before installing, make sure you have the required tools installed on your operating system:
+
+| Tool | Minimum Version | Download Link | Notes |
+| :--- | :--- | :--- | :--- |
+| **Python** | **3.10+** | [python.org/downloads](https://www.python.org/downloads/) | **Windows**: Check "Add Python to PATH" during installation! |
+| **Git** | **Latest** | [git-scm.com/downloads](https://git-scm.com/downloads) | Required for cloning the repository |
+| **Telegram** | **Desktop or Mobile** | [telegram.org/apps](https://telegram.org/apps) | Needed to receive the initial one-time 5-digit login code |
+
+---
+
 ## ▸ Quick Start (Local Setup)
 
 ### Step 1: Clone the Repository
@@ -62,19 +74,27 @@ cd Mobata
 ```
 
 ### Step 2: Install Dependencies
-Ensure you have **Python 3.9+** installed:
+Create a virtual environment (recommended) and install the dependencies:
 ```bash
+# Optional: Create and activate virtual environment
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# Linux / macOS:
+source venv/bin/activate
+
+# Install requirements (Telethon, Cryptography, Tqdm, Python-Dotenv)
 pip install -r requirements.txt
 ```
 
 ### Step 3: Get Telegram Credentials
-You will need your own Telegram API credentials:
+You will need your own Telegram personal MTProto API credentials:
 1. Go to [my.telegram.org](https://my.telegram.org) and log in with your Telegram account.
 2. Click on **"API Development Tools"**.
 3. Create an app (enter any name, e.g. `Mobata`).
 4. Copy your **`API ID`** and **`API HASH`**.
 
-### Step 4: Configure `.env`
+### Step 4: Configure `.env` and Add Media Files
 Copy `.env.example` to `.env`:
 * **Windows (Command Prompt / PowerShell)**:
   ```powershell
@@ -91,20 +111,22 @@ TELEGRAM_API_ID=12345678
 TELEGRAM_API_HASH=your_32_character_api_hash
 TELEGRAM_PHONE=+1234567890
 
-# Target Channel: ID or Invite Link
+# Target Channel: ID (e.g. -100...) or Invite Link
 TELEGRAM_CHANNEL_ID=-1001234567890
 TELEGRAM_INVITE_LINK=https://t.me/+AbCdEfGhIjK
 
-# Folder with media to upload
-UPLOAD_FOLDER=C:\Users\YourName\Pictures\Upload
+# Media Folder: Put files in Mobata/Upload/ (or specify an absolute path)
+UPLOAD_FOLDER=./Upload
 UPLOAD_DELAY=0.5
 ```
 
-> **[SECURITY TIP]**: Never commit your `.env` or `.session` file to GitHub! They are already protected in `.gitignore`.
+> **[MEDIA FOLDER]**: Place your photos and videos directly into the `Upload/` folder inside the `Mobata` project root directory. The uploader automatically scans subdirectories and recognizes all media formats.
+
+> **[SECURITY TIP]**: Never commit your `.env`, `.session`, or `Upload/` files to GitHub! They are already secured in `.gitignore`.
 
 ### Step 5: Run the Uploader
 
-* **Windows**: Double-click `run_uploader.bat`, or run:
+* **Windows**: Double-click `run_uploader.bat`, or run in PowerShell / Command Prompt:
   ```powershell
   python uploader.py
   ```
@@ -113,7 +135,11 @@ UPLOAD_DELAY=0.5
   python3 uploader.py
   ```
 
-> **[INITIAL AUTHENTICATION]**: Telegram will send a one-time 5-digit login code to your Telegram app. Enter it once into the terminal. Telethon will generate a `.session` file locally and you will never be asked again!
+> **[INITIAL AUTHENTICATION]**: On first run, Telegram will send a one-time 5-digit login code to your Telegram app. Enter it once into the terminal. Telethon will generate a `.session` file locally and you will never be asked again!
+
+> **[HISTORY & LIVE LOGS]**:
+> * `uploaded_history.txt`: Tracks every completed upload. You can stop (`Ctrl+C`) and restart at any time; Mobata instantly skips all completed files and resumes from the exact next item with zero duplicates.
+> * `uploader.log`: Records real-time audit logs with timestamps for monitoring and troubleshooting.
 
 ---
 

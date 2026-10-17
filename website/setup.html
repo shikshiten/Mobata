@@ -465,19 +465,25 @@
         <div class="step-num">01</div>
         <div class="step-title">Prerequisites & Repository Clone</div>
       </div>
-      <p class="step-text">Ensure you have <strong>Python 3.9+</strong> installed. Open your command prompt, Terminal, or PowerShell and clone the official repository:</p>
+      <p class="step-text">Before starting, make sure the following tools are installed on your machine:</p>
+      <ul style="margin-left: 20px; color: var(--text-muted); font-size: 14.5px; margin-bottom: 16px;">
+        <li style="margin-bottom: 6px;"><strong>Python 3.10+</strong> &mdash; <a href="https://www.python.org/downloads/" target="_blank" style="color: var(--code-cyan); text-decoration: underline;">Download Python from python.org</a> <em>(Crucial: Check "Add Python to PATH" during Windows setup)</em>.</li>
+        <li style="margin-bottom: 6px;"><strong>Git</strong> &mdash; <a href="https://git-scm.com/downloads" target="_blank" style="color: var(--code-cyan); text-decoration: underline;">Download Git from git-scm.com</a>.</li>
+        <li><strong>Telegram App</strong> &mdash; <a href="https://telegram.org/apps" target="_blank" style="color: var(--code-cyan); text-decoration: underline;">Download Telegram for Mobile or Desktop</a> (needed to receive the one-time 5-digit login code).</li>
+      </ul>
+      <p class="step-text">Open your command prompt, Terminal, or PowerShell and clone the official repository:</p>
       <div class="code-box">
         <button class="btn-copy" onclick="copyCode(this)">COPY</button>
-        <pre><span class="c-dim"># Clone Mobata repository</span>
+        <pre><span class="c-dim"># 1. Clone Mobata repository</span>
 git clone https://github.com/shikshiten/Mobata.git
 cd Mobata
 
-<span class="c-dim"># Create a clean virtual environment (recommended)</span>
+<span class="c-dim"># 2. Create and activate a clean virtual environment (optional but recommended)</span>
 python -m venv venv
 <span class="c-dim"># Windows:</span> venv\Scripts\activate
 <span class="c-dim"># macOS/Linux:</span> source venv/bin/activate
 
-<span class="c-dim"># Install native dependencies and C-accelerated MTProto cryptg</span>
+<span class="c-dim"># 3. Install required libraries (Telethon, Cryptography, Tqdm, Python-Dotenv)</span>
 pip install -r requirements.txt</pre>
       </div>
     </div>
@@ -488,9 +494,9 @@ pip install -r requirements.txt</pre>
         <div class="step-num">02</div>
         <div class="step-title">Get Free Telegram API Credentials</div>
       </div>
-      <p class="step-text">Telegram provides free personal MTProto API credentials for all user accounts. Unlike bot tokens that cap uploads at 50 MB, personal API tokens allow up to <strong>4 GB</strong> per file:</p>
+      <p class="step-text">Telegram provides free personal MTProto API credentials for all user accounts. Unlike bot tokens that cap uploads at 50 MB, personal API tokens allow up to <strong>2 GB to 4 GB</strong> per file:</p>
       <ol style="margin-left: 20px; color: var(--text-muted); font-size: 14.5px; margin-bottom: 16px;">
-        <li style="margin-bottom: 6px;">Log in with your Telegram phone number at <a href="https://my.telegram.org" target="_blank">my.telegram.org</a>.</li>
+        <li style="margin-bottom: 6px;">Log in with your Telegram phone number at <a href="https://my.telegram.org" target="_blank" style="color: var(--code-cyan); text-decoration: underline;">my.telegram.org</a>.</li>
         <li style="margin-bottom: 6px;">Click on <strong>"API Development Tools"</strong>.</li>
         <li style="margin-bottom: 6px;">Enter an App title (e.g. <code>Mobata Uploader</code>) and a short name.</li>
         <li>Copy your unique <code>api_id</code> (integer) and <code>api_hash</code> (hex string).</li>
@@ -501,16 +507,19 @@ pip install -r requirements.txt</pre>
     <div class="step-card">
       <div class="step-head">
         <div class="step-num">03</div>
-        <div class="step-title">Configure Environment Variables</div>
+        <div class="step-title">Configure Environment Variables & Media Folder</div>
       </div>
-      <p class="step-text">Copy <code>.env.example</code> to <code>.env</code> in the project folder and insert your credentials. All credentials remain 100% local on your machine:</p>
+      <p class="step-text">Copy <code>.env.example</code> to <code>.env</code> in the project folder and insert your credentials. Place the media files (photos & videos) you wish to upload directly into the <code>Upload/</code> directory inside <code>Mobata</code>:</p>
       <div class="code-box">
         <button class="btn-copy" onclick="copyCode(this)">COPY</button>
         <pre><span class="c-cyan">TELEGRAM_API_ID</span>=12345678
 <span class="c-cyan">TELEGRAM_API_HASH</span>=0123456789abcdef0123456789abcdef
 <span class="c-cyan">TELEGRAM_PHONE</span>=+1234567890
 <span class="c-cyan">TELEGRAM_CHANNEL_ID</span>=-1001234567890
-<span class="c-cyan">UPLOAD_FOLDER</span>=C:\Users\YourName\Pictures\Upload</pre>
+
+<span class="c-dim"># Portable local path (media files in Mobata/Upload/)</span>
+<span class="c-cyan">UPLOAD_FOLDER</span>=./Upload
+<span class="c-cyan">UPLOAD_DELAY</span>=0.5</pre>
       </div>
     </div>
 
@@ -535,9 +544,9 @@ run_uploader.bat</pre>
     <div class="step-card">
       <div class="step-head">
         <div class="step-num">05</div>
-        <div class="step-title">Autonomous Resume & Zero Duplicates</div>
+        <div class="step-title">Autonomous Resume, History & Live Logs</div>
       </div>
-      <p class="step-text">Mobata records every uploaded file immediately into <code>uploaded_history.txt</code>. You can press <kbd style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px;">Ctrl + C</kbd> at any time, turn off your laptop, or switch Wi-Fi networks. Running the script again instantly skips all finished items and resumes from the exact next item.</p>
+      <p class="step-text">Mobata records every uploaded file immediately into <code>uploaded_history.txt</code> and writes timestamped audit events to <code>uploader.log</code>. You can press <kbd style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px;">Ctrl + C</kbd> at any time, turn off your laptop, or switch Wi-Fi networks. Running the script again instantly skips all finished items and resumes from the exact next item with zero duplicate uploads.</p>
     </div>
 
     <div class="btn-bar">

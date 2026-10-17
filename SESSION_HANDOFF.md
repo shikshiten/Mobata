@@ -26,9 +26,8 @@ Because Git ignores sensitive files and databases, **`git clone` ALONE will NOT 
 | **`.env`** | Root `Mobata/` | ~450 B | Contains your Telegram API ID, API Hash, Phone, Channel ID, and folder configuration. |
 
 > [!IMPORTANT]
-> **Check `UPLOAD_FOLDER` in `.env` on your new laptop!**  
-> On this laptop it was set to: `UPLOAD_FOLDER=C:\Users\jites\Documents\Upload`  
-> If your new laptop has a different Windows username or media folder path, update line 11 of `.env` accordingly.
+> **Check `UPLOAD_FOLDER` in `.env`!**  
+> It is now configured to `./Upload` directly inside the `Mobata` repository folder, making the setup portable across machines.
 
 ---
 

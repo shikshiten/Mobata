@@ -14,6 +14,13 @@ uploaded_history.txt
 uploader.lock
 *.log
 
+# Media & Upload Folders
+Upload/
+media_uploads/
+*.blipdownload
+*.zip
+/Black and White Minimalist Monogram Personal Logo.png
+
 # Python cache & build
 __pycache__/
 *.py[cod]
